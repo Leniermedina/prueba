@@ -1,0 +1,8 @@
+{
+  "name": "dual-cell-corp",
+  "version": "1.0.0",
+  "dependencies": {
+    "redis": "^4.6.13",
+    "uuid": "^9.0.1"
+  }
+}
