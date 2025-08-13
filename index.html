@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dual Cell Corp - Tecnología desde 2017</title>
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#00ff9d">
+    <meta name="msapplication-TileColor" content="#00a300">
+    <meta name="theme-color" content="#ffffff">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Futura:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --verde-neon: #00ff9d;
+            --verde-oscuro: #0a2e1c;
+            --verde-medio: #1a5031;
+            --naranja-neon: #ff9d00;
+            --naranja-oscuro: #2e1a0a;
+            --blanco: #ffffff;
+            --negro: #000000;
+            --gris-oscuro: #0d0d0d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--verde-oscuro), var(--negro));
+            color: var(--blanco);
+            overflow-x: hidden;
+            line-height: 1.6;
+            font-family: 'Futura', sans-serif;
+            font-weight: 300;
+        }
+        
+        /* Menú Superior - Optimizado para móviles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: rgba(0, 0, 0, 0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.5);
+            border-bottom: 1px solid var(--verde-neon);
+            height: 60px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            font-weight: bold;
+            font-size: clamp(1.3rem, 4vw, 1.6rem);
+            color: var(--blanco);
+            position: relative;
+            font-family: 'Futura', sans-serif;
+            text-transform: uppercase;
+        }
+        
+        .logo span {
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s;
+            text-shadow: 0 0 5px rgba(0, 255, 157, 0.5);
+            animation: letterGlow 0.5s infinite alternate;
+        }
+        
+        @keyframes letterGlow {
+            0% { color: var(--blanco); text-shadow: 0 0 5px var(--verde-neon); }
+            100% { color: var(--verde-neon); text-shadow: 0 0 15px var(--verde-neon); }
+        }
+        
+        .menu {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .menu li a {
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--blanco);
+            padding: 8px 12px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            border: 1.5px solid transparent;
+            font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            white-space: nowrap;
+        }
+        
+        .menu li a:hover, .menu li a.active {
+            color: var(--verde-neon);
+            border: 1.5px solid var(--verde-neon);
+            box-shadow: 0 0 10px var(--verde-neon);
+        }
+        
+        .language-switcher {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 255, 157, 0.1);
+            padding: 5px;
+            border-radius: 50%;
+            border: 1px solid var(--verde-neon);
+            cursor: pointer;
+            width: 34px;
+            height: 34px;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .language-switcher:hover {
+            background: rgba(0, 255, 157, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .language-switcher i {
+            font-size: 1rem;
+            color: var(--blanco);
+        }
+        
+        /* Carrusel Hero - Imágenes más visibles */
+        .hero-slider {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slides {
+            display: flex;
+            width: 500%;
+            height: 100%;
+            transition: transform 0.8s ease-in-out;
+        }
+        
+        .slide {
+            width: 20%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        /* Menos opacidad para mostrar más la imagen */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(10, 46, 28, 0.15), rgba(0, 0, 0, 0.15));
+        }
+        
+        /* Contenido hero fijo */
+        .hero-content-fixed {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 900px;
+            z-index: 1;
+            text-align: center;
+            padding: 0 15px;
+            width: 100%;
+        }
+        
+        .hero-content-fixed h1 {
+            font-size: clamp(1.8rem, 6vw, 3.5rem);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--verde-neon);
+            font-weight: 700;
+            padding: 15px 25px;
+            border-radius: 40px;
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .hero-content-fixed p {
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            color: var(--blanco);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .slider-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            z-index: 10;
+            gap: 8px;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1.5px solid transparent;
+        }
+        
+        .slider-dot.active {
+            background: var(--naranja-neon);
+            box-shadow: 0 0 12px var(--naranja-neon);
+            transform: scale(1.2);
+            border: 1.5px solid var(--blanco);
+        }
+        
+        .divider {
+            height: 2px;
+            width: 70%;
+            background: linear-gradient(90deg, transparent, var(--verde-neon), transparent);
+            margin: 40px auto;
+            opacity: 0.7;
+            border-radius: 50%;
+        }
+        
+        /* Sección de productos destacados - Texto sin fondo */
+        .motivational {
+            padding: 40px 15px;
+            text-align: center;
+            position: relative;
+            background: var(--negro);
+        }
+        
+        .motivational h2 {
+            margin-bottom: 25px;
+            color: var(--verde-neon);
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 40px;
+        }
+        
+        .motivational-slider {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            height: clamp(300px, 50vh, 420px);
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .motivational-slides {
+            display: flex;
+            width: 500%;
+            height: 100%;
+            transition: transform 0.8s ease-in-out;
+        }
+        
+        .motivational-slide {
+            width: 20%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        /* Menos opacidad para mostrar más la imagen */
+        .motivational-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(10, 46, 28, 0.15), rgba(46, 28, 10, 0.15));
+        }
+        
+        /* Texto sin fondo negro */
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            color: var(--blanco);
+            padding: 20px;
+            max-width: 700px;
+            text-align: left;
+            background: none;
+            border-radius: 0;
+            backdrop-filter: none;
+            margin: 0 15px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 5px rgba(0, 0, 0, 0.9);
+        }
+        
+        .slide-content.right {
+            text-align: right;
+            margin-left: auto;
+        }
+        
+        .slide-content h3 {
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            margin-bottom: 10px;
+            font-family: 'Futura', sans-serif;
+            padding-bottom: 5px;
+            color: var(--naranja-neon);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .slide-content.right h3 {
+            color: var(--verde-neon);
+        }
+        
+        .slide-content p {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            line-height: 1.5;
+            font-weight: 400;
+            margin-top: 8px;
+        }
+        
+        .motivational-nav {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            z-index: 10;
+            gap: 6px;
+        }
+        
+        .motivational-dot {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1.5px solid transparent;
+        }
+        
+        .motivational-dot.active {
+            background: var(--naranja-neon);
+            box-shadow: 0 0 10px var(--naranja-neon);
+            transform: scale(1.2);
+            border: 1.5px solid var(--blanco);
+        }
+        
+        .discover-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: var(--negro);
+            color: var(--naranja-neon);
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 40px;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid var(--naranja-neon);
+        }
+        
+        .discover-btn:hover {
+            background: var(--naranja-oscuro);
+            color: var(--blanco);
+            transform: translateY(-4px);
+            box-shadow: 0 0 20px var(--naranja-neon);
+        }
+        
+        /* Sección Reseñas */
+        .reviews {
+            padding: 50px 15px;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+        }
+        
+        .reviews::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .reviews h2 {
+            margin-bottom: 30px;
+            color: var(--verde-neon);
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            position: relative;
+            display: inline-block;
+            padding: 10px 25px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 40px;
+        }
+        
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+            gap: 20px;
+            max-width: 1500px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .review-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid var(--negro);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .review-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 25px rgba(0, 255, 157, 0.4);
+            border-color: var(--verde-neon);
+        }
+        
+        .review-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 2px solid var(--verde-neon);
+            box-shadow: 0 0 12px var(--verde-neon);
+        }
+        
+        .review-card p {
+            font-style: italic;
+            color: var(--blanco);
+            margin-bottom: 15px;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            line-height: 1.5;
+            font-weight: 300;
+        }
+        
+        .review-card .stars {
+            color: var(--naranja-neon);
+            font-size: 1.3rem;
+        }
+        
+        /* Sección Botones */
+        .action-buttons {
+            padding: 50px 15px;
+            display: flex;
+            justify-content: center;
+            gap: clamp(15px, 4vw, 30px);
+            background: linear-gradient(135deg, var(--verde-oscuro), var(--naranja-oscuro));
+            position: relative;
+            overflow: hidden;
+            flex-wrap: wrap;
+        }
+        
+        .action-buttons::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80') no-repeat center center/cover;
+            opacity: 0.15;
+            z-index: 0;
+        }
+        
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: clamp(110px, 25vw, 140px);
+            height: clamp(110px, 25vw, 140px);
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.4);
+            color: var(--blanco);
+            transition: all 0.4s ease;
+            border: 3px solid var(--verde-neon);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            backdrop-filter: blur(5px);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-10px) scale(1.08);
+            box-shadow: 0 0 35px var(--verde-neon);
+            border-color: var(--blanco);
+        }
+        
+        .action-btn i {
+            font-size: clamp(2.2rem, 5vw, 2.8rem);
+            margin-bottom: 10px;
+            color: var(--blanco);
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover i {
+            color: var(--verde-neon);
+        }
+        
+        .action-btn span {
+            font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-family: 'Futura', sans-serif;
+        }
+        
+        .action-btn:hover span {
+            color: var(--verde-neon);
+        }
+        
+        /* Sección Quiénes Somos */
+        .about {
+            padding: 50px 15px;
+            background: linear-gradient(to right, var(--verde-oscuro), var(--naranja-oscuro));
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            flex-wrap: wrap;
+        }
+        
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80') no-repeat center center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .about-content {
+            flex: 1;
+            padding-right: 20px;
+            position: relative;
+            z-index: 1;
+            min-width: 300px;
+        }
+        
+        .about h2 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 20px;
+            color: var(--naranja-neon);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .about h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--naranja-neon);
+            box-shadow: 0 0 10px var(--naranja-neon);
+        }
+        
+        .about p {
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            color: var(--verde-neon);
+            font-weight: 300;
+        }
+        
+        .about-image {
+            flex: 1;
+            height: clamp(280px, 45vh, 400px);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 3px solid var(--verde-neon);
+            box-shadow: 0 0 25px rgba(0, 255, 157, 0.5);
+            position: relative;
+            z-index: 1;
+            min-width: 280px;
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.04);
+        }
+        
+        /* Footer */
+        .footer {
+            background: linear-gradient(to bottom, #070d0a, #000000);
+            color: var(--blanco);
+            padding: 50px 15px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-top: 2px solid var(--verde-neon);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.4);
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80') no-repeat center center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .footer-info {
+            margin-bottom: 25px;
+        }
+        
+        .footer-info h3 {
+            color: var(--verde-neon);
+            margin-bottom: 15px;
+            font-size: clamp(1.3rem, 3vw, 1.6rem);
+            text-shadow: 0 0 10px var(--verde-neon);
+            padding-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        .footer-info h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 70px;
+            height: 2px;
+            background: var(--verde-neon);
+            box-shadow: 0 0 6px var(--verde-neon);
+        }
+        
+        .footer-info p {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            color: var(--verde-neon);
+            font-weight: 300;
+        }
+        
+        .footer-info p i {
+            color: var(--verde-neon);
+            margin-right: 10px;
+            width: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .phone-link, .address-link {
+            color: var(--blanco);
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .address-link {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--negro);
+            border-radius: 20px;
+            border: 1.5px solid var(--verde-neon);
+            margin-top: 6px;
+            transition: all 0.3s;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+        }
+        
+        .address-link:hover {
+            background: var(--verde-oscuro);
+            box-shadow: 0 0 10px var(--verde-neon);
+        }
+        
+        .phone-link:hover, .address-link:hover {
+            color: var(--verde-neon);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: flex-start;
+        }
+        
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: clamp(36px, 7vw, 45px);
+            height: clamp(36px, 7vw, 45px);
+            border-radius: 50%;
+            background: rgba(0, 255, 157, 0.1);
+            color: var(--blanco);
+            transition: all 0.3s ease;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            border: 1.5px solid var(--verde-neon);
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+        }
+        
+        .social-icons a:hover {
+            background: var(--verde-neon);
+            color: var(--verde-oscuro);
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px var(--verde-neon);
+        }
+        
+        .copyright {
+            margin-top: 40px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 255, 157, 0.3);
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+            color: var(--verde-neon);
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+        }
+        
+        /* Mapa */
+        .map-container {
+            margin-top: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--verde-neon);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+            height: clamp(160px, 25vh, 220px);
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Responsive para móviles */
+        @media (max-width: 992px) {
+            .about {
+                flex-direction: column;
+                gap: 25px;
+            }
+            
+            .about-content {
+                padding-right: 0;
+                margin-bottom: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                height: 55px;
+                padding: 8px 10px;
+            }
+            
+            .menu {
+                gap: 4px;
+            }
+            
+            .menu li a {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+            
+            .language-switcher {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .reviews, .action-buttons, .about, .footer, .motivational {
+                padding: 40px 10px;
+            }
+            
+            .slide-content {
+                padding: 15px;
+                margin: 0 10px;
+            }
+            
+            .slide-content h3 {
+                font-size: clamp(1.4rem, 4vw, 1.8rem);
+            }
+            
+            .slide-content p {
+                font-size: clamp(0.95rem, 3vw, 1.1rem);
+            }
+            
+            .discover-btn {
+                padding: 10px 25px;
+                font-size: 1.1rem;
+            }
+            
+            .action-btn {
+                width: 100px;
+                height: 100px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-content-fixed h1 {
+                padding: 10px 20px;
+                font-size: clamp(1.6rem, 6vw, 2.2rem);
+            }
+            
+            .hero-content-fixed p {
+                font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+            }
+            
+            .review-card {
+                padding: 15px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Menú Superior -->
+    <header class="header">
+        <div class="logo">
+            <span>D</span>
+            <span>U</span>
+            <span>A</span>
+            <span>L</span>
+            <span> </span>
+            <span>C</span>
+            <span>E</span>
+            <span>L</span>
+            <span>L</span>
+        </div>
+        <ul class="menu">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="productos.html">Productos</a></li>
+            <li><a href="acerca.html">Acerca de</a></li>
+            <li>
+                <div class="language-switcher" id="language-switcher">
+                    <i class="fas fa-globe"></i>
+                </div>
+            </li>
+        </ul>
+    </header>
+
+    <!-- Carrusel Hero con imágenes locales -->
+    <section class="hero-slider">
+        <div class="slides" id="hero-slides">
+            <div class="slide" style="background-image: url('assets/img/hero/hero1.jpg');"></div>
+            <div class="slide" style="background-image: url('assets/img/hero/hero2.jpg');"></div>
+            <div class="slide" style="background-image: url('assets/img/hero/hero3.jpg');"></div>
+            <div class="slide" style="background-image: url('assets/img/hero/hero4.jpg');"></div>
+            <div class="slide" style="background-image: url('assets/img/hero/hero5.jpg');"></div>
+        </div>
+        
+        <!-- Contenido fijo -->
+        <div class="hero-content-fixed">
+            <h1>DUAL CELL</h1>
+            <p>Tecnología accesible desde 2017</p>
+        </div>
+        
+        <div class="slider-nav" id="hero-nav">
+            <div class="slider-dot active" data-index="0"></div>
+            <div class="slider-dot" data-index="1"></div>
+            <div class="slider-dot" data-index="2"></div>
+            <div class="slider-dot" data-index="3"></div>
+            <div class="slider-dot" data-index="4"></div>
+        </div>
+    </section>
+
+    <!-- Productos destacados con imágenes locales -->
+    <section class="motivational">
+        <h2>Nuestros Productos Destacados</h2>
+        <div class="motivational-slider">
+            <div class="motivational-slides" id="motivational-slides">
+                <div class="motivational-slide" style="background-image: url('assets/img/productos/destacado1.jpg');">
+                    <div class="slide-content">
+                        <h3>Móviles de última generación</h3>
+                        <p>Descubre los mejores smartphones con tecnología de punta y rendimiento excepcional</p>
+                    </div>
+                </div>
+                <div class="motivational-slide" style="background-image: url('assets/img/productos/destacado2.jpg');">
+                    <div class="slide-content right">
+                        <h3>Cables y accesorios premium</h3>
+                        <p>Maximiza la vida de tus dispositivos con cables de alta resistencia y carga rápida</p>
+                    </div>
+                </div>
+                <div class="motivational-slide" style="background-image: url('assets/img/productos/destacado3.jpg');">
+                    <div class="slide-content">
+                        <h3>Cargadores de alta eficiencia</h3>
+                        <p>Recarga tus dispositivos en tiempo récord con cargadores inteligentes</p>
+                    </div>
+                </div>
+                <div class="motivational-slide" style="background-image: url('assets/img/productos/destacado4.jpg');">
+                    <div class="slide-content right">
+                        <h3>Calidad a precio insuperable</h3>
+                        <p>Disfruta de productos premium sin pagar de más</p>
+                    </div>
+                </div>
+                <div class="motivational-slide" style="background-image: url('assets/img/productos/destacado5.jpg');">
+                    <div class="slide-content">
+                        <h3>Seguridad y confianza garantizada</h3>
+                        <p>Todas nuestras transacciones son 100% seguras</p>
+                    </div>
+                </div>
+            </div>
+            <div class="motivational-nav" id="motivational-nav">
+                <div class="motivational-dot active" data-index="0"></div>
+                <div class="motivational-dot" data-index="1"></div>
+                <div class="motivational-dot" data-index="2"></div>
+                <div class="motivational-dot" data-index="3"></div>
+                <div class="motivational-dot" data-index="4"></div>
+            </div>
+        </div>
+        
+        <!-- Botón Descubre -->
+        <a href="productos.html" class="discover-btn">Descubre nuestros productos</a>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Reseñas -->
+    <section class="reviews">
+        <h2>Lo que dicen nuestros clientes</h2>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Cliente satisfecho">
+                <p>"Los mejores teléfonos al mejor precio. Calidad garantizada y atención excepcional."</p>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            <div class="review-card">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Cliente satisfecha">
+                <p>"Las fundas son increíbles, protegen mi teléfono con estilo y a un precio inmejorable."</p>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            <div class="review-card">
+                <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Cliente satisfecho">
+                <p>"Cargadores rápidos y duraderos. Nunca más me quedo sin batería durante el día."</p>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            <div class="review-card">
+                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Cliente satisfecha">
+                <p>"Excelente atención al cliente y productos de primera calidad. ¡Volveré sin duda!"</p>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            <div class="review-card">
+                <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Cliente satisfecho">
+                <p>"Los mejores precios en accesorios sin sacrificar calidad. Un verdadero hallazgo."</p>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            <div class="review-card">
+                <img src="https://randomuser.me/api/portraits/women/29.jpg" alt="Cliente satisfecha">
+                <p>"Variedad increíble de modelos y accesorios. Encontré todo lo que buscaba y más."</p>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Botones de acción -->
+    <section class="action-buttons">
+        <a href="https://maps.google.com/?q=6020 NW 99Th AVE Suite 312, Miami, Florida 33178" target="_blank" class="action-btn">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Ubicación</span>
+        </a>
+        <a href="productos.html" class="action-btn">
+            <i class="fas fa-store"></i>
+            <span>Tienda</span>
+        </a>
+        <a href="https://wa.me/+17863952896" target="_blank" class="action-btn">
+            <i class="fab fa-whatsapp"></i>
+            <span>SMS</span>
+        </a>
+    </section>
+
+    <!-- Quiénes Somos -->
+    <section class="about">
+        <div class="about-content">
+            <h2>Quiénes Somos</h2>
+            <p>Somos Dual Cell Corp, una compañía dedicada a la venta de teléfonos móviles y accesorios desde 2017. Nuestra misión es poner a nuestros clientes por delante de todo, ofreciendo la máxima seguridad y confianza en cada compra.</p>
+            <p>Con un enfoque en calidad, innovación y servicio excepcional, nos hemos convertido en líderes del sector tecnológico, proporcionando soluciones móviles que mejoran la vida diaria de nuestros clientes.</p>
+            <p>En Dual Cell Corp, creemos que la tecnología debe ser accesible para todos, sin comprometer la calidad o el rendimiento. Por eso trabajamos cada día para ofrecerte lo mejor del mercado a precios competitivos.</p>
+        </div>
+        <div class="about-image">
+            <img src="https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Dual Cell Store">
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Dual Cell Corp</h3>
+                <p>Tecnología accesible desde 2017</p>
+            </div>
+            <div class="footer-info">
+                <h3>Contacto</h3>
+                <p><i class="fas fa-envelope"></i> info@dualcell.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> 
+                    <a href="https://maps.google.com/?q=6020 NW 99Th AVE Suite 312, Miami, Florida 33178" target="_blank" class="address-link">
+                        6020 NW 99Th AVE Suite 312, Miami, FL 33178
+                    </a>
+                </p>
+                <p><i class="fas fa-phone"></i> <a href="tel:+17863952896" class="phone-link">+1 (786) 395-2896</a></p>
+                
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.692198184635!2d-80.3551967242786!3d25.79225127735347!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b95c7b4b7d1b%3A0x7c3c7c3c7c3c7c3c!2s6020%20NW%2099Th%20AVE%20Suite%20312%2C%20Miami%2C%20FL%2033178!5e0!3m2!1sen!2sus!4v1691874723456!5m2!1sen!2sus" allowfullscreen loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="footer-info">
+                <h3>Síguenos</h3>
+                <div class="social-icons">
+                    <a href="mailto:info@dualcell.com"><i class="fas fa-envelope"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/+17863952896" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2017 - 2025 Dual Cell Corp. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Efecto de desplazamiento suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Efecto de scroll para el header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.boxShadow = '0 0 20px rgba(0, 255, 157, 0.7)';
+                header.style.background = 'rgba(0, 0, 0, 0.95)';
+            } else {
+                header.style.boxShadow = '0 0 12px rgba(0, 255, 157, 0.5)';
+                header.style.background = 'rgba(0, 0, 0, 0.95)';
+            }
+        });
+
+        // Animación de logo
+        function animateLogo() {
+            const letters = document.querySelectorAll('.logo span');
+            let currentIndex = 0;
+            
+            setInterval(() => {
+                letters.forEach(letter => {
+                    letter.style.animation = 'none';
+                    void letter.offsetWidth;
+                });
+                
+                letters[currentIndex].style.animation = 'letterGlow 0.5s infinite alternate';
+                
+                currentIndex = (currentIndex + 1) % letters.length;
+            }, 500);
+        }
+        
+        // Carrusel Hero
+        let heroCurrentSlide = 0;
+        const heroSlides = document.getElementById('hero-slides');
+        const heroDots = document.querySelectorAll('#hero-nav .slider-dot');
+        const heroSlideCount = document.querySelectorAll('.hero-slider .slide').length;
+        
+        function showHeroSlide(index) {
+            heroSlides.style.transform = `translateX(-${index * 20}%)`;
+            heroDots.forEach(dot => dot.classList.remove('active'));
+            heroDots[index].classList.add('active');
+            heroCurrentSlide = index;
+        }
+        
+        heroDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                showHeroSlide(parseInt(dot.dataset.index));
+            });
+        });
+        
+        // Carrusel Motivacional
+        let motivationalCurrentSlide = 0;
+        const motivationalSlides = document.getElementById('motivational-slides');
+        const motivationalDots = document.querySelectorAll('#motivational-nav .motivational-dot');
+        
+        function showMotivationalSlide(index) {
+            motivationalSlides.style.transform = `translateX(-${index * 20}%)`;
+            motivationalDots.forEach(dot => dot.classList.remove('active'));
+            motivationalDots[index].classList.add('active');
+            motivationalCurrentSlide = index;
+        }
+        
+        motivationalDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                showMotivationalSlide(parseInt(dot.dataset.index));
+            });
+        });
+        
+        // Cambio de idioma
+        const languageSwitcher = document.getElementById('language-switcher');
+        let isEnglish = false;
+        
+        languageSwitcher.addEventListener('click', () => {
+            isEnglish = !isEnglish;
+            
+            if (isEnglish) {
+                // Cambiar a inglés
+                document.querySelector('.logo').textContent = 'DUAL CELL';
+                document.querySelectorAll('.menu li a')[0].textContent = 'Home';
+                document.querySelectorAll('.menu li a')[1].textContent = 'Products';
+                document.querySelectorAll('.menu li a')[2].textContent = 'About';
+                document.querySelector('.hero-content-fixed h1').textContent = 'DUAL CELL';
+                document.querySelector('.hero-content-fixed p').textContent = 'Accessible technology since 2017';
+                document.querySelector('.motivational h2').textContent = 'Our Featured Products';
+                document.querySelector('.reviews h2').textContent = 'What Our Customers Say';
+                document.querySelectorAll('.action-btn span')[0].textContent = 'Location';
+                document.querySelectorAll('.action-btn span')[1].textContent = 'Store';
+                document.querySelectorAll('.action-btn span')[2].textContent = 'SMS';
+                document.querySelector('.about h2').textContent = 'Who We Are';
+                document.querySelector('.footer-info h3').textContent = 'Dual Cell Corp';
+                document.querySelectorAll('.footer-info p')[0].textContent = 'Accessible technology since 2017';
+                document.querySelectorAll('.footer-info h3')[1].textContent = 'Contact';
+                document.querySelectorAll('.footer-info h3')[2].textContent = 'Follow Us';
+                document.querySelector('.copyright p').textContent = '© 2017 - 2025 Dual Cell Corp. All rights reserved.';
+                document.querySelector('.discover-btn').textContent = 'Discover our products';
+            } else {
+                // Cambiar a español
+                const logo = document.querySelector('.logo');
+                logo.innerHTML = '';
+                const letters = ['D','U','A','L',' ','C','E','L','L'];
+                letters.forEach(letter => {
+                    const span = document.createElement('span');
+                    span.textContent = letter;
+                    logo.appendChild(span);
+                });
+                document.querySelectorAll('.menu li a')[0].textContent = 'Home';
+                document.querySelectorAll('.menu li a')[1].textContent = 'Productos';
+                document.querySelectorAll('.menu li a')[2].textContent = 'Acerca de';
+                document.querySelector('.hero-content-fixed h1').textContent = 'DUAL CELL';
+                document.querySelector('.hero-content-fixed p').textContent = 'Tecnología accesible desde 2017';
+                document.querySelector('.motivational h2').textContent = 'Nuestros Productos Destacados';
+                document.querySelector('.reviews h2').textContent = 'Lo que dicen nuestros clientes';
+                document.querySelectorAll('.action-btn span')[0].textContent = 'Ubicación';
+                document.querySelectorAll('.action-btn span')[1].textContent = 'Tienda';
+                document.querySelectorAll('.action-btn span')[2].textContent = 'SMS';
+                document.querySelector('.about h2').textContent = 'Quiénes Somos';
+                document.querySelector('.footer-info h3').textContent = 'Dual Cell Corp';
+                document.querySelectorAll('.footer-info p')[0].textContent = 'Tecnología accesible desde 2017';
+                document.querySelectorAll('.footer-info h3')[1].textContent = 'Contacto';
+                document.querySelectorAll('.footer-info h3')[2].textContent = 'Síguenos';
+                document.querySelector('.copyright p').textContent = '© 2017 - 2025 Dual Cell Corp. Todos los derechos reservados.';
+                document.querySelector('.discover-btn').textContent = 'Descubre nuestros productos';
+            }
+        });
+        
+        // Preload de imágenes para mejor experiencia
+        function preloadImages() {
+            const imageUrls = [
+                'assets/img/hero/hero1.jpg',
+                'assets/img/hero/hero2.jpg',
+                'assets/img/hero/hero3.jpg',
+                'assets/img/hero/hero4.jpg',
+                'assets/img/hero/hero5.jpg',
+                'assets/img/productos/destacado1.jpg',
+                'assets/img/productos/destacado2.jpg',
+                'assets/img/productos/destacado3.jpg',
+                'assets/img/productos/destacado4.jpg',
+                'assets/img/productos/destacado5.jpg'
+            ];
+            
+            imageUrls.forEach(url => {
+                const img = new Image();
+                img.src = url;
+            });
+        }
+        
+        // Inicializar
+        window.addEventListener('load', function() {
+            animateLogo();
+            preloadImages();
+            
+            // Iniciar carruseles automáticamente cada 1.5 segundos
+            setInterval(() => {
+                heroCurrentSlide = (heroCurrentSlide + 1) % heroSlideCount;
+                showHeroSlide(heroCurrentSlide);
+                
+                motivationalCurrentSlide = (motivationalCurrentSlide + 1) % 5;
+                showMotivationalSlide(motivationalCurrentSlide);
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
