@@ -931,466 +931,292 @@
         </div>
     </footer>
 
-    <script>
-        // URL de la API en Vercel
-        const API_URL = "https://dual-cell-corp.vercel.app/api";
-        const ADMIN_TOKEN = "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";
-        
-        // Variables globales
-        let cart = [];
-        let productos = {
-            moviles: [],
-            covers: [],
-            accesorios: []
-        };
-        
-        const whatsappBtn = document.getElementById('whatsappBtn');
-        const whatsappCount = document.getElementById('whatsappCount');
-        const cartOverlay = document.getElementById('cartOverlay');
-        const closeCart = document.getElementById('closeCart');
-        const cartItems = document.getElementById('cartItems');
-        const cartTotal = document.getElementById('cartTotal');
-        const orderNowBtn = document.getElementById('orderNowBtn');
-        const imageModal = document.getElementById('imageModal');
-        const modalContent = document.getElementById('modalContent');
-        const closeModal = document.getElementById('closeModal');
-        
-        // Función para cargar productos desde la API
-        async function loadProducts() {
-            try {
-                const response = await fetch(`${API_URL}/products`, {
-                    headers: {
-                        'Authorization': `Bearer ${ADMIN_TOKEN}`
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
-                }
-                
-                const productosAPI = await response.json();
-                return productosAPI;
-            } catch (error) {
-                console.error("Error cargando productos:", error);
-                alert("Error al cargar productos: " + error.message);
-                return [];
-            }
-        }
-        
-        // Función para agregar producto al carrito
-        function addToCart(productName, price, quantity = 1) {
-            // Buscar si el producto ya está en el carrito
-            const existingItem = cart.find(item => item.name === productName);
-            
-            if (existingItem) {
-                existingItem.quantity += quantity;
-            } else {
-                cart.push({
-                    name: productName,
-                    price: price,
-                    quantity: quantity
-                });
-            }
-            
-            // Actualizar contador de WhatsApp
-            updateWhatsAppCount();
-            
-            // Mostrar notificación
-            showNotification(`${quantity} ${productName} añadido(s) al carrito`);
-            
-            // Actualizar carrito
-            renderCartItems();
-        }
-        
-        // Actualizar contador de WhatsApp
-        function updateWhatsAppCount() {
-            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-            
-            if(totalItems > 0) {
-                whatsappCount.textContent = totalItems;
-                whatsappCount.style.display = 'flex';
-            } else {
-                whatsappCount.style.display = 'none';
-            }
-        }
-        
-        // Función para mostrar notificación
-        function showNotification(message) {
-            // Crear elemento de notificación
-            const notification = document.createElement('div');
-            notification.textContent = message;
-            notification.style.position = 'fixed';
-            notification.style.bottom = '100px';
-            notification.style.right = '30px';
-            notification.style.backgroundColor = 'var(--verde-neon)';
-            notification.style.color = 'var(--verde-oscuro)';
-            notification.style.padding = '15px 25px';
-            notification.style.borderRadius = '30px';
-            notification.style.zIndex = '10000';
-            notification.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-            notification.style.fontWeight = '600';
-            notification.style.transform = 'translateY(100px)';
-            notification.style.opacity = '0';
-            notification.style.transition = 'all 0.4s ease';
-            
-            document.body.appendChild(notification);
-            
-            // Animación de entrada
-            setTimeout(() => {
-                notification.style.transform = 'translateY(0)';
-                notification.style.opacity = '1';
-            }, 10);
-            
-            // Ocultar después de 3 segundos
-            setTimeout(() => {
-                notification.style.transform = 'translateY(100px)';
-                notification.style.opacity = '0';
-                
-                // Eliminar después de la animación
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 400);
-            }, 3000);
-        }
-        
-        // Función para eliminar producto del carrito
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            renderCartItems();
-            updateWhatsAppCount();
-        }
-        
-        // Actualizar cantidad en carrito
-        function updateQuantity(index, change) {
-            cart[index].quantity += change;
-            
-            // Si la cantidad llega a 0, eliminar el producto
-            if (cart[index].quantity <= 0) {
-                cart.splice(index, 1);
-            }
-            
-            renderCartItems();
-            updateWhatsAppCount();
-        }
-        
-        // Calcular total del carrito
-        function calculateCartTotal() {
-            return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-        }
-        
-        // Renderizar productos en el carrito
-        function renderCartItems() {
-            if (cart.length === 0) {
-                cartItems.innerHTML = `
-                    <div class="empty-cart">
-                        <i class="fas fa-shopping-cart"></i>
-                        <p>Tu carrito está vacío</p>
-                    </div>
-                `;
-                cartTotal.textContent = "$0.00";
-                return;
-            }
-            
-            cartItems.innerHTML = '';
-            
-            cart.forEach((item, index) => {
-                const subtotal = item.price * item.quantity;
-                const cartItem = document.createElement('div');
-                cartItem.classList.add('cart-item');
-                cartItem.innerHTML = `
-                    <div class="item-info">
-                        <h4>${item.name}</h4>
-                        <p class="item-price">Precio: $${item.price.toFixed(2)}</p>
-                        <p class="item-subtotal">Subtotal: $${subtotal.toFixed(2)}</p>
-                    </div>
-                    <div class="item-actions">
-                        <div class="quantity-controls">
-                            <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
-                            <span>${item.quantity}</span>
-                            <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
-                        </div>
-                        <button class="remove-item" onclick="removeFromCart(${index})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                cartItems.appendChild(cartItem);
-            });
-            
-            // Actualizar total
-            const total = calculateCartTotal();
-            cartTotal.textContent = `$${total.toFixed(2)}`;
-        }
-        
-        // Enviar pedido por WhatsApp
-        function sendWhatsAppOrder() {
-            if (cart.length === 0) {
-                showNotification('Añade productos al carrito primero');
-                return;
-            }
-            
-            // Crear mensaje con los productos del carrito
-            let message = '¡Hola! Quisiera realizar el siguiente pedido:\n\n';
-            let total = 0;
-            
-            cart.forEach(item => {
-                const subtotal = item.price * item.quantity;
-                total += subtotal;
-                message += `- ${item.name} (Cantidad: ${item.quantity}) - $${item.price.toFixed(2)} c/u = $${subtotal.toFixed(2)}\n`;
-            });
-            
-            message += '\nTotal de productos: ' + cart.reduce((total, item) => total + item.quantity, 0);
-            message += `\nTotal a pagar: $${total.toFixed(2)}`;
-            message += '\n\nPor favor, envíenme más información para completar la compra.';
-            
-            // Codificar el mensaje para URL
-            const encodedMessage = encodeURIComponent(message);
-            
-            // Abrir WhatsApp con el mensaje
-            window.open(`https://wa.me/17863952896?text=${encodedMessage}`, '_blank');
-            
-            // Vaciar el carrito después de enviar
-            cart = [];
-            renderCartItems();
-            updateWhatsAppCount();
-            
-            // Cerrar el carrito
-            cartOverlay.classList.remove('active');
-        }
-        
-        // Mostrar imagen en modal
-        function showImageModal(imageSrc) {
-            modalContent.innerHTML = `<img src="${imageSrc}" alt="Producto">`;
-            imageModal.classList.add('active');
-        }
-        
-        // Renderizar productos con estructura mejorada
-        function renderProducts() {
-            // Renderizar móviles
-            const movilesGrid = document.getElementById('moviles');
-            movilesGrid.innerHTML = ''; // Limpiar antes de añadir
-            
-            if (productos.moviles.length === 0) {
-                movilesGrid.innerHTML = `
-                    <div class="empty-section" style="grid-column: 1 / -1; text-align: center; padding: 40px 0; color: #b1ffdd;">
-                        <i class="fas fa-mobile-alt" style="font-size: 3rem; margin-bottom: 20px; color: rgba(0, 255, 157, 0.3);"></i>
-                        <p>No hay productos disponibles en esta categoría</p>
-                    </div>
-                `;
-            } else {
-                productos.moviles.forEach(producto => {
-                    movilesGrid.innerHTML += `
-                        <div class="product-card">
-                            <div class="product-image" onclick="showImageModal('${producto.imagen}')">
-                                <img src="${producto.imagen}" alt="${producto.nombre}">
-                            </div>
-                            <div class="product-info">
-                                <div class="product-title">${producto.nombre}</div>
-                                <div class="product-price">$${producto.precio.toFixed(2)}</div>
-                                <div class="quantity-controls">
-                                    <button class="quantity-btn minus-btn">-</button>
-                                    <input type="number" class="quantity-input" value="1" min="1">
-                                    <button class="quantity-btn plus-btn">+</button>
-                                </div>
-                                <button class="add-to-cart-btn" data-name="${producto.nombre}" data-price="${producto.precio}">
-                                    <i class="fas fa-cart-plus"></i> Añadir al Carrito
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-            
-            // Renderizar covers
-            const coversGrid = document.getElementById('covers');
-            coversGrid.innerHTML = ''; // Limpiar antes de añadir
-            
-            if (productos.covers.length === 0) {
-                coversGrid.innerHTML = `
-                    <div class="empty-section" style="grid-column: 1 / -1; text-align: center; padding: 40px 0; color: #b1ffdd;">
-                        <i class="fas fa-shield-alt" style="font-size: 3rem; margin-bottom: 20px; color: rgba(0, 255, 157, 0.3);"></i>
-                        <p>No hay productos disponibles en esta categoría</p>
-                    </div>
-                `;
-            } else {
-                productos.covers.forEach(producto => {
-                    coversGrid.innerHTML += `
-                        <div class="product-card">
-                            <div class="product-image" onclick="showImageModal('${producto.imagen}')">
-                                <img src="${producto.imagen}" alt="${producto.nombre}">
-                            </div>
-                            <div class="product-info">
-                                <div class="product-title">${producto.nombre}</div>
-                                <div class="product-price">$${producto.precio.toFixed(2)}</div>
-                                <div class="quantity-controls">
-                                    <button class="quantity-btn minus-btn">-</button>
-                                    <input type="number" class="quantity-input" value="1" min="1">
-                                    <button class="quantity-btn plus-btn">+</button>
-                                </div>
-                                <button class="add-to-cart-btn" data-name="${producto.nombre}" data-price="${producto.precio}">
-                                    <i class="fas fa-cart-plus"></i> Añadir al Carrito
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-            
-            // Renderizar accesorios
-            const accesoriosGrid = document.getElementById('accesorios');
-            accesoriosGrid.innerHTML = ''; // Limpiar antes de añadir
-            
-            if (productos.accesorios.length === 0) {
-                accesoriosGrid.innerHTML = `
-                    <div class="empty-section" style="grid-column: 1 / -1; text-align: center; padding: 40px 0; color: #b1ffdd;">
-                        <i class="fas fa-headphones" style="font-size: 3rem; margin-bottom: 20px; color: rgba(0, 255, 157, 0.3);"></i>
-                        <p>No hay productos disponibles en esta categoría</p>
-                    </div>
-                `;
-            } else {
-                productos.accesorios.forEach(producto => {
-                    accesoriosGrid.innerHTML += `
-                        <div class="product-card">
-                            <div class="product-image" onclick="showImageModal('${producto.imagen}')">
-                                <img src="${producto.imagen}" alt="${producto.nombre}">
-                            </div>
-                            <div class="product-info">
-                                <div class="product-title">${producto.nombre}</div>
-                                <div class="product-price">$${producto.precio.toFixed(2)}</div>
-                                <div class="quantity-controls">
-                                    <button class="quantity-btn minus-btn">-</button>
-                                    <input type="number" class="quantity-input" value="1" min="1">
-                                    <button class="quantity-btn plus-btn">+</button>
-                                </div>
-                                <button class="add-to-cart-btn" data-name="${producto.nombre}" data-price="${producto.precio}">
-                                    <i class="fas fa-cart-plus"></i> Añadir al Carrito
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-        }
-        
-        // Filtrado de categorías
-        function setupCategoryFilter() {
-            const categoryButtons = document.querySelectorAll('.category-btn');
-            const sections = {
-                'moviles': document.getElementById('moviles').parentElement,
-                'covers': document.getElementById('covers').parentElement,
-                'accesorios': document.getElementById('accesorios').parentElement
-            };
-            
-            categoryButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // Quitar clase activa de todos los botones
-                    categoryButtons.forEach(btn => btn.classList.remove('active'));
-                    // Agregar clase activa al botón clickeado
-                    button.classList.add('active');
-                    
-                    const category = button.dataset.category;
-                    
-                    // Ocultar todas las secciones
-                    Object.values(sections).forEach(section => {
-                        section.style.display = 'none';
-                    });
-                    
-                    // Mostrar la sección seleccionada
-                    sections[category].style.display = 'block';
-                    
-                    // Desplazarse a la sección
-                    sections[category].scrollIntoView({ behavior: 'smooth' });
-                });
-            });
-        }
-        
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Cargar productos desde la API
-            const productosAPI = await loadProducts();
-            
-            // Organizar por categorías
-            productos.moviles = productosAPI.filter(p => p.categoria === 'moviles');
-            productos.covers = productosAPI.filter(p => p.categoria === 'covers');
-            productos.accesorios = productosAPI.filter(p => p.categoria === 'accesorios');
-            
-            // Renderizar productos
-            renderProducts();
-            
-            // Configurar filtro de categorías
-            setupCategoryFilter();
-            
-            // Asignar eventos a los botones de cantidad
-            document.addEventListener('click', function(e) {
-                // Botones de cantidad (+/-)
-                if (e.target.classList.contains('minus-btn')) {
-                    const input = e.target.nextElementSibling;
-                    if (input.value > 1) {
-                        input.value = parseInt(input.value) - 1;
-                    }
-                } else if (e.target.classList.contains('plus-btn')) {
-                    const input = e.target.previousElementSibling;
-                    input.value = parseInt(input.value) + 1;
-                }
-                
-                // Botones de añadir al carrito
-                if (e.target.classList.contains('add-to-cart-btn')) {
-                    const productName = e.target.getAttribute('data-name');
-                    const productPrice = parseFloat(e.target.getAttribute('data-price'));
-                    const quantityInput = e.target.previousElementSibling.querySelector('.quantity-input');
-                    const quantity = parseInt(quantityInput.value);
-                    
-                    // Restablecer cantidad a 1 después de agregar
-                    quantityInput.value = 1;
-                    
-                    addToCart(productName, productPrice, quantity);
-                }
-            });
-            
-            // Validar inputs de cantidad
-            document.addEventListener('input', function(e) {
-                if (e.target.classList.contains('quantity-input')) {
-                    if (e.target.value < 1) {
-                        e.target.value = 1;
-                    }
-                }
-            });
-            
-            // Eventos para el carrito
-            whatsappBtn.addEventListener('click', () => {
-                cartOverlay.classList.add('active');
-                renderCartItems();
-            });
-            
-            closeCart.addEventListener('click', () => {
-                cartOverlay.classList.remove('active');
-            });
-            
-            cartOverlay.addEventListener('click', (e) => {
-                if (e.target === cartOverlay) {
-                    cartOverlay.classList.remove('active');
-                }
-            });
-            
-            // Evento para ordenar
-            orderNowBtn.addEventListener('click', sendWhatsAppOrder);
-            
-            // Eventos para el modal de imagen
-            closeModal.addEventListener('click', () => {
-                imageModal.classList.remove('active');
-            });
-            
-            imageModal.addEventListener('click', (e) => {
-                if (e.target === imageModal) {
-                    imageModal.classList.remove('active');
-                }
-            });
-            
-            // Permitir acceso a funciones desde HTML
-            window.removeFromCart = removeFromCart;
-            window.showImageModal = showImageModal;
-            window.updateQuantity = updateQuantity;
-        });
-    </script>
+<script>
+  // ===== CONFIG =====
+  // Lee productos del mismo dominio (funciona en local y en Vercel)
+  const API_PRODUCTS = '/api/products';
+
+  // ===== Estado global =====
+  let cart = [];
+  let productos = { moviles: [], covers: [], accesorios: [] };
+
+  // Referencias UI
+  const whatsappBtn = document.getElementById('whatsappBtn');
+  const whatsappCount = document.getElementById('whatsappCount');
+  const cartOverlay = document.getElementById('cartOverlay');
+  const closeCart = document.getElementById('closeCart');
+  const cartItems = document.getElementById('cartItems');
+  const cartTotal = document.getElementById('cartTotal');
+  const orderNowBtn = document.getElementById('orderNowBtn');
+  const imageModal = document.getElementById('imageModal');
+  const modalContent = document.getElementById('modalContent');
+  const closeModal = document.getElementById('closeModal');
+
+  // ===== Utilidades =====
+  function byn(val, fallback = '') {
+    return (val === undefined || val === null) ? fallback : val;
+  }
+
+  function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    Object.assign(notification.style, {
+      position: 'fixed', bottom: '100px', right: '30px',
+      backgroundColor: 'var(--verde-neon)', color: 'var(--verde-oscuro)',
+      padding: '15px 25px', borderRadius: '30px', zIndex: 10000,
+      boxShadow: '0 4px 12px rgba(0,0,0,0.15)', fontWeight: 600,
+      transform: 'translateY(100px)', opacity: 0, transition: 'all 0.4s ease'
+    });
+    document.body.appendChild(notification);
+    setTimeout(() => { notification.style.transform = 'translateY(0)'; notification.style.opacity = '1'; }, 10);
+    setTimeout(() => {
+      notification.style.transform = 'translateY(100px)'; notification.style.opacity = '0';
+      setTimeout(() => document.body.removeChild(notification), 400);
+    }, 3000);
+  }
+
+  function updateWhatsAppCount() {
+    const totalItems = cart.reduce((t, it) => t + it.quantity, 0);
+    if (totalItems > 0) {
+      whatsappCount.textContent = totalItems;
+      whatsappCount.style.display = 'flex';
+    } else {
+      whatsappCount.style.display = 'none';
+    }
+  }
+
+  function addToCart(name, price, quantity = 1) {
+    const item = cart.find(x => x.name === name);
+    if (item) item.quantity += quantity;
+    else cart.push({ name, price, quantity });
+
+    updateWhatsAppCount();
+    showNotification(`${quantity} ${name} añadido(s) al carrito`);
+    renderCartItems();
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    renderCartItems();
+    updateWhatsAppCount();
+  }
+
+  function updateQuantity(index, change) {
+    cart[index].quantity += change;
+    if (cart[index].quantity <= 0) cart.splice(index, 1);
+    renderCartItems();
+    updateWhatsAppCount();
+  }
+
+  function calculateCartTotal() {
+    return cart.reduce((t, it) => t + it.price * it.quantity, 0);
+  }
+
+  function renderCartItems() {
+    if (cart.length === 0) {
+      cartItems.innerHTML = `
+        <div class="empty-cart">
+          <i class="fas fa-shopping-cart"></i>
+          <p>Tu carrito está vacío</p>
+        </div>`;
+      cartTotal.textContent = "$0.00";
+      return;
+    }
+
+    cartItems.innerHTML = '';
+    cart.forEach((item, index) => {
+      const subtotal = item.price * item.quantity;
+      const el = document.createElement('div');
+      el.className = 'cart-item';
+      el.innerHTML = `
+        <div class="item-info">
+          <h4>${item.name}</h4>
+          <p class="item-price">Precio: $${item.price.toFixed(2)}</p>
+          <p class="item-subtotal">Subtotal: $${subtotal.toFixed(2)}</p>
+        </div>
+        <div class="item-actions">
+          <div class="quantity-controls">
+            <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
+            <span>${item.quantity}</span>
+            <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
+          </div>
+          <button class="remove-item" onclick="removeFromCart(${index})">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>`;
+      cartItems.appendChild(el);
+    });
+
+    cartTotal.textContent = `$${calculateCartTotal().toFixed(2)}`;
+  }
+
+  function sendWhatsAppOrder() {
+    if (cart.length === 0) return showNotification('Añade productos al carrito primero');
+
+    let msg = '¡Hola! Quisiera realizar el siguiente pedido:\n\n';
+    let total = 0;
+    cart.forEach(it => {
+      const sub = it.price * it.quantity;
+      total += sub;
+      msg += `- ${it.name} (Cantidad: ${it.quantity}) - $${it.price.toFixed(2)} c/u = $${sub.toFixed(2)}\n`;
+    });
+    msg += `\nTotal de productos: ${cart.reduce((t, it) => t + it.quantity, 0)}`;
+    msg += `\nTotal a pagar: $${total.toFixed(2)}`;
+    msg += '\n\nPor favor, envíenme más información para completar la compra.';
+
+    const encoded = encodeURIComponent(msg);
+    window.open(`https://wa.me/17863952896?text=${encoded}`, '_blank');
+
+    cart = [];
+    renderCartItems();
+    updateWhatsAppCount();
+    cartOverlay.classList.remove('active');
+  }
+
+  function showImageModal(src) {
+    const safe = src || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=60';
+    modalContent.innerHTML = `<img src="${safe}" alt="Producto">`;
+    imageModal.classList.add('active');
+  }
+
+  // ===== Carga de productos =====
+  async function loadProducts() {
+    try {
+      const res = await fetch(API_PRODUCTS, { method: 'GET', cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+      const data = await res.json();
+
+      // Soporta array directo o {items: [...]}
+      const list = Array.isArray(data) ? data : (data.items || []);
+
+      // Normaliza campos (ES/EN): categoria/category, nombre/name, precio/price, imagen/image
+      return list.map(p => {
+        const categoria = byn(p.categoria, byn(p.category, '')).toString().toLowerCase();
+        const nombre = byn(p.nombre, byn(p.name, 'Producto'));
+        const precio = Number(byn(p.precio, byn(p.price, 0)));
+        const imagen = byn(p.imagen, p.image);
+        return { categoria, nombre, precio, imagen };
+      });
+    } catch (err) {
+      console.error('Error cargando productos:', err);
+      alert('Error al cargar productos: ' + err.message);
+      return [];
+    }
+  }
+
+  function renderProducts() {
+    const renderCategoria = (arr, gridId, emptyIcon, emptyText) => {
+      const grid = document.getElementById(gridId);
+      grid.innerHTML = '';
+      if (!arr.length) {
+        grid.innerHTML = `
+          <div class="empty-section" style="grid-column: 1 / -1; text-align: center; padding: 40px 0; color: #b1ffdd;">
+            <i class="${emptyIcon}" style="font-size: 3rem; margin-bottom: 20px; color: rgba(0, 255, 157, 0.3);"></i>
+            <p>${emptyText}</p>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = arr.map(prod => `
+        <div class="product-card">
+          <div class="product-image" onclick="showImageModal('${byn(prod.imagen, '').replace(/'/g, "\\'")}')">
+            <img src="${byn(prod.imagen, 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=60')}" alt="${prod.nombre}">
+          </div>
+          <div class="product-info">
+            <div class="product-title">${prod.nombre}</div>
+            <div class="product-price">$${prod.precio.toFixed(2)}</div>
+            <div class="quantity-controls">
+              <button class="quantity-btn minus-btn">-</button>
+              <input type="number" class="quantity-input" value="1" min="1">
+              <button class="quantity-btn plus-btn">+</button>
+            </div>
+            <button class="add-to-cart-btn" data-name="${prod.nombre}" data-price="${prod.precio}">
+              <i class="fas fa-cart-plus"></i> Añadir al Carrito
+            </button>
+          </div>
+        </div>
+      `).join('');
+    };
+
+    renderCategoria(productos.moviles, 'moviles', 'fas fa-mobile-alt', 'No hay productos disponibles en esta categoría');
+    renderCategoria(productos.covers, 'covers', 'fas fa-shield-alt', 'No hay productos disponibles en esta categoría');
+    renderCategoria(productos.accesorios, 'accesorios', 'fas fa-headphones', 'No hay productos disponibles en esta categoría');
+  }
+
+  function setupCategoryFilter() {
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const sections = {
+      'moviles': document.getElementById('moviles').parentElement,
+      'covers': document.getElementById('covers').parentElement,
+      'accesorios': document.getElementById('accesorios').parentElement
+    };
+
+    categoryButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        categoryButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        const category = button.dataset.category;
+        Object.values(sections).forEach(s => s.style.display = 'none');
+        sections[category].style.display = 'block';
+        sections[category].scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  }
+
+  // ===== Init =====
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Carga productos
+    const lista = await loadProducts();
+
+    // Partición por categoría (acepta 'moviles'|'covers'|'accesorios')
+    productos.moviles    = lista.filter(p => p.categoria === 'moviles');
+    productos.covers     = lista.filter(p => p.categoria === 'covers');
+    productos.accesorios = lista.filter(p => p.categoria === 'accesorios');
+
+    // Render
+    renderProducts();
+    setupCategoryFilter();
+
+    // Eventos globales
+    document.addEventListener('click', e => {
+      if (e.target.classList.contains('minus-btn')) {
+        const input = e.target.nextElementSibling;
+        if (input.value > 1) input.value = parseInt(input.value) - 1;
+      } else if (e.target.classList.contains('plus-btn')) {
+        const input = e.target.previousElementSibling;
+        input.value = parseInt(input.value) + 1;
+      }
+
+      if (e.target.classList.contains('add-to-cart-btn')) {
+        const name = e.target.getAttribute('data-name');
+        const price = parseFloat(e.target.getAttribute('data-price'));
+        const quantityInput = e.target.previousElementSibling.querySelector('.quantity-input');
+        const qty = parseInt(quantityInput.value) || 1;
+        quantityInput.value = 1;
+        addToCart(name, price, qty);
+      }
+    });
+
+    document.addEventListener('input', e => {
+      if (e.target.classList.contains('quantity-input') && e.target.value < 1) {
+        e.target.value = 1;
+      }
+    });
+
+    whatsappBtn.addEventListener('click', () => { cartOverlay.classList.add('active'); renderCartItems(); });
+    closeCart.addEventListener('click', () => cartOverlay.classList.remove('active'));
+    cartOverlay.addEventListener('click', e => { if (e.target === cartOverlay) cartOverlay.classList.remove('active'); });
+    orderNowBtn.addEventListener('click', sendWhatsAppOrder);
+    closeModal.addEventListener('click', () => imageModal.classList.remove('active'));
+    imageModal.addEventListener('click', e => { if (e.target === imageModal) imageModal.classList.remove('active'); });
+
+    // Exponer helpers
+    window.removeFromCart = removeFromCart;
+    window.showImageModal = showImageModal;
+    window.updateQuantity = updateQuantity;
+  });
+</script>
+
 </body>
 </html>
