@@ -55,3 +55,28 @@ export function setCORS(res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 }
+
+// Crear admin inicial si no existe
+export async function createInitialAdmin() {
+  const kv = getKV();
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  
+  const idxKey = `user:email:${adminEmail}`;
+  const existsId = await kv.get(idxKey);
+  
+  if (!existsId) {
+    const id = crypto.randomUUID();
+    const user = {
+      id,
+      name: "Admin",
+      email: adminEmail,
+      password: hashPassword(adminPassword),
+      createdAt: Date.now(),
+      isAdmin: true
+    };
+    await kv.set(idxKey, id);
+    await kv.set(`user:${id}`, user);
+    console.log("Admin inicial creado");
+  }
+}

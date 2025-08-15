@@ -25,12 +25,14 @@ export default async function handler(req, res) {
       case 'POST': {
         const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
         const id = uuidv4();
+        // Validar precio no negativo
+        const price = Math.max(0, Number(body.price ?? body.precio ?? 0));
         const item = {
           id,
           timestamp: Date.now(),
           name: body.name || body.nombre || '',
           category: body.category || body.categoria || 'moviles',
-          price: Number(body.price ?? body.precio ?? 0),
+          price,
           image: body.image || body.imagen || '',
           description: body.description || body.descripcion || '',
         };
@@ -44,14 +46,17 @@ export default async function handler(req, res) {
         if (!id) return res.status(400).json({ error: 'Missing id' });
         const idx = products.findIndex(p => p.id === id);
         if (idx === -1) return res.status(404).json({ error: 'Product not found' });
+        // Validar precio no negativo
+        const price = body.price !== undefined ? Math.max(0, Number(body.price)) : 
+                     body.precio !== undefined ? Math.max(0, Number(body.precio)) : 
+                     products[idx].price;
         const updatedItem = {
           ...products[idx],
           ...(body.name !== undefined ? { name: body.name } : {}),
           ...(body.nombre !== undefined ? { name: body.nombre } : {}),
           ...(body.category !== undefined ? { category: body.category } : {}),
           ...(body.categoria !== undefined ? { category: body.categoria } : {}),
-          ...(body.price !== undefined ? { price: Number(body.price) } : {}),
-          ...(body.precio !== undefined ? { price: Number(body.precio) } : {}),
+          price,
           ...(body.image !== undefined ? { image: body.image } : {}),
           ...(body.imagen !== undefined ? { image: body.imagen } : {}),
           ...(body.description !== undefined ? { description: body.description } : {}),

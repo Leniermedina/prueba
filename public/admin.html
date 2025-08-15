@@ -7,8 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="/app.js"></script>
   <style>
-    /* Estilos completos del panel admin */
-    /* ... (mantener estilos originales) ... */
+    /* ... (estilos sin cambios) ... */
   </style>
 </head>
 <body>
@@ -44,12 +43,39 @@
         return;
       }
       
+      // Verificar token primero
+      try {
+        const meResponse = await fetch('/api/me', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        if (!meResponse.ok) {
+          window.location.href = '/login.html';
+          return;
+        }
+        
+        const me = await meResponse.json();
+        if (!me.isAdmin) {
+          alert('No tienes permisos de administrador');
+          window.location.href = '/index.html';
+          return;
+        }
+      } catch (e) {
+        console.error('Admin verification error:', e);
+        alert('Error de verificación');
+        window.location.href = '/login.html';
+        return;
+      }
+      
       const form = document.getElementById('admin-form');
       const productsList = document.getElementById('admin-products');
       
       async function loadProducts() {
         const response = await fetch('/api/products', {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            'Cache-Control': 'no-store'
+          }
         });
         
         if (!response.ok) {
