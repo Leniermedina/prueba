@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos - Dual Cell Corp</title>
+  
+  <!-- Protección de sesión -->
+  <script src="/app.js"></script>
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="mask-icon" href="safari-pinned-tab.svg" color="#00ff9d">
+  <meta name="msapplication-TileColor" content="#00a300">
+  <meta name="theme-color" content="#ffffff">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --verde-neon: #00ff9d;
+      --verde-oscuro: #0a2e1c;
+      --naranja-btn: #ff9800;
+      --blanco: #ffffff;
+      --negro: #000000;
+      --fondo-oscuro: #0d1f15;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: var(--fondo-oscuro);
+      color: var(--blanco);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .products-section {
+      padding: 40px 0;
+    }
+    
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.2rem);
+      color: var(--verde-neon);
+      margin: 30px 0 20px;
+      padding-left: 15px;
+      border-left: 4px solid var(--verde-neon);
+      text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+      font-weight: 600;
+    }
+    
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+      gap: 25px;
+      margin-bottom: 50px;
+    }
+    
+    .product-card {
+      background: rgba(26, 80, 49, 0.3);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0, 255, 157, 0.3);
+      backdrop-filter: blur(5px);
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
+      border-color: var(--verde-neon);
+    }
+    
+    .product-image {
+      width: 100%;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 15px 15px 0 0;
+      cursor: pointer;
+    }
+    
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .product-card:hover .product-image img {
+      transform: scale(1.05);
+    }
+    
+    .product-info {
+      padding: 15px;
+    }
+    
+    .product-title {
+      color: var(--blanco);
+      font-size: clamp(0.85rem, 2.5vw, 1rem);
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 2.4em;
+      line-height: 1.3;
+    }
+    
+    .product-price {
+      color: var(--verde-neon);
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-align: center;
+      margin: 8px 0;
+      text-shadow: 0 0 5px rgba(0, 255, 157, 0.5);
+    }
+    
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    
+    .quantity-input {
+      width: 50px;
+      height: 35px;
+      border: 1px solid var(--verde-neon);
+      border-radius: 5px;
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--blanco);
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    
+    .quantity-btn {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: var(--naranja-btn);
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+    
+    .quantity-btn:hover {
+      background: #ffac33;
+      transform: scale(1.1);
+    }
+    
+    .add-to-cart-btn {
+      padding: 8px 15px;
+      background: var(--verde-neon);
+      color: var(--verde-oscuro);
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+      text-align: center;
+      font-size: 0.95rem;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .add-to-cart-btn:hover {
+      background: var(--blanco);
+      box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+    }
+    
+    .add-to-cart-btn.added {
+      background: #28a745;
+      color: white;
+    }
+    
+    @media (max-width: 768px) {
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+        gap: 15px;
+      }
+      
+      .product-image {
+        height: 160px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .products-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .product-image {
+        height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <!-- Sección Móviles -->
+    <section class="products-section">
+      <h2 class="section-title">Móviles</h2>
+      <div class="products-grid" id="moviles"></div>
+    </section>
+    
+    <!-- Sección Covers -->
+    <section class="products-section">
+      <h2 class="section-title">Covers</h2>
+      <div class="products-grid" id="covers"></div>
+    </section>
+    
+    <!-- Sección Accesorios -->
+    <section class="products-section">
+      <h2 class="section-title">Accesorios</h2>
+      <div class="products-grid" id="accesorios"></div>
+    </section>
+  </main>
+  
+  <script>
+    // Funciones globales
+    function showImageModal(imageSrc) {
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+      `;
+      
+      modal.innerHTML = `
+        <img src="${imageSrc}" style="max-width: 90%; max-height: 90%; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 255, 157, 0.3);">
+        <button style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 2rem; cursor: pointer;">&times;</button>
+      `;
+      
+      modal.querySelector('button').addEventListener('click', () => {
+        document.body.removeChild(modal);
+      });
+      
+      document.body.appendChild(modal);
+    }
+    
+    // Cargar productos al iniciar
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const response = await fetch('/api/products');
+        const products = await response.json();
+        
+        if (!Array.isArray(products)) {
+          throw new Error('Error al cargar productos');
+        }
+        
+        // Filtrar por categorías
+        const moviles = products.filter(p => p.category === 'moviles');
+        const covers = products.filter(p => p.category === 'covers');
+        const accesorios = products.filter(p => p.category === 'accesorios');
+        
+        // Renderizar cada categoría
+        renderCategory('moviles', moviles);
+        renderCategory('covers', covers);
+        renderCategory('accesorios', accesorios);
+        
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('moviles').innerHTML = '<p>Error al cargar los productos</p>';
+        document.getElementById('covers').innerHTML = '';
+        document.getElementById('accesorios').innerHTML = '';
+      }
+      
+      function renderCategory(categoryId, products) {
+        const container = document.getElementById(categoryId);
+        if (!container) return;
+        
+        if (products.length === 0) {
+          container.innerHTML = `<p style="text-align:center;color:#b1ffdd">No hay productos en esta categoría</p>`;
+          return;
+        }
+        
+        container.innerHTML = products.map(product => `
+          <div class="product-card">
+            <div class="product-image" onclick="showImageModal('${product.image}')">
+              <img src="${product.image}" alt="${product.name}" loading="lazy">
+            </div>
+            <div class="product-info">
+              <div class="product-title">${product.name}</div>
+              <div class="product-price">$${Number(product.price || 0).toFixed(2)}</div>
+              <div class="quantity-controls">
+                <button class="quantity-btn minus-btn">-</button>
+                <input class="quantity-input" type="number" min="1" value="1">
+                <button class="quantity-btn plus-btn">+</button>
+              </div>
+              <button class="add-to-cart-btn" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-image="${product.image}">
+                <i class="fa fa-cart-plus"></i> Añadir al carrito
+              </button>
+            </div>
+          </div>
+        `).join('');
+        
+        // Event listeners
+        container.querySelectorAll('.minus-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const input = e.target.nextElementSibling;
+            let val = parseInt(input.value || '1', 10);
+            input.value = Math.max(1, val - 1);
+          });
+        });
+        
+        container.querySelectorAll('.plus-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const input = e.target.previousElementSibling;
+            let val = parseInt(input.value || '1', 10);
+            input.value = val + 1;
+          });
+        });
+        
+        container.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.dataset.id;
+            const name = btn.dataset.name;
+            const price = parseFloat(btn.dataset.price);
+            const image = btn.dataset.image;
+            const qtyInput = btn.parentElement.querySelector('.quantity-input');
+            const qty = Math.max(1, parseInt(qtyInput.value || '1', 10));
+            
+            // Añadir al carrito (implementar esta función en app.js)
+            if (window.addToCart) {
+              window.addToCart({ id, name, price, image }, qty);
+              
+              // Feedback visual
+              btn.classList.add('added');
+              btn.innerHTML = '<i class="fa fa-check"></i> Añadido';
+              setTimeout(() => {
+                btn.classList.remove('added');
+                btn.innerHTML = '<i class="fa fa-cart-plus"></i> Añadir al carrito';
+                qtyInput.value = 1;
+              }, 2000);
+            }
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
