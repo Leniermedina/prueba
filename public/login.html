@@ -8,13 +8,54 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="/app.js"></script>
   <style>
-    /* ... (estilos sin cambios) ... */
+    /* Estilos actualizados para mejor feedback */
+    :root {
+      --verde-neon: #00ff9d;
+      --verde-oscuro: #0a2e1c;
+      --rojo-error: #ff6b6b;
+    }
+    
+    .error-message {
+      color: var(--rojo-error);
+      background: rgba(255, 107, 107, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border: 1px solid var(--rojo-error);
+      display: none;
+    }
+    
+    .loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    
+    .loading::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid var(--verde-neon);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
   <div class="container" id="auth-forms">
     <section id="login">
       <h2 data-i18n="login_title">Iniciar sesión</h2>
+      <div id="login-error" class="error-message"></div>
       <form id="loginForm">
         <label for="email" data-i18n="email">Correo:</label>
         <input type="email" id="email" name="email" required>
@@ -31,6 +72,7 @@
     
     <section id="register">
       <h2 data-i18n="register_title">Registrarse</h2>
+      <div id="register-error" class="error-message"></div>
       <form id="registerForm">
         <label for="name" data-i18n="name">Nombre:</label>
         <input type="text" id="name" name="name" required>
@@ -47,6 +89,15 @@
   </div>
 
   <script>
+    function showError(elementId, message) {
+      const errorElement = document.getElementById(elementId);
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      setTimeout(() => {
+        errorElement.style.display = 'none';
+      }, 5000);
+    }
+
     function adminLogin() {
       document.getElementById('email').value = 'leniermedina2003@gmail.com';
       document.getElementById('password').value = '123456789';
@@ -58,8 +109,10 @@
       const password = document.getElementById('password').value;
       
       const button = this.querySelector('button');
+      const originalText = button.textContent;
+      
+      button.classList.add('loading');
       button.disabled = true;
-      button.textContent = 'Cargando...';
       
       try {
         const response = await fetch('/api/login', {
@@ -72,19 +125,21 @@
         
         if (response.ok) {
           localStorage.setItem('AUTH_TOKEN', data.token);
+          
           if (data.user.isAdmin) {
             window.location.href = '/admin.html';
           } else {
             window.location.href = '/index.html';
           }
         } else {
-          alert(data.error || 'Error en el login');
+          showError('login-error', data.error || 'Error en el inicio de sesión');
         }
-      } catch (e) {
-        alert('Error de red: ' + e.message);
+      } catch (error) {
+        showError('login-error', 'Error de conexión: ' + error.message);
       } finally {
+        button.classList.remove('loading');
         button.disabled = false;
-        button.textContent = 'Entrar';
+        button.textContent = originalText;
       }
     });
     
@@ -95,8 +150,10 @@
       const password = document.getElementById('passwordReg').value;
       
       const button = this.querySelector('button');
+      const originalText = button.textContent;
+      
+      button.classList.add('loading');
       button.disabled = true;
-      button.textContent = 'Cargando...';
       
       try {
         const response = await fetch('/api/register', {
@@ -111,13 +168,14 @@
           localStorage.setItem('AUTH_TOKEN', data.token);
           window.location.href = '/index.html';
         } else {
-          alert(data.error || 'Error en el registro');
+          showError('register-error', data.error || 'Error en el registro');
         }
-      } catch (e) {
-        alert('Error de red: ' + e.message);
+      } catch (error) {
+        showError('register-error', 'Error de conexión: ' + error.message);
       } finally {
+        button.classList.remove('loading');
         button.disabled = false;
-        button.textContent = 'Crear cuenta';
+        button.textContent = originalText;
       }
     });
   </script>

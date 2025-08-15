@@ -2,59 +2,69 @@ import { getKV, verifyPassword, signJWT, setCORS, createInitialAdmin } from './_
 
 export default async function handler(req, res) {
   setCORS(res);
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', ['POST','OPTIONS']);
-    return res.status(405).end('Method Not Allowed');
-  }
-  
-  // Crear admin inicial si no existe
-  await createInitialAdmin();
   
   try {
+    if (req.method === 'OPTIONS') {
+      return res.status(200).end();
+    }
+    
+    if (req.method !== 'POST') {
+      res.setHeader('Allow', ['POST', 'OPTIONS']);
+      return res.status(405).json({ error: 'Method Not Allowed' });
+    }
+    
+    // Crear admin inicial si no existe
+    await createInitialAdmin();
+    
     const kv = getKV();
-    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    
     const email = (body.email || '').trim().toLowerCase();
     const password = String(body.password || '');
     
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+    
     const idxKey = `user:email:${email}`;
-    const id = await kv.get(idxKey);
-    if (!id) {
-      console.log(`Usuario no encontrado: ${email}`);
-      return res.status(401).json({ error: 'Credenciales inválidas' });
+    const userId = await kv.get(idxKey);
+    
+    if (!userId) {
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
     
-    const user = await kv.get(`user:${id}`);
+    const user = await kv.get(`user:${userId}`);
+    
     if (!user) {
-      console.log(`Usuario no encontrado en KV: ${id}`);
-      return res.status(401).json({ error: 'Credenciales inválidas' });
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
     
-    const validPassword = verifyPassword(password, user.password);
-    if (!validPassword) {
-      console.log(`Contraseña inválida para: ${email}`);
-      return res.status(401).json({ error: 'Credenciales inválidas' });
+    const isPasswordValid = verifyPassword(password, user.password);
+    
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
     
-    const token = signJWT({ 
-      sub: user.id, 
-      name: user.name, 
-      email: user.email, 
+    const token = signJWT({
+      sub: user.id,
+      name: user.name,
+      email: user.email,
       isAdmin: user.isAdmin,
-      exp: Date.now() + 1000*60*60*24*30 
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30 // 30 días
     });
     
-    return res.status(200).json({ 
-      token, 
-      user: { 
-        id: user.id, 
-        name: user.name, 
-        email: user.email, 
-        isAdmin: user.isAdmin 
-      } 
+    return res.status(200).json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin
+      }
     });
-  } catch (e) {
-    console.error('login error:', e);
-    return res.status(500).json({ error: 'Server error: ' + e.message });
+    
+  } catch (error) {
+    console.error('Login error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }

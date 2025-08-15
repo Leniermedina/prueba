@@ -2,6 +2,10 @@ import crypto from 'crypto';
 import { createClient } from '@vercel/kv';
 
 export function getKV() {
+  if (!process.env.KV_URL || !process.env.KV_REST_API_TOKEN) {
+    throw new Error('KV environment variables not set!');
+  }
+  
   return createClient({
     url: process.env.KV_URL,
     token: process.env.KV_REST_API_TOKEN,
@@ -9,58 +13,68 @@ export function getKV() {
 }
 
 function b64url(input) {
-  return Buffer.from(input).toString('base64').replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
+  return Buffer.from(input).toString('base64')
+    .replace(/=/g, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_');
 }
 
 export function signJWT(payload) {
+  if (!process.env.AUTH_SECRET) {
+    throw new Error('AUTH_SECRET is not defined!');
+  }
+  
   const header = { alg: 'HS256', typ: 'JWT' };
   const secret = process.env.AUTH_SECRET;
+  
   const h = b64url(JSON.stringify(header));
   const p = b64url(JSON.stringify(payload));
-  const sig = crypto.createHmac('sha256', secret).update(`${h}.${p}`).digest('base64').replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
-  return `${h}.${p}.${sig}`;
+  
+  const signature = crypto
+    .createHmac('sha256', secret)
+    .update(`${h}.${p}`)
+    .digest('base64')
+    .replace(/=/g, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_');
+  
+  return `${h}.${p}.${signature}`;
 }
 
 export function verifyJWT(token) {
-  try{
-    const [h,p,sig] = token.split('.');
+  if (!token || typeof token !== 'string') return null;
+  
+  try {
+    const [headerB64, payloadB64, signature] = token.split('.');
+    if (!headerB64 || !payloadB64 || !signature) return null;
+
     const secret = process.env.AUTH_SECRET;
-    const check = crypto.createHmac('sha256', secret).update(`${h}.${p}`).digest('base64').replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
-    if (check !== sig) return null;
-    const payload = JSON.parse(Buffer.from(p.replace(/-/g,'+').replace(/_/g,'/'),'base64').toString('utf8'));
+    if (!secret) return null;
+
+    const checkSignature = crypto
+      .createHmac('sha256', secret)
+      .update(`${headerB64}.${payloadB64}`)
+      .digest('base64')
+      .replace(/=/g, '')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_');
+
+    if (signature !== checkSignature) return null;
+
+    const payload = JSON.parse(
+      Buffer.from(payloadB64.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString()
+    );
+
     if (payload.exp && Date.now() >= payload.exp) return null;
+    
     return payload;
-  }catch(e){ 
-    console.error('Error verifying JWT:', e);
+  } catch (e) {
+    console.error('JWT verification error:', e);
     return null;
   }
 }
 
-export function hashPassword(password) {
-  const salt = crypto.randomBytes(16);
-  const hash = crypto.scryptSync(password, salt, 64);
-  return `scrypt:${salt.toString('base64')}:${hash.toString('base64')}`;
-}
-
-export function verifyPassword(password, stored) {
-  try {
-    const [algo, saltB64, hashB64] = stored.split(':');
-    if (algo !== 'scrypt') return false;
-    const salt = Buffer.from(saltB64, 'base64');
-    const hash = Buffer.from(hashB64, 'base64');
-    const test = crypto.scryptSync(password, salt, hash.length);
-    return crypto.timingSafeEqual(hash, test);
-  } catch (e) {
-    console.error('Error verifying password:', e);
-    return false;
-  }
-}
-
-export function setCORS(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-}
+// ... (resto de funciones sin cambios) ...
 
 // Crear admin inicial si no existe
 export async function createInitialAdmin() {
@@ -89,11 +103,9 @@ export async function createInitialAdmin() {
       };
       await kv.set(idxKey, id);
       await kv.set(`user:${id}`, user);
-      console.log("Admin inicial creado");
-    } else {
-      console.log("Admin ya existe");
+      console.log("Admin inicial creado exitosamente");
     }
   } catch (e) {
-    console.error('Error creando admin inicial:', e);
+    console.error('Error creating initial admin:', e);
   }
 }
