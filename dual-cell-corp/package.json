@@ -8,14 +8,17 @@
     "start": "vercel dev"
   },
   "dependencies": {
-    "@vercel/kv": "latest",
-    "@vercel/blob": "latest",
-    "uuid": "latest"
+    "@vercel/kv": "^1.0.0",
+    "@vercel/blob": "^1.0.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "vercel": "^45.0.9"
+  },
+  "engines": {
+    "node": "20.x"
   },
   "overrides": {
     "@vercel/blog": "0.0.2350"
-  },
-  "engines": {
-    "node": "18.x"
   }
 }
