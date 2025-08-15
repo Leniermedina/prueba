@@ -1,4 +1,17 @@
 (() => {
+  // Función para escapar HTML
+  const escapeHtml = (str) => {
+    if (!str) return '';
+    return str.replace(/[&<>"']/g, 
+      tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[tag] || tag));
+  };
+
   const API = {
     products: '/api/products',
     texts: '/api/texts',
@@ -18,12 +31,15 @@
       const r = await fetch(API.me, { headers: authHeaders(), cache: 'no-store' });
       if (!r.ok) return null;
       return await r.json();
-    } catch { return null; }
+    } catch (e) {
+      console.error('Error getting me:', e);
+      return null;
+    }
   }
 
   const CART_KEY = 'DCC_CART';
   const getCart = () => {
-    try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch { return []; }
+    try { return JSON.parse(localStorage.getItem(CART_KEY) || []; } catch { return []; }
   };
   const setCart = (items) => localStorage.setItem(CART_KEY, JSON.stringify(items || []));
   
@@ -272,18 +288,18 @@
       
       container.innerHTML = products.map(p => `
         <div class="product-card">
-          <div class="product-image" onclick="showImageModal('${p.image}')">
-            <img src="${p.image}" alt="${p.name}" loading="lazy">
+          <div class="product-image" onclick="showImageModal('${escapeHtml(p.image)}')">
+            <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" loading="lazy">
           </div>
           <div class="product-info">
-            <div class="product-title">${p.name}</div>
+            <div class="product-title">${escapeHtml(p.name)}</div>
             <div class="product-price">$${Number(p.price || 0).toFixed(2)}</div>
             <div class="quantity-controls">
               <button class="quantity-btn" data-act="dec">-</button>
               <input class="quantity-input" type="number" min="1" value="1">
               <button class="quantity-btn" data-act="inc">+</button>
             </div>
-            <button class="add-to-cart-btn" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}" data-image="${p.image}">
+            <button class="add-to-cart-btn" data-id="${p.id}" data-name="${escapeHtml(p.name)}" data-price="${p.price}" data-image="${escapeHtml(p.image)}">
               <i class="fa fa-cart-plus"></i> <span data-i18n="add_to_cart">Añadir al carrito</span>
             </button>
           </div>
@@ -325,12 +341,22 @@
     }
   }
 
-  // Resto de funciones (renderCartPage, etc.)
-
   document.addEventListener('DOMContentLoaded', async () => {
-    // Verificar autenticación
+    // Verificar autenticación - SOLUCIÓN CLAVE
+    const publicPages = ['/index.html', '/productos.html', '/acerca.html', '/login.html', '/carrito.html'];
+    const currentPage = location.pathname;
+    
+    // Permitir páginas públicas sin autenticación
+    if (publicPages.some(page => currentPage.endsWith(page))) {
+      buildNavbar();
+      updateCartBadge();
+      updateLanguage(localStorage.getItem('language') === 'en');
+      if (document.querySelector('.products-grid')) renderProducts('.products-grid');
+      return;
+    }
+
     const me = await getMe();
-    const isLoginPage = location.pathname.includes('login.html');
+    const isLoginPage = currentPage.includes('login.html');
     
     if (!me && !isLoginPage) {
       window.location.href = '/login.html';
@@ -338,11 +364,12 @@
     }
     
     // Si es admin y está en página de admin, redirigir
-    if (me && me.isAdmin && !location.pathname.includes('admin.html')) {
+    if (me && me.isAdmin && !currentPage.includes('admin.html')) {
       window.location.href = '/admin.html';
     }
     
     buildNavbar();
+    updateCartBadge();
     
     // Cargar idioma guardado
     const savedLang = localStorage.getItem('language') || 'es';
@@ -353,8 +380,6 @@
     if (document.getElementById('auth-forms')) initAuthForms();
     if (document.getElementById('admin-panel')) initAdminPanel();
   });
-  
-  // Resto del código...
 })();
 
 // Funciones globales

@@ -30,7 +30,10 @@ export function verifyJWT(token) {
     const payload = JSON.parse(Buffer.from(p.replace(/-/g,'+').replace(/_/g,'/'),'base64').toString('utf8'));
     if (payload.exp && Date.now() >= payload.exp) return null;
     return payload;
-  }catch(e){ return null; }
+  }catch(e){ 
+    console.error('Error verifying JWT:', e);
+    return null;
+  }
 }
 
 export function hashPassword(password) {
@@ -47,7 +50,10 @@ export function verifyPassword(password, stored) {
     const hash = Buffer.from(hashB64, 'base64');
     const test = crypto.scryptSync(password, salt, hash.length);
     return crypto.timingSafeEqual(hash, test);
-  } catch { return false; }
+  } catch (e) {
+    console.error('Error verifying password:', e);
+    return false;
+  }
 }
 
 export function setCORS(res) {
@@ -58,25 +64,36 @@ export function setCORS(res) {
 
 // Crear admin inicial si no existe
 export async function createInitialAdmin() {
-  const kv = getKV();
-  const adminEmail = process.env.ADMIN_EMAIL;
-  const adminPassword = process.env.ADMIN_PASSWORD;
-  
-  const idxKey = `user:email:${adminEmail}`;
-  const existsId = await kv.get(idxKey);
-  
-  if (!existsId) {
-    const id = crypto.randomUUID();
-    const user = {
-      id,
-      name: "Admin",
-      email: adminEmail,
-      password: hashPassword(adminPassword),
-      createdAt: Date.now(),
-      isAdmin: true
-    };
-    await kv.set(idxKey, id);
-    await kv.set(`user:${id}`, user);
-    console.log("Admin inicial creado");
+  try {
+    const kv = getKV();
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    
+    if (!adminEmail || !adminPassword) {
+      console.error('ADMIN_EMAIL or ADMIN_PASSWORD not set');
+      return;
+    }
+    
+    const idxKey = `user:email:${adminEmail}`;
+    const existsId = await kv.get(idxKey);
+    
+    if (!existsId) {
+      const id = crypto.randomUUID();
+      const user = {
+        id,
+        name: "Admin",
+        email: adminEmail,
+        password: hashPassword(adminPassword),
+        createdAt: Date.now(),
+        isAdmin: true
+      };
+      await kv.set(idxKey, id);
+      await kv.set(`user:${id}`, user);
+      console.log("Admin inicial creado");
+    } else {
+      console.log("Admin ya existe");
+    }
+  } catch (e) {
+    console.error('Error creando admin inicial:', e);
   }
 }

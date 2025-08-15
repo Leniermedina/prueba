@@ -19,10 +19,20 @@ export default async function handler(req, res) {
     
     const idxKey = `user:email:${email}`;
     const id = await kv.get(idxKey);
-    if (!id) return res.status(401).json({ error: 'Credenciales inválidas' });
+    if (!id) {
+      console.log(`Usuario no encontrado: ${email}`);
+      return res.status(401).json({ error: 'Credenciales inválidas' });
+    }
     
     const user = await kv.get(`user:${id}`);
-    if (!user || !verifyPassword(password, user.password)) {
+    if (!user) {
+      console.log(`Usuario no encontrado en KV: ${id}`);
+      return res.status(401).json({ error: 'Credenciales inválidas' });
+    }
+    
+    const validPassword = verifyPassword(password, user.password);
+    if (!validPassword) {
+      console.log(`Contraseña inválida para: ${email}`);
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
     
@@ -45,6 +55,6 @@ export default async function handler(req, res) {
     });
   } catch (e) {
     console.error('login error:', e);
-    return res.status(500).json({ error: 'Server error' });
+    return res.status(500).json({ error: 'Server error: ' + e.message });
   }
 }

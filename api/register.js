@@ -50,6 +50,6 @@ export default async function handler(req, res) {
     return res.status(201).json({ token, user: { id, name, email, isAdmin } });
   } catch (e) {
     console.error('register error:', e);
-    return res.status(500).json({ error: 'Server error' });
+    return res.status(500).json({ error: 'Server error: ' + e.message });
   }
 }
