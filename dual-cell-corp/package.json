@@ -11,5 +11,11 @@
     "@vercel/kv": "latest",
     "@vercel/blob": "latest",
     "uuid": "latest"
+  },
+  "overrides": {
+    "@vercel/blog": "0.0.2350"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
