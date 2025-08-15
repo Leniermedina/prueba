@@ -1,30 +1,8 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/*.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "public/**/*",
-      "use": "@vercel/static"
-    }
-  ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
-    }
-  ],
-  "env": {
-    "KV_URL": "@your-kv-url",
-    "KV_REST_API_TOKEN": "@your-kv-rest-api-token",
-    "AUTH_SECRET": "@your-auth-secret",
-    "BLOB_READ_WRITE_TOKEN": "@your-blob-rw-token",
-    "ADMIN_EMAIL": "@your-admin-email"
-  }
+    { "src": "/api/(.*)", "dest": "/api/$1.js" },
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
 }
