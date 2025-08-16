@@ -1,1 +1,0 @@
-import { put } from '@vercel/blob'; export async function uploadPublic(name: string, data: Buffer | ArrayBuffer | Blob){ return await put(name, data as any, { access: 'public', addRandomSuffix: false, token: process.env.BLOB_READ_WRITE_TOKEN }); }
