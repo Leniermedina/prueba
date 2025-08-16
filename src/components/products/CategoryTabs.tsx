@@ -1,1 +1,0 @@
-type Props={active:'moviles'|'accesorios'|'covers',onChange:(c:any)=>void};export default function CategoryTabs({active,onChange}:any){const cats=['moviles','accesorios','covers'];return(<div className='flex gap-2 mb-4'>{cats.map((c)=>(<button key={c} onClick={()=>onChange(c)} className={`btn ${active===c?'btn-primary':''}`}>{c}</button>))}</div>)}
