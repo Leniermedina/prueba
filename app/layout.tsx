@@ -1,4 +1,4 @@
-import './globals.css';
+import '../styles/globals.css';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { getDictionary, LocaleProvider } from '@lib/i18n';
