@@ -1,0 +1,1 @@
+export default function AboutPage(){return(<section className='container mx-auto p-6'><h1 className='text-3xl font-bold text-brand mb-4'>Acerca de</h1><div className='card space-y-4'><p>Somos especialistas en móviles, con garantía y soporte.</p><ul className='list-disc pl-6'><li>Garantía 12 meses</li><li>Envíos nacionales</li><li>Soporte por WhatsApp</li></ul></div></section>)}
