@@ -12,6 +12,7 @@
             --text-color: #333;
             --background-color: #fff;
             --accent-color: #ff6b6b;
+            --success-color: #4CAF50;
             --border-color: #e1e1e1;
             --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
@@ -239,6 +240,7 @@
         .category-header {
             text-align: center;
             margin-bottom: 2rem;
+            position: relative;
         }
 
         .category-title {
@@ -250,25 +252,26 @@
 
         .back-to-categories {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 0;
+            left: 0;
             display: flex;
             align-items: center;
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
             transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 50%;
         }
 
         .back-to-categories:hover {
-            text-decoration: underline;
+            background-color: var(--menu-bg);
             transform: translateX(-2px);
         }
 
         .back-arrow {
-            margin-right: 0.5rem;
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             stroke: currentColor;
         }
 
@@ -289,6 +292,7 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            position: relative;
         }
         
         .dark-mode .product-card {
@@ -374,7 +378,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            min-width: 40px;
+            height: 40px;
         }
 
         .add-to-cart-btn:hover {
@@ -386,6 +391,27 @@
             width: 16px;
             height: 16px;
             stroke: white;
+        }
+
+        /* Mensaje de éxito */
+        .success-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--success-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-weight: bold;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .success-message.show {
+            opacity: 1;
         }
 
         /* Footer */
@@ -666,6 +692,10 @@
             .products-grid {
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             }
+            
+            .category-header {
+                margin-top: 1rem;
+            }
         }
 
         @media (max-width: 600px) {
@@ -697,11 +727,24 @@
             .products-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .category-header {
+                text-align: center;
+            }
+            
+            .back-to-categories {
+                position: static;
+                display: inline-flex;
+                margin-bottom: 1rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="overlay" id="overlay"></div>
+    
+    <!-- Mensaje de éxito -->
+    <div class="success-message" id="successMessage">Producto agregado</div>
     
     <aside class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
@@ -775,11 +818,9 @@
     <main class="main">
         <div class="category-header">
             <a href="categorias.html" class="back-to-categories">
-                <svg class="back-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg class="back-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M15 19l-7-7 7-7"></path>
-                    <path d="M5 12h14"></path>
                 </svg>
-                Volver a categorías
             </a>
             <h1 class="category-title" id="categoryTitle">Cargando productos...</h1>
         </div>
@@ -833,6 +874,7 @@
         // Elementos del DOM
         const categoryTitle = document.getElementById('categoryTitle');
         const productsGrid = document.getElementById('productsGrid');
+        const successMessage = document.getElementById('successMessage');
 
         // === FUNCIONES DEL CARRITO ===
         const cartCountElement = document.getElementById('cartCount');
@@ -967,6 +1009,14 @@
             saveCart();
             updateCartCount();
             updateCartUI();
+        }
+
+        // Mostrar mensaje de éxito
+        function showSuccessMessage() {
+            successMessage.classList.add('show');
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 1000);
         }
 
         // Actualizar cantidad de un producto
@@ -1105,21 +1155,13 @@
             // Agregar eventos a botones de "Agregar al carrito"
             document.querySelectorAll('.add-to-cart-btn').forEach(button => {
                 button.addEventListener('click', (e) => {
-                    const productId = parseInt(e.target.getAttribute('data-id'));
+                    const productId = parseInt(e.target.closest('.add-to-cart-btn').getAttribute('data-id'));
                     const quantityInput = e.target.closest('.product-card').querySelector('.quantity-input');
                     const quantity = parseInt(quantityInput.value);
                     
                     if (quantity > 0) {
                         addToCart(productId, quantity);
-                        
-                        // Efecto visual
-                        const originalText = e.target.textContent;
-                        e.target.textContent = '¡Agregado!';
-                        e.target.style.backgroundColor = '#4CAF50';
-                        setTimeout(() => {
-                            e.target.textContent = originalText;
-                            e.target.style.backgroundColor = '';
-                        }, 1000);
+                        showSuccessMessage();
                         
                         // Restablecer el valor del input
                         quantityInput.value = 0;
