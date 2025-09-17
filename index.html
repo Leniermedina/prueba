@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio • IslaMarket</title>
+    <title>IslaMarket • Tu tienda online</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <style>
         :root {
@@ -17,6 +17,7 @@
             --transition: all 0.3s ease;
             --menu-bg: #e8f0fe;
             --menu-hover: #d0e2ff;
+            --success-color: #28a745;
             --icon-color: #333;
         }
 
@@ -43,7 +44,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
-            padding-top: 70px; /* Espacio para el header fijo */
+            padding-top: 70px;
         }
 
         /* Header fijo y compacto */
@@ -59,7 +60,7 @@
             transition: transform 0.3s ease;
             display: flex;
             flex-direction: column;
-            height: 70px; /* Altura reducida */
+            height: 70px;
         }
 
         .header.hidden {
@@ -70,11 +71,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 40px; /* Altura reducida */
+            height: 40px;
         }
 
         .logo img {
-            height: 30px; /* Logo más pequeño */
+            height: 30px;
             width: auto;
         }
 
@@ -101,7 +102,6 @@
             justify-content: center;
             width: 32px;
             height: 32px;
-            /* DeepSeek: color heredado para SVG */
             color: var(--icon-color);
         }
 
@@ -109,7 +109,6 @@
             background-color: var(--secondary-color);
         }
 
-        /* DeepSeek: asegurar que el SVG herede color y tamaño */
         .language-btn svg {
             width: 20px;
             height: 20px;
@@ -134,7 +133,6 @@
             justify-content: center;
             width: 32px;
             height: 32px;
-            /* DeepSeek: color heredado para SVG */
             color: var(--icon-color);
         }
 
@@ -142,7 +140,6 @@
             background-color: var(--secondary-color);
         }
 
-        /* DeepSeek: asegurar que los íconos hereden color/tamaño */
         .theme-toggle svg {
             width: 20px;
             height: 20px;
@@ -177,7 +174,6 @@
             background-color: var(--secondary-color);
         }
 
-        /* DeepSeek: homogeneizar tamaño/traZo del carrito */
         .cart-link svg {
             width: 20px;
             height: 20px;
@@ -233,31 +229,28 @@
         /* Layout principal */
         .main {
             display: flex;
-            max-width: 1400px; /* Ancho máximo aumentado */
+            max-width: 1400px;
             margin: 0 auto;
             padding: 1rem;
-            gap: 2rem; /* Más espacio entre sidebar y contenido */
+            gap: 2rem;
         }
 
-        /* Sidebar categorías - MODIFICADO */
+        /* Sidebar de categorías */
         .sidebar {
-            flex: 0 0 260px; /* Ancho aumentado */
+            width: 250px;
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
             position: sticky;
             top: 80px;
-            align-self: flex-start;
-            background-color: var(--background-color);
-            border-radius: 8px;
-            padding: 1.25rem; /* Más padding */
-            box-shadow: var(--shadow);
-            max-height: calc(100vh - 100px);
-            overflow-y: auto;
-            margin-left: -10px; /* Mover más a la izquierda */
         }
 
         .sidebar h2 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 1.25rem;
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.75rem;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -266,49 +259,29 @@
         }
 
         .categories-menu li {
-            margin-bottom: 0.5rem;
-            position: relative;
-        }
-
-        .categories-menu li:not(:last-child):after {
-            content: "";
-            position: absolute;
-            bottom: -0.25rem;
-            left: 5%; /* Ajustado para el nuevo ancho */
-            width: 90%; /* Ajustado para el nuevo ancho */
-            height: 1px;
-            background-color: var(--border-color);
+            margin-bottom: 0.75rem;
         }
 
         .categories-menu a {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
             text-decoration: none;
             color: var(--text-color);
-            padding: 0.75rem; /* Padding ajustado */
-            border-radius: 8px;
+            font-weight: 500;
+            padding: 0.75rem;
+            border-radius: 6px;
             transition: var(--transition);
-            background-color: var(--menu-bg);
-            font-size: 0.9rem; /* Tamaño de fuente reducido */
         }
 
         .categories-menu a:hover {
             background-color: var(--menu-hover);
-            color: var(--primary-color);
-            transform: translateX(5px);
         }
 
         .category-icon {
-            width: 20px; /* Iconos ligeramente más pequeños */
+            width: 20px;
             height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin-right: 0.75rem;
             color: var(--icon-color);
-            filter: grayscale(100%) contrast(70%);
-            transition: var(--transition);
-            font-size: 1rem; /* Tamaño de icono ajustado */
             flex-shrink: 0;
         }
 
@@ -324,10 +297,10 @@
         /* Hero slider */
         .hero {
             position: relative;
-            height: 380px; /* Altura aumentada */
+            height: 380px;
             overflow: hidden;
             border-radius: 8px;
-            margin-bottom: 2.5rem; /* Más margen inferior */
+            margin-bottom: 2.5rem;
             box-shadow: var(--shadow);
         }
 
@@ -343,7 +316,7 @@
             width: 100%;
             height: 100%;
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.5s ease-in-out;
         }
 
         .slide.active {
@@ -359,34 +332,33 @@
         .slide-content {
             position: absolute;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
+            left: 50px;
+            transform: translateY(-50%);
             color: white;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-            max-width: 80%;
+            max-width: 50%;
         }
 
         .slide-content h2 {
-            font-size: 2.2rem; /* Tamaño de fuente aumentado */
-            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .slide-content p {
-            margin-bottom: 1.25rem; /* Más margen inferior */
-            font-size: 1.2rem; /* Tamaño de fuente aumentado */
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .btn {
             display: inline-block;
+            padding: 0.8rem 1.5rem;
             background-color: var(--primary-color);
             color: white;
-            padding: 0.6rem 1.75rem; /* Botón más grande */
-            border-radius: 4px;
             text-decoration: none;
-            font-weight: 500;
+            border-radius: 4px;
+            font-weight: bold;
             transition: var(--transition);
-            font-size: 1rem;
         }
 
         .btn:hover {
@@ -394,33 +366,34 @@
             transform: translateY(-2px);
         }
 
-        .hero-controls {
+        .slide-btn {
             position: absolute;
             top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 1rem;
             transform: translateY(-50%);
-        }
-
-        .slide-btn {
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(255, 255, 255, 0.3);
             color: white;
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            font-size: 1.5rem;
             transition: var(--transition);
         }
 
         .slide-btn:hover {
             background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .prev-btn {
+            left: 1rem;
+        }
+
+        .next-btn {
+            right: 1rem;
         }
 
         .hero-indicators {
@@ -449,9 +422,9 @@
         /* Tarjetas promocionales */
         .promo-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Tarjetas más grandes */
-            gap: 1.25rem; /* Más espacio entre tarjetas */
-            margin-bottom: 2.5rem; /* Más margen inferior */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
         }
 
         .promo-card {
@@ -459,7 +432,7 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: var(--shadow);
-            height: 160px; /* Altura aumentada */
+            height: 160px;
         }
 
         .promo-card img {
@@ -475,21 +448,21 @@
             right: 0;
             background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
             color: white;
-            padding: 1.25rem; /* Más padding */
+            padding: 1.25rem;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
         }
 
         .promo-content h3 {
-            font-size: 1.2rem; /* Tamaño de fuente aumentado */
+            font-size: 1.2rem;
         }
 
         .promo-content a {
             color: white;
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.95rem; /* Tamaño de fuente aumentado */
+            font-size: 0.95rem;
         }
 
         .promo-content a:hover {
@@ -498,20 +471,20 @@
 
         /* Sección de productos */
         .products-section {
-            margin-bottom: 2.5rem; /* Más margen inferior */
+            margin-bottom: 2.5rem;
         }
 
         .products-section h2 {
-            font-size: 1.6rem; /* Tamaño de fuente aumentado */
-            margin-bottom: 1.25rem; /* Más margen inferior */
+            font-size: 1.6rem;
+            margin-bottom: 1.25rem;
             padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border-color); /* Borde más grueso */
+            border-bottom: 2px solid var(--border-color);
         }
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); /* Tarjetas más grandes */
-            gap: 1.75rem; /* Más espacio entre tarjetas */
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 1.75rem;
         }
 
         .product-card {
@@ -524,13 +497,18 @@
             flex-direction: column;
         }
 
+        .dark-mode .product-card {
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+        }
+
         .product-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .product-image {
-            height: 200px; /* Altura aumentada */
+            height: 200px;
             overflow: hidden;
         }
 
@@ -546,48 +524,30 @@
         }
 
         .product-info {
-            padding: 1.25rem; /* Más padding */
+            padding: 1.25rem;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
 
-        .product-title {
-            font-size: 1.05rem; /* Tamaño de fuente aumentado */
-            margin-bottom: 0.75rem; /* Más margen inferior */
-            font-weight: 500;
-            line-height: 1.3;
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
         }
 
         .product-price {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.75rem; /* Más margen inferior */
-        }
-
-        .current-price {
+            font-size: 1.2rem;
             font-weight: bold;
-            font-size: 1.2rem; /* Tamaño de fuente aumentado */
             color: var(--primary-color);
-        }
-
-        .original-price {
-            text-decoration: line-through;
-            color: #888;
-            font-size: 0.95rem; /* Tamaño de fuente aumentado */
-        }
-
-        .product-stock {
-            font-size: 0.85rem; /* Tamaño de fuente aumentado */
-            color: #28a745;
-            margin-bottom: 1rem; /* Más margen inferior */
+            margin-bottom: 1rem;
         }
 
         .quantity-selector {
             display: flex;
             align-items: center;
-            margin-bottom: 1rem; /* Más margen inferior */
+            margin-bottom: 1rem;
             gap: 0.5rem;
             justify-content: center;
         }
@@ -595,7 +555,7 @@
         .quantity-btn {
             background: var(--secondary-color);
             border: 1px solid var(--border-color);
-            width: 32px; /* Botones más grandes */
+            width: 32px;
             height: 32px;
             border-radius: 4px;
             display: flex;
@@ -604,104 +564,113 @@
             cursor: pointer;
             font-weight: bold;
             font-size: 1rem;
-        }
-
-        .quantity-btn:hover {
-            background: var(--primary-color);
-            color: white;
+            color: var(--text-color);
         }
 
         .quantity-input {
-            width: 50px; /* Input más ancho */
-            height: 32px;
+            width: 50px;
             text-align: center;
             border: 1px solid var(--border-color);
             border-radius: 4px;
+            padding: 0.5rem;
             background: var(--background-color);
             color: var(--text-color);
-            font-size: 1rem;
         }
 
-        .add-to-cart {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
+        .add-to-cart-btn {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 0.75rem; /* Más padding */
+            padding: 0.75rem;
             border-radius: 4px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: bold;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 0.5rem;
-            margin-top: auto; /* Empujar hacia abajo */
         }
 
-        .add-to-cart:hover {
+        .add-to-cart-btn:hover {
             background-color: #3a5cd8;
+            transform: translateY(-2px);
         }
 
-        .add-to-cart svg {
-            width: 18px;
-            height: 18px;
+        .cart-icon {
+            width: 16px;
+            height: 16px;
+            stroke: white;
+        }
+
+        /* Mensaje de éxito */
+        .success-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--success-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-weight: bold;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .success-message.show {
+            opacity: 1;
         }
 
         /* Sección de servicios */
         .services-section {
-            margin-bottom: 2.5rem; /* Más margen inferior */
-        }
-
-        .services-section h2 {
-            font-size: 1.6rem; /* Tamaño de fuente aumentado */
-            margin-bottom: 1.25rem; /* Más margen inferior */
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border-color); /* Borde más grueso */
+            margin: 4rem 0;
         }
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Tarjetas más grandes */
-            gap: 1.75rem; /* Más espacio entre tarjetas */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
         }
 
         .service-card {
-            background-color: var(--background-color);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            padding: 1.75rem; /* Más padding */
-            text-align: center;
-            transition: var(--transition);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.85rem; /* Más espacio entre elementos */
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background-color: var(--secondary-color);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .dark-mode .service-card {
+            background-color: var(--menu-bg);
+            border: 1px solid var(--border-color);
         }
 
         .service-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .service-icon {
-            width: 60px; /* Iconos más grandes */
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.2rem; /* Tamaño de fuente aumentado */
+            width: 50px;
+            height: 50px;
+            margin-bottom: 1rem;
             color: var(--primary-color);
         }
 
         .service-title {
-            font-size: 1.1rem; /* Tamaño de fuente aumentado */
+            font-size: 1.1rem;
             font-weight: 500;
+            margin-bottom: 0.5rem;
         }
 
         .service-description {
-            font-size: 0.9rem; /* Tamaño de fuente aumentado */
+            font-size: 0.9rem;
             color: #666;
         }
 
@@ -712,31 +681,31 @@
         /* Footer */
         .footer {
             background-color: var(--secondary-color);
-            padding: 2.5rem 1.5rem 1rem; /* Más padding */
-            margin-top: 4rem; /* Más margen superior */
+            padding: 2.5rem 1.5rem 1rem;
+            margin-top: 4rem;
         }
 
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2.5rem; /* Más espacio entre columnas */
-            max-width: 1200px; /* Ancho máximo aumentado */
+            gap: 2.5rem;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
         .footer-section {
             display: flex;
             flex-direction: column;
-            gap: 1.25rem; /* Más espacio entre elementos */
+            gap: 1.25rem;
         }
 
         .footer-section img {
-            margin-bottom: 0.75rem; /* Más margen inferior */
+            margin-bottom: 0.75rem;
         }
 
         .footer-section h3 {
-            font-size: 1.2rem; /* Tamaño de fuente aumentado */
-            margin-bottom: 0.75rem; /* Más margen inferior */
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
         }
 
         .footer-section a {
@@ -751,10 +720,10 @@
 
         .footer-bottom {
             text-align: center;
-            padding-top: 2.5rem; /* Más padding */
-            margin-top: 2.5rem; /* Más margen superior */
+            padding-top: 2.5rem;
+            margin-top: 2.5rem;
             border-top: 1px solid var(--border-color);
-            font-size: 0.95rem; /* Tamaño de fuente aumentado */
+            font-size: 0.95rem;
         }
 
         /* Carrito flotante */
@@ -762,7 +731,7 @@
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            width: 55px; /* Tamaño aumentado */
+            width: 55px;
             height: 55px;
             border-radius: 50%;
             background-color: var(--primary-color);
@@ -800,9 +769,9 @@
             background-color: var(--accent-color);
             color: white;
             border-radius: 50%;
-            width: 22px; /* Tamaño aumentado */
+            width: 22px;
             height: 22px;
-            font-size: 0.75rem; /* Tamaño de fuente aumentado */
+            font-size: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -814,106 +783,7 @@
             opacity: 1;
         }
 
-        /* Responsive */
-        @media (max-width: 1100px) {
-            .main {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                position: static;
-                flex: 0 0 auto;
-                margin-bottom: 1.5rem;
-                max-height: none;
-                margin-left: 0;
-                width: 100%;
-            }
-            
-            .products-grid,
-            .services-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header-top {
-                flex-wrap: wrap;
-            }
-            
-            .nav {
-                overflow-x: auto;
-                padding-bottom: 0.5rem;
-                justify-content: flex-start;
-            }
-            
-            .hero {
-                height: 320px;
-            }
-            
-            .slide-content h2 {
-                font-size: 1.8rem;
-            }
-            
-            .slide-content p {
-                font-size: 1.1rem;
-            }
-            
-            .promo-cards {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header {
-                padding: 0.5rem 1rem;
-            }
-            
-            .logo img {
-                height: 30px;
-            }
-            
-            .header-actions {
-                gap: 0.5rem;
-            }
-            
-            .nav {
-                gap: 0.5rem;
-            }
-            
-            .nav a {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
-            }
-            
-            .hero {
-                height: 280px;
-            }
-            
-            .slide-content {
-                max-width: 90%;
-            }
-            
-            .slide-content h2 {
-                font-size: 1.5rem;
-            }
-            
-            .btn {
-                padding: 0.5rem 1.25rem;
-                font-size: 0.9rem;
-            }
-            
-            .products-grid,
-            .services-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Nuevos estilos para el carrito lateral */
+        /* Carrito lateral */
         .cart-sidebar {
             position: fixed;
             top: 0;
@@ -943,6 +813,7 @@
         .cart-header h2 {
             margin: 0;
             font-size: 1.5rem;
+            color: var(--text-color);
         }
 
         .close-cart {
@@ -981,6 +852,7 @@
         .cart-item-name {
             margin: 0 0 0.5rem 0;
             font-size: 1rem;
+            color: var(--text-color);
         }
 
         .cart-item-price {
@@ -1001,6 +873,7 @@
             height: 25px;
             border-radius: 4px;
             cursor: pointer;
+            color: var(--text-color);
         }
 
         .cart-item-quantity input {
@@ -1029,6 +902,7 @@
         .cart-total {
             margin-bottom: 1rem;
             text-align: right;
+            color: var(--text-color);
         }
 
         .checkout-btn {
@@ -1062,66 +936,143 @@
             display: block;
         }
 
-        /* Ajustes para el carrito flotante */
-        .floating-cart {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow);
-            z-index: 999;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .main {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: static;
+                width: 100%;
+                margin-bottom: 2rem;
+            }
+
+            .content {
+                width: 100%;
+            }
         }
 
-        .floating-cart.visible {
-            opacity: 1;
-            visibility: visible;
+        @media (max-width: 768px) {
+            .header-top {
+                flex-wrap: wrap;
+            }
+
+            .nav {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+                justify-content: flex-start;
+            }
+
+            .hero {
+                height: 300px;
+            }
+
+            .slide-content {
+                left: 20px;
+                max-width: 70%;
+            }
+
+            .slide-content h2 {
+                font-size: 2rem;
+            }
+
+            .slide-content p {
+                font-size: 1rem;
+            }
+
+            .promo-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 1rem;
+            }
+
+            .product-image {
+                height: 150px;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
-        .floating-cart svg {
-            width: 28px;
-            height: 28px;
-            stroke: white;
-            stroke-width: 2;
-        }
+        @media (max-width: 600px) {
+            .header {
+                padding: 0.5rem 1rem;
+            }
 
-        .floating-cart-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: var(--accent-color);
-            color: white;
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: var(--transition);
-        }
+            .logo img {
+                height: 30px;
+            }
 
-        .floating-cart-count.show {
-            opacity: 1;
+            .header-actions {
+                gap: 0.5rem;
+            }
+
+            .nav {
+                gap: 0.5rem;
+            }
+
+            .nav a {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .hero {
+                height: 250px;
+            }
+
+            .slide-content {
+                left: 15px;
+                max-width: 80%;
+            }
+
+            .slide-content h2 {
+                font-size: 1.5rem;
+            }
+
+            .slide-content p {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .promo-content {
+                padding: 1rem;
+            }
+
+            .promo-content h3 {
+                font-size: 1rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Overlay para el carrito -->
     <div class="overlay" id="overlay"></div>
     
-    <!-- Carrito lateral -->
+    <!-- Mensaje de éxito -->
+    <div class="success-message" id="successMessage">Producto agregado</div>
+
     <aside class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h2>Carrito de Compras</h2>
@@ -1199,141 +1150,122 @@
             <ul class="categories-menu" id="categoriesMenu">
                 <li><a href="categorias.html?cat=todos">
                     <span class="category-icon">
-                        <!-- Caja / paquete -->
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 7l9-4 9 4"></path>
-                            <path d="M21 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7"></path>
-                            <path d="M3 7l9 5 9-5"></path>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
                         </svg>
                     </span>
                     <span>Todos los productos</span>
                 </a></li>
-                <li><a href="categorias.html?cat=deportivos">
+                <li><a href="categorias.html?cat=accesorios-deportivos">
                     <span class="category-icon">
-                        <!-- Balón deportivo -->
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="9"></circle>
-                            <path d="M3 12h18"></path>
-                            <path d="M12 3a12 12 0 0 1 0 18"></path>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
                         </svg>
                     </span>
                     <span>Accesorios Deportivos</span>
                 </a></li>
                 <li><a href="categorias.html?cat=alimentos">
                     <span class="category-icon">
-                        <!-- Fruta/hoja -->
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M15 3c-1.2 0-2 .6-3 2-1-1.4-1.8-2-3-2-2 0-4 2-4 5 0 4 3 7 7 13 4-6 7-9 7-13 0-3-2-5-4-5z"></path>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                            <path d="M12 2v10"></path>
                         </svg>
                     </span>
                     <span>Alimentos</span>
                 </a></li>
                 <li><a href="categorias.html?cat=electrodomesticos">
                     <span class="category-icon">
-                        <!-- Refrigerador / panel frontal -->
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="6" y="2" width="12" height="20" rx="2"></rect>
-                            <path d="M6 8h12"></path>
-                            <path d="M10 12h2"></path>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M2 6h20"></path>
                         </svg>
                     </span>
                     <span>Electrodomésticos</span>
                 </a></li>
                 <li><a href="categorias.html?cat=ropa">
                     <span class="category-icon">
-                        <!-- Camiseta -->
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 3l3 3-4 3v12H9V9L5 6l3-3 4 2 4-2z"></path>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 7h-4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path>
+                            <path d="M4 7h4a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path>
+                            <line x1="9" y1="3" x2="15" y2="3"></line>
                         </svg>
                     </span>
                     <span>Ropa</span>
                 </a></li>
                 <li><a href="categorias.html?cat=tecnologia">
                     <span class="category-icon">
-                        <!-- Laptop / monitor -->
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="12" rx="2"></rect>
-                            <path d="M8 20h8"></path>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
                         </svg>
                     </span>
                     <span>Tecnología</span>
                 </a></li>
                 <li><a href="categorias.html?cat=herramientas">
                     <span class="category-icon">
-                        <!-- Herramientas cruzadas -->
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14 7l-7 7 3 3 7-7"></path>
-                            <path d="M2 22l4-4"></path>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
                         </svg>
                     </span>
                     <span>Herramientas</span>
                 </a></li>
                 <li><a href="categorias.html?cat=joyeria">
                     <span class="category-icon">
-                        <!-- Diamante -->
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M6 10l6-7 6 7-6 11-6-11z"></path>
-                            <path d="M6 10h12"></path>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"></path>
                         </svg>
                     </span>
                     <span>Joyería</span>
                 </a></li>
-                <li><a href="categorias.html?cat=autos">
+                <li><a href="categorias.html?cat=piezas-para-autos">
                     <span class="category-icon">
-                        <!-- Auto -->
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 13l2-3h14l2 3"></path>
-                            <circle cx="7.5" cy="17.5" r="2.5"></circle>
-                            <circle cx="16.5" cy="17.5" r="2.5"></circle>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
                         </svg>
                     </span>
                     <span>Piezas para Autos</span>
                 </a></li>
-                <li><a href="categorias.html?cat=hogar">
+                <li><a href="categorias.html?cat=productos-del-hogar">
                     <span class="category-icon">
-                        <!-- Casa -->
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 10l9-7 9 7"></path>
-                            <path d="M9 22V12h6v10"></path>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
                         </svg>
                     </span>
                     <span>Productos del Hogar</span>
                 </a></li>
-                <li><a href="categorias.html?cat=suplementos">
+                <li><a href="categorias.html?cat=suplementos-vitaminicos">
                     <span class="category-icon">
-                        <!-- Cápsulas -->
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="8" height="18" rx="2"></rect>
-                            <rect x="13" y="7" width="8" height="10" rx="2"></rect>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                            <path d="M12 2v10"></path>
                         </svg>
                     </span>
-                    <span>Suplementos Vitaminicos</span>
+                    <span>Suplementos Vitamínicos</span>
                 </a></li>
                 <li><a href="categorias.html?cat=servicios">
                     <span class="category-icon">
-                        <!-- Teléfono / soporte -->
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 16.92V21a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.18 2 2 0 0 1 4 2h4.09a2 2 0 0 1 2 1.72l.27 1.89a2 2 0 0 1-.57 1.82L8.09 8.91a16 16 0 0 0 6 6l1.48-1.71a2 2 0 0 1 1.82-.57l1.89.27A2 2 0 0 1 22 16.92z"></path>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
                         </svg>
                     </span>
                     <span>Servicios</span>
                 </a></li>
             </ul>
         </aside>
-        
+
         <div class="content">
+            <!-- Hero Slider -->
             <section class="hero">
                 <div class="hero-slides">
                     <div class="slide active">
@@ -1352,294 +1284,79 @@
                             <a href="categorias.html" class="btn">Explorar</a>
                         </div>
                     </div>
-                    <div class="slide">
-                        <img src="assets/img/hero3.svg" alt="Envío gratis" loading="lazy">
-                        <div class="slide-content">
-                            <h2>Envío Gratis</h2>
-                            <p>En compras superiores a $50</p>
-                            <a href="categorias.html" class="btn">Comprar ahora</a>
-                        </div>
-                    </div>
                 </div>
-                <div class="hero-controls">
-                    <button class="slide-btn prev">&#8249;</button>
-                    <button class="slide-btn next">&#8250;</button>
-                </div>
+                <button class="slide-btn prev-btn">&#10094;</button>
+                <button class="slide-btn next-btn">&#10095;</button>
                 <div class="hero-indicators">
                     <span class="indicator active"></span>
                     <span class="indicator"></span>
-                    <span class="indicator"></span>
                 </div>
             </section>
-            
+
+            <!-- Tarjetas promocionales -->
             <section class="promo-cards">
                 <div class="promo-card">
                     <img src="assets/img/card1.svg" alt="Ofertas de temporada" loading="lazy">
                     <div class="promo-content">
                         <h3 data-i18n="home.deals">Ofertas de temporada</h3>
-                        <a href="categorias.html?cat=ofertas-semana" data-i18n="home.viewAll">Ver todo</a>
+                        <a href="categorias.html?cat=ofertas-semana">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="10" cy="20.5" r="1"></circle>
+                                <circle cx="18" cy="20.5" r="1"></circle>
+                                <path d="M2.5 2.5h3l2.7 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6l1.6-8.4H7.1"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
                 <div class="promo-card">
                     <img src="assets/img/card2.svg" alt="Productos populares" loading="lazy">
                     <div class="promo-content">
                         <h3 data-i18n="home.bestsellers">Más vendidos</h3>
-                        <a href="categorias.html?cat=mas-vendidos" data-i18n="home.viewAll">Ver todo</a>
+                        <a href="categorias.html?cat=mas-vendidos">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="10" cy="20.5" r="1"></circle>
+                                <circle cx="18" cy="20.5" r="1"></circle>
+                                <path d="M2.5 2.5h3l2.7 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6l1.6-8.4H7.1"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
                 <div class="promo-card">
                     <img src="assets/img/card3.svg" alt="Lo que necesitas" loading="lazy">
                     <div class="promo-content">
                         <h3>Lo que necesitas</h3>
-                        <a href="categorias.html" data-i18n="home.viewAll">Ver todo</a>
+                        <a href="categorias.html">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="10" cy="20.5" r="1"></circle>
+                                <circle cx="18" cy="20.5" r="1"></circle>
+                                <path d="M2.5 2.5h3l2.7 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6l1.6-8.4H7.1"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </section>
-            
+
+            <!-- Ofertas de la semana -->
             <section class="products-section">
                 <h2 data-i18n="home.deals">Ofertas de la semana</h2>
                 <div class="products-grid" id="dealsGrid">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="assets/img/products/treadmill.svg" alt="Cinta para Correr" loading="lazy">
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Cinta para Correr</h3>
-                            <div class="product-price">
-                                <span class="current-price">179,99 US$</span>
-                                <span class="original-price">279,99 US$</span>
-                            </div>
-                            <div class="product-stock">8 en stock</div>
-                            <div class="quantity-selector">
-                                <button class="quantity-btn minus" data-product-id="1">-</button>
-                                <input type="number" class="quantity-input" value="0" min="0" max="8" data-product-id="1">
-                                <button class="quantity-btn plus" data-product-id="1">+</button>
-                            </div>
-                            <button class="add-to-cart" data-product-id="1">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                                </svg>
-                                Agregar
-                            </button>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="assets/img/products/coffee.svg" alt="Café Molido Premium" loading="lazy">
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Café Molido Premium</h3>
-                            <div class="product-price">
-                                <span class="current-price">7,99 US$</span>
-                                <span class="original-price">9,99 US$</span>
-                            </div>
-                            <div class="product-stock">30 en stock</div>
-                            <div class="quantity-selector">
-                                <button class="quantity-btn minus" data-product-id="2">-</button>
-                                <input type="number" class="quantity-input" value="0" min="0" max="30" data-product-id="2">
-                                <button class="quantity-btn plus" data-product-id="2">+</button>
-                            </div>
-                            <button class="add-to-cart" data-product-id="2">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                                </svg>
-                                Agregar
-                            </button>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="assets/img/products/toaster.svg" alt="Horno Tostador" loading="lazy">
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Horno Tostador</h3>
-                            <div class="product-price">
-                                <span class="current-price">34,99 US$</span>
-                                <span class="original-price">39,99 US$</span>
-                            </div>
-                            <div class="product-stock">12 en stock</div>
-                            <div class="quantity-selector">
-                                <button class="quantity-btn minus" data-product-id="3">-</button>
-                                <input type="number" class="quantity-input" value="0" min="0" max="12" data-product-id="3">
-                                <button class="quantity-btn plus" data-product-id="3">+</button>
-                            </div>
-                            <button class="add-to-cart" data-product-id="3">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                                </svg>
-                                Agregar
-                            </button>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="assets/img/products/headphones.svg" alt="Auriculares Bluetooth" loading="lazy">
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Auriculares Bluetooth</h3>
-                            <div class="product-price">
-                                <span class="current-price">45,99 US$</span>
-                                <span class="original-price">59,99 US$</span>
-                            </div>
-                            <div class="product-stock">15 en stock</div>
-                            <div class="quantity-selector">
-                                <button class="quantity-btn minus" data-product-id="4">-</button>
-                                <input type="number" class="quantity-input" value="0" min="0" max="15" data-product-id="4">
-                                <button class="quantity-btn plus" data-product-id="4">+</button>
-                            </div>
-                            <button class="add-to-cart" data-product-id="4">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                                </svg>
-                                Agregar
-                            </button>
-                        </div>
-                    </div>
+                    <!-- Productos cargados dinámicamente -->
                 </div>
             </section>
-            
+
+            <!-- Más vendidos -->
             <section class="products-section">
                 <h2 data-i18n="home.bestsellers">Más vendidos</h2>
                 <div class="products-grid" id="bestsellersGrid">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="assets/img/products/smartwatch.svg" alt="Smartwatch Deportivo" loading="lazy">
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Smartwatch Deportivo</h3>
-                            <div class="product-price">
-                                <span class="current-price">89,99 US$</span>
-                            </div>
-                            <div class="product-stock">22 en stock</div>
-                            <div class="quantity-selector">
-                                <button class="quantity-btn minus" data-product-id="5">-</button>
-                                <input type="number" class="quantity-input" value="0" min="0" max="22" data-product-id="5">
-                                <button class="quantity-btn plus" data-product-id="5">+</button>
-                            </div>
-                            <button class="add-to-cart" data-product-id="5">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                                </svg>
-                                Agregar
-                            </button>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="assets/img/products/oliveoil.svg" alt="Aceite de Oliva Extra" loading="lazy">
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Aceite de Oliva Extra</h3>
-                            <div class="product-price">
-                                <span class="current-price">12,99 US$</span>
-                            </div>
-                            <div class="product-stock">40 en stock</div>
-                            <div class="quantity-selector">
-                                <button class="quantity-btn minus" data-product-id="6">-</button>
-                                <input type="number" class="quantity-input" value="0" min="0" max="40" data-product-id="6">
-                                <button class="quantity-btn plus" data-product-id="6">+</button>
-                            </div>
-                            <button class="add-to-cart" data-product-id="6">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                                </svg>
-                                Agregar
-                            </button>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="assets/img/products/blender.svg" alt="Licuadora Profesional" loading="lazy">
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Licuadora Profesional</h3>
-                            <div class="product-price">
-                                <span class="current-price">54,99 US$</span>
-                            </div>
-                            <div class="product-stock">18 en stock</div>
-                            <div class="quantity-selector">
-                                <button class="quantity-btn minus" data-product-id="7">-</button>
-                                <input type="number" class="quantity-input" value="0" min="0" max="18" data-product-id="7">
-                                <button class="quantity-btn plus" data-product-id="7">+</button>
-                            </div>
-                            <button class="add-to-cart" data-product-id="7">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                                </svg>
-                                Agregar
-                            </button>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="assets/img/products/yoga-mat.svg" alt="Mat de Yoga" loading="lazy">
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Mat de Yoga</h3>
-                            <div class="product-price">
-                                <span class="current-price">24,99 US$</span>
-                            </div>
-                            <div class="product-stock">25 en stock</div>
-                            <div class="quantity-selector">
-                                <button class="quantity-btn minus" data-product-id="8">-</button>
-                                <input type="number" class="quantity-input" value="0" min="0" max="25" data-product-id="8">
-                                <button class="quantity-btn plus" data-product-id="8">+</button>
-                            </div>
-                            <button class="add-to-cart" data-product-id="8">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                                </svg>
-                                Agregar
-                            </button>
-                        </div>
-                    </div>
+                    <!-- Productos cargados dinámicamente -->
                 </div>
             </section>
-            
+
+            <!-- Servicios y envíos -->
             <section class="services-section">
                 <h2>Servicios y envíos</h2>
                 <div class="services-grid" id="servicesGrid">
-                    <div class="service-card">
-                        <div class="service-icon">📱</div>
-                        <h3 class="service-title">Recarga Nauta</h3>
-                        <p class="service-description">Recarga tu cuenta Nauta desde cualquier lugar</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon">💻</div>
-                        <h3 class="service-title">Recarga ETECSA</h3>
-                        <p class="service-description">Recarga móviles y servicios de ETECSA</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon">📦</div>
-                        <h3 class="service-title">Envíos a Cuba</h3>
-                        <p class="service-description">Envía paquetes a cualquier parte de Cuba</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon">🚢</div>
-                        <h3 class="service-title">Envíos Marítimos</h3>
-                        <p class="service-description">Envíos económicos por vía marítima</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon">✈️</div>
-                        <h3 class="service-title">Envíos Aéreos</h3>
-                        <p class="service-description">Envíos rápidos por vía aérea</p>
-                    </div>
+                    <!-- Servicios cargados dinámicamente -->
                 </div>
             </section>
         </div>
@@ -1681,21 +1398,12 @@
     </div>
 
     <script>
-        // Datos de productos
-        const products = {
-            1: { id: 1, name: "Cinta para Correr", price: 179.99, image: "assets/img/products/treadmill.svg" },
-            2: { id: 2, name: "Café Molido Premium", price: 7.99, image: "assets/img/products/coffee.svg" },
-            3: { id: 3, name: "Horno Tostador", price: 34.99, image: "assets/img/products/toaster.svg" },
-            4: { id: 4, name: "Auriculares Bluetooth", price: 45.99, image: "assets/img/products/headphones.svg" },
-            5: { id: 5, name: "Smartwatch Deportivo", price: 89.99, image: "assets/img/products/smartwatch.svg" },
-            6: { id: 6, name: "Aceite de Oliva Extra", price: 12.99, image: "assets/img/products/oliveoil.svg" },
-            7: { id: 7, name: "Licuadora Profesional", price: 54.99, image: "assets/img/products/blender.svg" },
-            8: { id: 8, name: "Mat de Yoga", price: 24.99, image: "assets/img/products/yoga-mat.svg" }
-        };
-
-        // Funcionalidad del carrito
+        // Variables globales
         let cartItems = [];
-        let cartCount = 0;
+        let allProducts = [];
+        let services = [];
+
+        // Elementos del DOM
         const cartCountElement = document.getElementById('cartCount');
         const floatingCartCountElement = document.getElementById('floatingCartCount');
         const cartLink = document.getElementById('cartLink');
@@ -1706,24 +1414,29 @@
         const cartItemsContainer = document.getElementById('cartItems');
         const cartTotalElement = document.getElementById('cartTotal');
         const checkoutBtn = document.getElementById('checkoutBtn');
-        
+        const successMessage = document.getElementById('successMessage');
+        const dealsGrid = document.getElementById('dealsGrid');
+        const bestsellersGrid = document.getElementById('bestsellersGrid');
+        const servicesGrid = document.getElementById('servicesGrid');
+
+        // === FUNCIONES DEL CARRITO ===
         // Obtener carrito desde localStorage
         function getCart() {
             const savedCart = localStorage.getItem('islamarketCart');
             return savedCart ? JSON.parse(savedCart) : [];
         }
-        
+
         // Guardar carrito en localStorage
         function saveCart() {
             localStorage.setItem('islamarketCart', JSON.stringify(cartItems));
         }
-        
+
         // Actualizar contador del carrito
         function updateCartCount() {
-            cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+            const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
             cartCountElement.textContent = cartCount;
             floatingCartCountElement.textContent = cartCount;
-            
+
             if (cartCount > 0) {
                 cartCountElement.classList.add('show');
                 floatingCartCountElement.classList.add('show');
@@ -1732,24 +1445,24 @@
                 floatingCartCountElement.classList.remove('show');
             }
         }
-        
+
         // Calcular total del carrito
         function calculateTotal() {
             return cartItems.reduce((total, item) => {
                 return total + (item.price * item.quantity);
             }, 0).toFixed(2);
         }
-        
+
         // Actualizar interfaz del carrito
         function updateCartUI() {
             cartItemsContainer.innerHTML = '';
-            
+
             if (cartItems.length === 0) {
                 cartItemsContainer.innerHTML = '<p class="empty-cart">Tu carrito está vacío</p>';
                 cartTotalElement.textContent = '0.00';
                 return;
             }
-            
+
             cartItems.forEach(item => {
                 const cartItemElement = document.createElement('div');
                 cartItemElement.className = 'cart-item';
@@ -1768,9 +1481,9 @@
                 `;
                 cartItemsContainer.appendChild(cartItemElement);
             });
-            
+
             cartTotalElement.textContent = calculateTotal();
-            
+
             // Agregar eventos a los botones de cantidad y eliminar
             document.querySelectorAll('.quantity-minus').forEach(button => {
                 button.addEventListener('click', (e) => {
@@ -1778,14 +1491,14 @@
                     updateItemQuantity(id, -1);
                 });
             });
-            
+
             document.querySelectorAll('.quantity-plus').forEach(button => {
                 button.addEventListener('click', (e) => {
                     const id = parseInt(e.target.getAttribute('data-id'));
                     updateItemQuantity(id, 1);
                 });
             });
-            
+
             document.querySelectorAll('.quantity-input').forEach(input => {
                 input.addEventListener('change', (e) => {
                     const id = parseInt(e.target.getAttribute('data-id'));
@@ -1797,7 +1510,7 @@
                     }
                 });
             });
-            
+
             document.querySelectorAll('.remove-item').forEach(button => {
                 button.addEventListener('click', (e) => {
                     const id = parseInt(e.target.getAttribute('data-id'));
@@ -1805,37 +1518,44 @@
                 });
             });
         }
-        
+
         // Agregar producto al carrito
-        function addToCart(productId, quantity) {
-            const product = products[productId];
+        function addToCart(productId, quantity = 1) {
+            const product = allProducts.find(p => p.id === productId);
             if (!product) return;
-            
+
             const existingItem = cartItems.find(item => item.id === productId);
-            
             if (existingItem) {
                 existingItem.quantity += quantity;
             } else {
                 cartItems.push({
                     id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    image: product.image,
+                    name: product.nombre,
+                    price: product.precio,
+                    image: product.imagen,
                     quantity: quantity
                 });
             }
-            
+
             saveCart();
             updateCartCount();
             updateCartUI();
         }
-        
+
+        // Mostrar mensaje de éxito
+        function showSuccessMessage() {
+            successMessage.classList.add('show');
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 1000);
+        }
+
         // Actualizar cantidad de un producto
         function updateItemQuantity(productId, change) {
             const item = cartItems.find(item => item.id === productId);
             if (item) {
                 item.quantity += change;
-                
+
                 if (item.quantity <= 0) {
                     removeFromCart(productId);
                 } else {
@@ -1845,7 +1565,7 @@
                 }
             }
         }
-        
+
         // Establecer cantidad específica
         function setItemQuantity(productId, quantity) {
             const item = cartItems.find(item => item.id === productId);
@@ -1856,7 +1576,7 @@
                 updateCartUI();
             }
         }
-        
+
         // Eliminar producto del carrito
         function removeFromCart(productId) {
             cartItems = cartItems.filter(item => item.id !== productId);
@@ -1864,98 +1584,190 @@
             updateCartCount();
             updateCartUI();
         }
-        
+
         // Abrir carrito
         function openCart() {
             cartSidebar.classList.add('open');
             overlay.classList.add('open');
             document.body.style.overflow = 'hidden';
         }
-        
+
         // Cerrar carrito
         function closeCart() {
             cartSidebar.classList.remove('open');
             overlay.classList.remove('open');
             document.body.style.overflow = 'auto';
         }
-        
+
         // Inicializar carrito
         function initCart() {
             cartItems = getCart();
             updateCartCount();
             updateCartUI();
         }
-        
-        // Agregar productos al carrito
-        const addToCartButtons = document.querySelectorAll('.add-to-cart');
-        addToCartButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const productId = parseInt(button.getAttribute('data-product-id'));
-                const quantityInput = document.querySelector(`.quantity-input[data-product-id="${productId}"]`);
-                const quantity = parseInt(quantityInput.value);
-                
-                if (quantity > 0) {
-                    addToCart(productId, quantity);
-                    
-                    // Efecto visual de agregado al carrito
-                    button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"></path></svg>Agregado';
-                    button.style.backgroundColor = '#28a745';
-                    
-                    setTimeout(() => {
-                        button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>Agregar';
-                        button.style.backgroundColor = '';
-                        quantityInput.value = '0';
-                    }, 1500);
-                }
-            });
-        });
-        
-        // Selectores de cantidad
-        const quantityButtons = document.querySelectorAll('.quantity-btn');
-        quantityButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const productId = parseInt(button.getAttribute('data-product-id'));
-                const input = document.querySelector(`.quantity-input[data-product-id="${productId}"]`);
-                let value = parseInt(input.value);
-                const max = parseInt(input.getAttribute('max'));
-                
-                if (button.classList.contains('plus')) {
-                    if (value < max) {
-                        input.value = value + 1;
+
+        // === FUNCIONES DE PRODUCTOS ===
+        // Cargar productos desde JSON
+        async function loadProducts() {
+            try {
+                const response = await fetch('datos/productos.json');
+                const data = await response.json();
+                allProducts = data.productos;
+                displayDealsAndBestsellers();
+            } catch (error) {
+                console.error('Error cargando productos:', error);
+            }
+        }
+
+        // Mostrar ofertas y más vendidos
+        function displayDealsAndBestsellers() {
+            // Seleccionar productos aleatorios para ofertas (sin repetir)
+            const shuffledProducts = [...allProducts].sort(() => 0.5 - Math.random());
+            const dealsProducts = shuffledProducts.slice(0, 5);
+
+            // Seleccionar productos aleatorios para más vendidos (sin repetir y sin incluir los de ofertas)
+            const remainingProducts = shuffledProducts.slice(5);
+            const bestsellersProducts = remainingProducts.slice(0, 5);
+
+            // Generar HTML para ofertas
+            dealsGrid.innerHTML = dealsProducts.map(product => `
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="${product.imagen}" alt="${product.nombre}" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">${product.nombre}</h3>
+                        <div class="product-price">${product.precio} US$</div>
+                        <div class="quantity-selector">
+                            <button class="quantity-btn minus" data-product-id="${product.id}">-</button>
+                            <input type="number" value="0" min="0" max="99" class="quantity-input" data-product-id="${product.id}">
+                            <button class="quantity-btn plus" data-product-id="${product.id}">+</button>
+                        </div>
+                        <button class="add-to-cart-btn" data-product-id="${product.id}">
+                            <svg class="cart-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                            Agregar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Generar HTML para más vendidos
+            bestsellersGrid.innerHTML = bestsellersProducts.map(product => `
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="${product.imagen}" alt="${product.nombre}" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">${product.nombre}</h3>
+                        <div class="product-price">${product.precio} US$</div>
+                        <div class="quantity-selector">
+                            <button class="quantity-btn minus" data-product-id="${product.id}">-</button>
+                            <input type="number" value="0" min="0" max="99" class="quantity-input" data-product-id="${product.id}">
+                            <button class="quantity-btn plus" data-product-id="${product.id}">+</button>
+                        </div>
+                        <button class="add-to-cart-btn" data-product-id="${product.id}">
+                            <svg class="cart-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                            Agregar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Agregar eventos a los botones de cantidad y agregar al carrito
+            document.querySelectorAll('.quantity-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = parseInt(button.getAttribute('data-product-id'));
+                    const input = document.querySelector(`.quantity-input[data-product-id="${productId}"]`);
+                    let value = parseInt(input.value);
+                    const max = parseInt(input.getAttribute('max'));
+
+                    if (button.classList.contains('plus')) {
+                        if (value < max) {
+                            input.value = value + 1;
+                        }
+                    } else if (button.classList.contains('minus')) {
+                        if (value > 0) {
+                            input.value = value - 1;
+                        }
                     }
-                } else if (button.classList.contains('minus')) {
-                    if (value > 0) {
-                        input.value = value - 1;
-                    }
-                }
+                });
             });
-        });
-        
+
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.closest('.add-to-cart-btn').getAttribute('data-product-id'));
+                    const quantityInput = e.target.closest('.product-card').querySelector('.quantity-input');
+                    const quantity = parseInt(quantityInput.value);
+
+                    if (quantity > 0) {
+                        addToCart(productId, quantity);
+                        showSuccessMessage();
+                        // Restablecer el valor del input
+                        quantityInput.value = 0;
+                    } else {
+                        alert('Por favor, ingrese una cantidad válida');
+                    }
+                });
+            });
+        }
+
+        // === FUNCIONES DE SERVICIOS ===
+        // Cargar servicios desde JSON
+        async function loadServices() {
+            try {
+                const response = await fetch('datos/productos.json');
+                const data = await response.json();
+                services = data.productos.filter(p => p.categoria === 'servicios');
+                displayServices();
+            } catch (error) {
+                console.error('Error cargando servicios:', error);
+            }
+        }
+
+        // Mostrar servicios
+        function displayServices() {
+            servicesGrid.innerHTML = services.map(service => `
+                <div class="service-card">
+                    <svg class="service-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    <h3 class="service-title">${service.nombre}</h3>
+                    <p class="service-description">${service.descripcion || 'Servicio de calidad'}</p>
+                </div>
+            `).join('');
+        }
+
+        // === FUNCIONES EXISTENTES ===
         // Cambio de tema
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
-            // Guardar preferencia de tema
             if (document.body.classList.contains('dark-mode')) {
                 localStorage.setItem('theme', 'dark');
             } else {
                 localStorage.setItem('theme', 'light');
             }
         });
-        
+
         // Cargar tema guardado
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
         }
-        
+
         // Cambio de idioma
         const languageToggle = document.getElementById('languageToggle');
         let currentLanguage = 'es';
-        
+
         languageToggle.addEventListener('click', () => {
-            // Aquí iría la lógica de cambio de idioma
-            // Por ahora solo cambiamos visualmente
             if (currentLanguage === 'es') {
                 currentLanguage = 'en';
                 console.log('Idioma cambiado a inglés');
@@ -1964,64 +1776,61 @@
                 console.log('Idioma cambiado a español');
             }
         });
-        
-        // Slider del hero
+
+        // Hero Slider
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const indicators = document.querySelectorAll('.indicator');
-        
+
         function showSlide(index) {
             slides.forEach(slide => slide.classList.remove('active'));
             indicators.forEach(indicator => indicator.classList.remove('active'));
             
             slides[index].classList.add('active');
             indicators[index].classList.add('active');
-            currentSlide = index;
         }
-        
-        document.querySelector('.slide-btn.next').addEventListener('click', () => {
-            let nextSlide = (currentSlide + 1) % slides.length;
-            showSlide(nextSlide);
-        });
-        
-        document.querySelector('.slide-btn.prev').addEventListener('click', () => {
-            let prevSlide = (currentSlide - 1 + slides.length) % slides.length;
-            showSlide(prevSlide);
-        });
-        
-        // Auto avanzar slides (3000ms)
-        setInterval(() => {
-            let nextSlide = (currentSlide + 1) % slides.length;
-            showSlide(nextSlide);
-        }, 3000);
-        
-        // Click en indicadores
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        document.querySelector('.next-btn').addEventListener('click', nextSlide);
+        document.querySelector('.prev-btn').addEventListener('click', prevSlide);
+
         indicators.forEach((indicator, index) => {
             indicator.addEventListener('click', () => {
-                showSlide(index);
+                currentSlide = index;
+                showSlide(currentSlide);
             });
         });
-        
+
+        // Auto slide
+        setInterval(nextSlide, 5000);
+
         // Ocultar/mostrar header al hacer scroll
         let lastScrollTop = 0;
         const header = document.querySelector('.header');
-        
+
         window.addEventListener('scroll', () => {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
+
             if (scrollTop > lastScrollTop && scrollTop > 200) {
-                // Scroll hacia abajo - ocultar header
                 header.classList.add('hidden');
                 floatingCart.classList.add('visible');
             } else {
-                // Scroll hacia arriba - mostrar header
                 header.classList.remove('hidden');
                 floatingCart.classList.remove('visible');
             }
-            
+
             lastScrollTop = scrollTop;
         });
-        
+
         // Eventos del carrito lateral
         cartLink.addEventListener('click', function(e) {
             e.preventDefault();
@@ -2042,18 +1851,22 @@
                 alert('El carrito está vacío');
                 return;
             }
-            
+
             let message = "Hola, me interesa comprar los siguientes productos:%0A";
             cartItems.forEach(item => {
                 message += `- ${item.name} (Cantidad: ${item.quantity}, Precio: ${item.price} US$)%0A`;
             });
             message += `%0ATotal: ${calculateTotal()} US$`;
-            
+
             window.open(`https://wa.me/5363200804?text=${message}`, '_blank');
         });
-        
-        // Inicializar carrito al cargar la página
-        initCart();
+
+        // === INICIALIZACIÓN ===
+        document.addEventListener('DOMContentLoaded', function() {
+            initCart();
+            loadProducts();
+            loadServices();
+        });
     </script>
 </body>
 </html>
