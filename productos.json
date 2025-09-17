@@ -1,0 +1,84 @@
+{
+  "productos": [
+    {
+      "id": 1,
+      "nombre": "Cinta para Correr",
+      "precio": 179.99,
+      "imagen": "assets/img/products/treadmill.svg",
+      "categoria": "accesorios-deportivos",
+      "descripcion": "Cinta de correr profesional para entrenamiento en casa"
+    },
+    {
+      "id": 2,
+      "nombre": "Café Molido Premium",
+      "precio": 7.99,
+      "imagen": "assets/img/products/coffee.svg",
+      "categoria": "alimentos",
+      "descripcion": "Café 100% arábigo molido a mano"
+    },
+    {
+      "id": 3,
+      "nombre": "Horno Tostador",
+      "precio": 34.99,
+      "imagen": "assets/img/products/toaster.svg",
+      "categoria": "electrodomesticos",
+      "descripcion": "Horno tostador eléctrico de 4 rebanadas"
+    },
+    {
+      "id": 4,
+      "nombre": "Auriculares Bluetooth",
+      "precio": 45.99,
+      "imagen": "assets/img/products/headphones.svg",
+      "categoria": "tecnologia",
+      "descripcion": "Auriculares inalámbricos con cancelación de ruido"
+    },
+    {
+      "id": 5,
+      "nombre": "Smartwatch Deportivo",
+      "precio": 89.99,
+      "imagen": "assets/img/products/smartwatch.svg",
+      "categoria": "tecnologia",
+      "descripcion": "Reloj inteligente con monitor de frecuencia cardíaca"
+    },
+    {
+      "id": 6,
+      "nombre": "Aceite de Oliva Extra",
+      "precio": 12.99,
+      "imagen": "assets/img/products/oliveoil.svg",
+      "categoria": "alimentos",
+      "descripcion": "Aceite de oliva virgen extra 500ml"
+    },
+    {
+      "id": 7,
+      "nombre": "Licuadora Profesional",
+      "precio": 54.99,
+      "imagen": "assets/img/products/blender.svg",
+      "categoria": "electrodomesticos",
+      "descripcion": "Licuadora de alta potencia con 6 velocidades"
+    },
+    {
+      "id": 8,
+      "nombre": "Mat de Yoga",
+      "precio": 24.99,
+      "imagen": "assets/img/products/yoga-mat.svg",
+      "categoria": "accesorios-deportivos",
+      "descripcion": "Colchoneta antideslizante para yoga"
+    },
+    {
+      "id": 9,
+      "nombre": "Camiseta Deportiva",
+      "precio": 15.99,
+      "imagen": "assets/img/products/tshirt.svg",
+      "categoria": "ropa",
+      "descripcion": "Camiseta deportiva transpirable"
+    },
+    {
+      "id": 10,
+      "nombre": "Martillo Profesional",
+      "precio": 12.50,
+      "imagen": "assets/img/products/hammer.svg",
+      "categoria": "herramientas",
+      "descripcion": "Martillo de acero forjado"
+    }
+  ]
+}
