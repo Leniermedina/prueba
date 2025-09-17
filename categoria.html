@@ -1272,7 +1272,7 @@
                         </div>
                         <div class="product-info">
                             <h3 class="product-name">${product.nombre}</h3>
-                            <div class="product-price" data-i18n="category.price">Precio: ${product.precio} US$</div>
+                            <div class="product-price"><span data-i18n="category.price.label">Precio:</span> ${product.precio} <span data-i18n="category.currency">US$</span></div>
                             <div class="quantity-selector">
                                 <button class="quantity-btn minus" data-product-id="${product.id}">-</button>
                                 <input type="number" value="0" min="0" max="99" class="quantity-input" data-product-id="${product.id}">
