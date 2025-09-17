@@ -312,33 +312,11 @@
             stroke: currentColor;
         }
 
-        /* Controles de filtrado */
-        .filter-controls {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .sort-label {
-            font-weight: 500;
-        }
-
-        .sort-select {
-            padding: 0.5rem;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            background-color: var(--background-color);
-            color: var(--text-color);
-        }
-
         /* Grid de productos */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-            gap: 2rem;
+            gap: 1.75rem;
         }
 
         .product-card {
@@ -349,6 +327,7 @@
             transition: var(--transition);
             display: flex;
             flex-direction: column;
+            height: 100%;
         }
 
         .dark-mode .product-card {
@@ -364,6 +343,9 @@
         .product-image {
             height: 200px;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .product-image img {
@@ -781,23 +763,19 @@
                 padding: 0.75rem;
                 font-size: 1rem;
             }
-            
+
             .cart-sidebar {
                 width: 100%;
                 right: -100%;
             }
-            
+
             .products-grid {
                 grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
                 gap: 1rem;
             }
-            
+
             .product-image {
                 height: 150px;
-            }
-            
-            .filter-controls {
-                justify-content: center;
             }
         }
 
@@ -805,28 +783,28 @@
             .header {
                 padding: 0.5rem 1rem;
             }
-            
+
             .logo img {
                 height: 30px;
             }
-            
+
             .header-actions {
                 gap: 0.5rem;
             }
-            
+
             .nav {
                 gap: 0.5rem;
             }
-            
+
             .nav a {
                 font-size: 0.8rem;
                 padding: 0.4rem 0.8rem;
             }
-            
+
             .footer-content {
                 grid-template-columns: 1fr;
             }
-            
+
             .products-grid {
                 grid-template-columns: 1fr;
             }
@@ -919,27 +897,16 @@
     <main class="main">
         <div class="category-header">
             <a href="categorias.html" class="back-to-categories">
-                <svg class="back-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
+                <svg class="back-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 19l-7-7 7-7"></path>
                 </svg>
                 <span data-i18n="category.backToCategories">Volver a Categorías</span>
             </a>
-            <h1 class="category-title" id="categoryTitle">Productos</h1> <!-- Este título se actualizará dinámicamente -->
-        </div>
-
-        <div class="filter-controls">
-            <label for="sortSelect" class="sort-label" data-i18n="category.sortBy">Ordenar por:</label>
-            <select id="sortSelect" class="sort-select">
-                <option value="default" data-i18n="category.sort.default">Por defecto</option>
-                <option value="priceLow" data-i18n="category.sort.priceLow">Precio: Menor a Mayor</option>
-                <option value="priceHigh" data-i18n="category.sort.priceHigh">Precio: Mayor a Menor</option>
-                <option value="name" data-i18n="category.sort.name">Nombre (A-Z)</option>
-            </select>
+            <h1 class="category-title" id="categoryTitle">Cargando productos...</h1>
         </div>
 
         <div class="products-grid" id="productsGrid">
-            <!-- Los productos se cargarán aquí dinámicamente -->
+            <!-- Productos se cargarán aquí dinámicamente -->
         </div>
     </main>
 
@@ -989,7 +956,6 @@
 
         // Elementos del DOM
         const categoryTitle = document.getElementById('categoryTitle');
-        const sortSelect = document.getElementById('sortSelect');
         const productsGrid = document.getElementById('productsGrid');
         const cartCountElement = document.getElementById('cartCount');
         const floatingCartCountElement = document.getElementById('floatingCartCount');
@@ -1240,7 +1206,7 @@
             }
         }
 
-        // Mostrar productos (filtrados y ordenados)
+        // Mostrar productos (filtrados)
         function displayProducts() {
             const currentCategory = getCategoryFromURL();
             updateCategoryTitle(currentCategory);
@@ -1249,16 +1215,6 @@
             let filteredProducts = allProducts;
             if (currentCategory !== 'todos') {
                 filteredProducts = allProducts.filter(product => product.categoria === currentCategory);
-            }
-
-            // Ordenar productos
-            const sortValue = sortSelect.value;
-            if (sortValue === 'priceLow') {
-                filteredProducts.sort((a, b) => a.precio - b.precio);
-            } else if (sortValue === 'priceHigh') {
-                filteredProducts.sort((a, b) => b.precio - a.precio);
-            } else if (sortValue === 'name') {
-                filteredProducts.sort((a, b) => a.nombre.localeCompare(b.nombre));
             }
 
             // Generar HTML de productos
@@ -1272,7 +1228,9 @@
                         </div>
                         <div class="product-info">
                             <h3 class="product-name">${product.nombre}</h3>
+                            <!-- LÍNEA MODIFICADA PARA TRADUCIR PRECIO Y MONEDA -->
                             <div class="product-price"><span data-i18n="category.price.label">Precio:</span> ${product.precio} <span data-i18n="category.currency">US$</span></div>
+                            <!-- --------------------------------------------------- -->
                             <div class="quantity-selector">
                                 <button class="quantity-btn minus" data-product-id="${product.id}">-</button>
                                 <input type="number" value="0" min="0" max="99" class="quantity-input" data-product-id="${product.id}">
@@ -1415,9 +1373,6 @@
 
             window.open(`https://wa.me/5363200804?text=${message}`, '_blank');
         });
-
-        // Evento de cambio en el select de ordenamiento
-        sortSelect.addEventListener('change', displayProducts);
 
         // === Menú Hamburguesa ===
         menuToggle.addEventListener('click', () => {
