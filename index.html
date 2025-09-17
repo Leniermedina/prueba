@@ -87,6 +87,42 @@
             gap: 0.75rem;
         }
 
+        /* Menú Hamburguesa */
+        .menu-toggle {
+            display: none; /* Oculto por defecto en escritorio */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--text-color);
+            border-radius: 10px;
+            transition: all 0.3s linear;
+            position: relative;
+            transform-origin: center;
+        }
+
+        .menu-toggle.open span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .menu-toggle.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
         .language-toggle {
             position: relative;
             display: flex;
@@ -990,15 +1026,41 @@
             }
         }
 
+        /* Estilos para el menú hamburguesa en móviles */
         @media (max-width: 768px) {
-            .header-top {
-                flex-wrap: wrap;
+            .menu-toggle {
+                display: flex; /* Mostrar el botón en móviles */
             }
 
             .nav {
-                overflow-x: auto;
-                padding-bottom: 0.5rem;
-                justify-content: flex-start;
+                position: fixed;
+                top: 70px; /* Debajo del header */
+                left: 0;
+                right: 0;
+                background-color: var(--background-color);
+                flex-direction: column;
+                align-items: center;
+                padding: 1rem 0;
+                box-shadow: var(--shadow);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 1000;
+            }
+
+            .nav.open {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav a {
+                width: 80%;
+                text-align: center;
+                margin-bottom: 0.5rem;
+                padding: 0.75rem;
+                font-size: 1rem;
             }
 
             .hero {
@@ -1114,17 +1176,17 @@
 
     <aside class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
-            <h2>Carrito de Compras</h2>
-            <button class="close-cart" id="closeCart">&times;</button>
+            <h2 data-i18n="cart.title">Carrito de Compras</h2>
+            <button class="close-cart" id="closeCart" data-i18n="cart.close">&times;</button>
         </div>
         <div class="cart-items" id="cartItems">
             <!-- Los items del carrito se insertarán aquí dinámicamente -->
         </div>
         <div class="cart-footer">
             <div class="cart-total">
-                <strong>Total: <span id="cartTotal">0.00</span> US$</strong>
+                <strong data-i18n="cart.total">Total: <span id="cartTotal">0.00</span> US$</strong>
             </div>
-            <button class="checkout-btn" id="checkoutBtn">Finalizar Compra</button>
+            <button class="checkout-btn" id="checkoutBtn" data-i18n="cart.checkout">Finalizar Compra</button>
         </div>
     </aside>
 
@@ -1135,6 +1197,13 @@
             </a>
             
             <div class="header-actions">
+                <!-- Botón de menú hamburguesa -->
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
                 <div class="language-toggle">
                     <button class="language-btn" id="languageToggle" aria-label="Cambiar idioma">
                         <!-- Icono minimalista de traducción -->
@@ -1175,7 +1244,7 @@
             </div>
         </div>
         
-        <nav class="nav">
+        <nav class="nav" id="mainNav">
             <a href="index.html" data-i18n="nav.home">Inicio</a>
             <a href="categorias.html" data-i18n="nav.shop">Tienda</a>
             <a href="acerca-de.html" data-i18n="nav.about">Acerca de</a>
@@ -1196,7 +1265,7 @@
                                 <line x1="9" y1="21" x2="9" y2="9"></line>
                             </svg>
                         </span>
-                        <span class="category-name">Todos los productos</span>
+                        <span class="category-name" data-i18n="home.cat.allProducts">Todos los productos</span>
                     </a></li>
                     <li><a href="categoria.html?cat=accesorios-deportivos">
                         <span class="category-icon">
@@ -1207,7 +1276,7 @@
                                 <line x1="6" y1="12" x2="18" y2="12"></line>
                             </svg>
                         </span>
-                        <span class="category-name">Accesorios Deportivos</span>
+                        <span class="category-name" data-i18n="home.cat.accessories">Accesorios Deportivos</span>
                     </a></li>
                     <li><a href="categoria.html?cat=alimentos">
                         <span class="category-icon">
@@ -1218,7 +1287,7 @@
                                 <path d="M7 17c0 2 1.5 3 3 3h4c1.5 0 3-1 3-3"></path>
                             </svg>
                         </span>
-                        <span class="category-name">Alimentos</span>
+                        <span class="category-name" data-i18n="home.cat.food">Alimentos</span>
                     </a></li>
                     <li><a href="categoria.html?cat=electrodomesticos">
                         <span class="category-icon">
@@ -1228,7 +1297,7 @@
                                 <path d="M2 6h20"></path>
                             </svg>
                         </span>
-                        <span class="category-name">Electrodomésticos</span>
+                        <span class="category-name" data-i18n="home.cat.appliances">Electrodomésticos</span>
                     </a></li>
                     <li><a href="categoria.html?cat=ropa">
                         <span class="category-icon">
@@ -1240,7 +1309,7 @@
                                 <path d="M8 8h8"></path>
                             </svg>
                         </span>
-                        <span class="category-name">Ropa</span>
+                        <span class="category-name" data-i18n="home.cat.clothing">Ropa</span>
                     </a></li>
                     <li><a href="categoria.html?cat=tecnologia">
                         <span class="category-icon">
@@ -1250,7 +1319,7 @@
                                 <line x1="12" y1="17" x2="12" y2="21"></line>
                             </svg>
                         </span>
-                        <span class="category-name">Tecnología</span>
+                        <span class="category-name" data-i18n="home.cat.technology">Tecnología</span>
                     </a></li>
                     <li><a href="categoria.html?cat=herramientas">
                         <span class="category-icon">
@@ -1258,7 +1327,7 @@
                                 <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
                             </svg>
                         </span>
-                        <span class="category-name">Herramientas</span>
+                        <span class="category-name" data-i18n="home.cat.tools">Herramientas</span>
                     </a></li>
                     <li><a href="categoria.html?cat=joyeria">
                         <span class="category-icon">
@@ -1267,7 +1336,7 @@
                                 <path d="M12 2l3 7h7l-6 5 2 7-7-4-7 4 2-7-6-5h7l3-7z"></path>
                             </svg>
                         </span>
-                        <span class="category-name">Joyería</span>
+                        <span class="category-name" data-i18n="home.cat.jewelry">Joyería</span>
                     </a></li>
                     <li><a href="categoria.html?cat=piezas-para-autos">
                         <span class="category-icon">
@@ -1282,7 +1351,7 @@
                                 <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
                             </svg>
                         </span>
-                        <span class="category-name">Piezas para Autos</span>
+                        <span class="category-name" data-i18n="home.cat.carParts">Piezas para Autos</span>
                     </a></li>
                     <li><a href="categoria.html?cat=productos-del-hogar">
                         <span class="category-icon">
@@ -1291,7 +1360,7 @@
                                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
                             </svg>
                         </span>
-                        <span class="category-name">Productos del Hogar</span>
+                        <span class="category-name" data-i18n="home.cat.home">Productos del Hogar</span>
                     </a></li>
                     <li><a href="categoria.html?cat=suplementos-vitaminicos">
                         <span class="category-icon">
@@ -1301,7 +1370,7 @@
                                 <path d="M12 6v6l4 2"></path>
                             </svg>
                         </span>
-                        <span class="category-name">Suplementos Vitamínicos</span>
+                        <span class="category-name" data-i18n="home.cat.supplements">Suplementos Vitamínicos</span>
                     </a></li>
                     <li><a href="categoria.html?cat=servicios">
                         <span class="category-icon">
@@ -1311,7 +1380,7 @@
                                 <line x1="12" y1="16" x2="12.01" y2="16"></line>
                             </svg>
                         </span>
-                        <span class="category-name">Servicios</span>
+                        <span class="category-name" data-i18n="home.cat.services">Servicios</span>
                     </a></li>
                 </ul>
             </div>
@@ -1324,17 +1393,17 @@
                     <div class="slide active">
                         <img src="assets/img/hero1.svg" alt="Ofertas especiales" loading="lazy">
                         <div class="slide-content">
-                            <h2>Grandes Ofertas</h2>
-                            <p>Hasta 50% de descuento en productos seleccionados</p>
-                            <a href="categoria.html?cat=ofertas-semana" class="btn">Ver ofertas</a>
+                            <h2 data-i18n="home.hero.title1">Grandes Ofertas</h2>
+                            <p data-i18n="home.hero.desc1">Hasta 50% de descuento en productos seleccionados</p>
+                            <a href="categoria.html?cat=ofertas-semana" class="btn" data-i18n="home.hero.btn1">Ver ofertas</a>
                         </div>
                     </div>
                     <div class="slide">
                         <img src="assets/img/hero2.svg" alt="Nuevos productos" loading="lazy">
                         <div class="slide-content">
-                            <h2>Nuevos Productos</h2>
-                            <p>Descubre las últimas novedades en IslaMarket</p>
-                            <a href="categorias.html" class="btn">Explorar</a>
+                            <h2 data-i18n="home.hero.title2">Nuevos Productos</h2>
+                            <p data-i18n="home.hero.desc2">Descubre las últimas novedades en IslaMarket</p>
+                            <a href="categorias.html" class="btn" data-i18n="home.hero.btn2">Explorar</a>
                         </div>
                     </div>
                 </div>
@@ -1377,8 +1446,8 @@
                 <div class="promo-card">
                     <img src="assets/img/card3.svg" alt="Lo que necesitas" loading="lazy">
                     <div class="promo-content">
-                        <h3>Lo que necesitas</h3>
-                        <a href="categorias.html">
+                        <h3 data-i18n="home.need">Lo que necesitas</h3>
+                        <a href="categorias.html"> <!-- Corregido: Enlace a la página general de categorías -->
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="10" cy="20.5" r="1"></circle>
                                 <circle cx="18" cy="20.5" r="1"></circle>
@@ -1391,7 +1460,7 @@
 
             <!-- Ofertas de la semana -->
             <section class="products-section">
-                <h2 data-i18n="home.deals">Ofertas de la semana</h2>
+                <h2 data-i18n="home.deals.section">Ofertas de la semana</h2>
                 <div class="products-grid" id="dealsGrid">
                     <!-- Productos cargados dinámicamente -->
                 </div>
@@ -1399,7 +1468,7 @@
 
             <!-- Más vendidos -->
             <section class="products-section">
-                <h2 data-i18n="home.bestsellers">Más vendidos</h2>
+                <h2 data-i18n="home.bestsellers.section">Más vendidos</h2>
                 <div class="products-grid" id="bestsellersGrid">
                     <!-- Productos cargados dinámicamente -->
                 </div>
@@ -1407,7 +1476,7 @@
 
             <!-- Servicios y envíos -->
             <section class="services-section">
-                <h2>Servicios y envíos</h2>
+                <h2 data-i18n="home.services">Servicios y envíos</h2>
                 <div class="services-grid" id="servicesGrid">
                     <!-- Servicios cargados dinámicamente -->
                 </div>
@@ -1419,23 +1488,23 @@
         <div class="footer-content">
             <div class="footer-section">
                 <img src="assets/logo.svg" alt="IslaMarket" width="140" height="35">
-                <p>Tu tienda online confiable con los mejores productos y precios.</p>
+                <p data-i18n="footer.description">Tu tienda online confiable con los mejores productos y precios.</p>
             </div>
             <div class="footer-section">
-                <h3>Menú</h3>
+                <h3 data-i18n="footer.menu">Menú</h3>
                 <a href="index.html" data-i18n="nav.home">Inicio</a>
                 <a href="categorias.html" data-i18n="nav.shop">Tienda</a>
                 <a href="acerca-de.html" data-i18n="nav.about">Acerca de</a>
                 <a href="contacto.html" data-i18n="nav.contact">Contacto</a>
             </div>
             <div class="footer-section">
-                <h3>Contacto</h3>
-                <p>Email: info@islamarket.cu</p>
-                <p>WhatsApp: +53 63200804</p>
+                <h3 data-i18n="footer.contact">Contacto</h3>
+                <p data-i18n="footer.email">Email:</p> <p>info@islamarket.cu</p>
+                <p data-i18n="footer.whatsapp">WhatsApp:</p> <p>+53 63200804</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 IslaMarket. Todos los derechos reservados.</p>
+            <p data-i18n="footer.copyright">&copy; 2025 IslaMarket. Todos los derechos reservados.</p>
         </div>
     </footer>
 
@@ -1450,11 +1519,15 @@
         </a>
     </div>
 
+    <!-- Incluir el archivo de traducciones -->
+    <script src="assets/js/translations.js"></script>
+    
     <script>
         // Variables globales
         let cartItems = [];
         let allProducts = [];
         let services = [];
+        let currentLanguage = localStorage.getItem('language') || 'es'; // Cargar idioma guardado
 
         // Elementos del DOM
         const cartCountElement = document.getElementById('cartCount');
@@ -1471,6 +1544,10 @@
         const dealsGrid = document.getElementById('dealsGrid');
         const bestsellersGrid = document.getElementById('bestsellersGrid');
         const servicesGrid = document.getElementById('servicesGrid');
+        
+        // Elementos para el menú hamburguesa
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
 
         // === FUNCIONES DEL CARRITO ===
         // Obtener carrito desde localStorage
@@ -1511,7 +1588,7 @@
             cartItemsContainer.innerHTML = '';
 
             if (cartItems.length === 0) {
-                cartItemsContainer.innerHTML = '<p class="empty-cart">Tu carrito está vacío</p>';
+                cartItemsContainer.innerHTML = '<p class="empty-cart" data-i18n="cart.empty">Tu carrito está vacío</p>';
                 cartTotalElement.textContent = '0.00';
                 return;
             }
@@ -1529,7 +1606,7 @@
                             <input type="number" value="${item.quantity}" min="1" class="quantity-input" data-id="${item.id}">
                             <button class="quantity-plus" data-id="${item.id}">+</button>
                         </div>
-                        <button class="remove-item" data-id="${item.id}">Eliminar</button>
+                        <button class="remove-item" data-id="${item.id}" data-i18n="cart.removeItem">Eliminar</button>
                     </div>
                 `;
                 cartItemsContainer.appendChild(cartItemElement);
@@ -1570,6 +1647,9 @@
                     removeFromCart(id);
                 });
             });
+            
+            // Aplicar traducciones al contenido del carrito
+            applyTranslations(currentLanguage);
         }
 
         // Agregar producto al carrito
@@ -1597,6 +1677,8 @@
 
         // Mostrar mensaje de éxito
         function showSuccessMessage() {
+            // Aplicar traducción al mensaje
+            successMessage.textContent = getTranslation("message.productAdded", currentLanguage);
             successMessage.classList.add('show');
             setTimeout(() => {
                 successMessage.classList.remove('show');
@@ -1692,11 +1774,12 @@
                         <h3 class="product-name">${product.nombre}</h3>
                         <div class="product-price">${product.precio} US$</div>
                         <div class="quantity-selector">
+                            <span data-i18n="cart.quantity">Cantidad:</span>
                             <button class="quantity-btn minus" data-product-id="${product.id}">-</button>
                             <input type="number" value="0" min="0" max="99" class="quantity-input" data-product-id="${product.id}">
                             <button class="quantity-btn plus" data-product-id="${product.id}">+</button>
                         </div>
-                        <button class="add-to-cart-btn" data-product-id="${product.id}">
+                        <button class="add-to-cart-btn" data-product-id="${product.id}" data-i18n="category.addToCart">
                             <svg class="cart-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="9" cy="21" r="1"></circle>
                                 <circle cx="20" cy="21" r="1"></circle>
@@ -1718,11 +1801,12 @@
                         <h3 class="product-name">${product.nombre}</h3>
                         <div class="product-price">${product.precio} US$</div>
                         <div class="quantity-selector">
+                            <span data-i18n="cart.quantity">Cantidad:</span>
                             <button class="quantity-btn minus" data-product-id="${product.id}">-</button>
                             <input type="number" value="0" min="0" max="99" class="quantity-input" data-product-id="${product.id}">
                             <button class="quantity-btn plus" data-product-id="${product.id}">+</button>
                         </div>
-                        <button class="add-to-cart-btn" data-product-id="${product.id}">
+                        <button class="add-to-cart-btn" data-product-id="${product.id}" data-i18n="category.addToCart">
                             <svg class="cart-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="9" cy="21" r="1"></circle>
                                 <circle cx="20" cy="21" r="1"></circle>
@@ -1770,6 +1854,9 @@
                     }
                 });
             });
+            
+            // Aplicar traducciones a los productos
+            applyTranslations(currentLanguage);
         }
 
         // === FUNCIONES DE SERVICIOS ===
@@ -1796,6 +1883,9 @@
                     <p class="service-description">${service.descripcion || 'Servicio de calidad'}</p>
                 </div>
             `).join('');
+            
+            // Aplicar traducciones a los servicios
+            applyTranslations(currentLanguage);
         }
 
         // === FUNCIONES EXISTENTES ===
@@ -1818,16 +1908,23 @@
 
         // Cambio de idioma
         const languageToggle = document.getElementById('languageToggle');
-        let currentLanguage = 'es';
+
+        // Aplicar el idioma guardado al cargar la página
+        document.addEventListener('DOMContentLoaded', function () {
+            applyTranslations(currentLanguage);
+        });
 
         languageToggle.addEventListener('click', () => {
-            if (currentLanguage === 'es') {
-                currentLanguage = 'en';
-                console.log('Idioma cambiado a inglés');
-            } else {
-                currentLanguage = 'es';
-                console.log('Idioma cambiado a español');
-            }
+            // Cambiar idioma
+            currentLanguage = currentLanguage === 'es' ? 'en' : 'es';
+            
+            // Guardar preferencia de idioma
+            localStorage.setItem('language', currentLanguage);
+            
+            // Aplicar traducciones
+            applyTranslations(currentLanguage);
+            
+            console.log(`Idioma cambiado a ${currentLanguage}`);
         });
 
         // Hero Slider
@@ -1901,7 +1998,7 @@
         // Botón de finalizar compra
         checkoutBtn.addEventListener('click', function() {
             if (cartItems.length === 0) {
-                alert('El carrito está vacío');
+                alert(getTranslation("message.cartEmpty", currentLanguage) || 'El carrito está vacío');
                 return;
             }
 
@@ -1914,11 +2011,27 @@
             window.open(`https://wa.me/5363200804?text=${message}`, '_blank');
         });
 
+        // === Menú Hamburguesa ===
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('open');
+            mainNav.classList.toggle('open');
+        });
+
+        // Cerrar el menú si se hace clic fuera de él
+        document.addEventListener('click', (e) => {
+            if (!mainNav.contains(e.target) && !menuToggle.contains(e.target) && mainNav.classList.contains('open')) {
+                menuToggle.classList.remove('open');
+                mainNav.classList.remove('open');
+            }
+        });
+
         // === INICIALIZACIÓN ===
         document.addEventListener('DOMContentLoaded', function() {
             initCart();
             loadProducts();
             loadServices();
+            // Aplicar traducciones a todo el contenido de la página
+            applyTranslations(currentLanguage);
         });
     </script>
 </body>

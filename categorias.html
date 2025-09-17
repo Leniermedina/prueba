@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda • IslaMarket</title>
+    <title>Categorías • IslaMarket</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <style>
         :root {
@@ -82,6 +82,42 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
+        }
+
+        /* Menú Hamburguesa */
+        .menu-toggle {
+            display: none; /* Oculto por defecto en escritorio */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--text-color);
+            border-radius: 10px;
+            transition: all 0.3s linear;
+            position: relative;
+            transform-origin: center;
+        }
+
+        .menu-toggle.open span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .menu-toggle.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
         }
 
         .language-toggle {
@@ -579,15 +615,41 @@
             }
         }
 
+        /* Estilos para el menú hamburguesa en móviles */
         @media (max-width: 768px) {
-            .header-top {
-                flex-wrap: wrap;
+            .menu-toggle {
+                display: flex; /* Mostrar el botón en móviles */
             }
-            
+
             .nav {
-                overflow-x: auto;
-                padding-bottom: 0.5rem;
-                justify-content: flex-start;
+                position: fixed;
+                top: 70px; /* Debajo del header */
+                left: 0;
+                right: 0;
+                background-color: var(--background-color);
+                flex-direction: column;
+                align-items: center;
+                padding: 1rem 0;
+                box-shadow: var(--shadow);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 1000;
+            }
+
+            .nav.open {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav a {
+                width: 80%;
+                text-align: center;
+                margin-bottom: 0.5rem;
+                padding: 0.75rem;
+                font-size: 1rem;
             }
             
             .cart-sidebar {
@@ -633,16 +695,16 @@
     
     <aside class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
-            <h2>Carrito de Compras</h2>
-            <button class="close-cart" id="closeCart">&times;</button>
+            <h2 data-i18n="cart.title">Carrito de Compras</h2> <!-- Cambio 1: data-i18n -->
+            <button class="close-cart" id="closeCart" data-i18n="cart.close">&times;</button> <!-- Cambio 2: data-i18n -->
         </div>
         <div class="cart-items" id="cartItems">
         </div>
         <div class="cart-footer">
             <div class="cart-total">
-                <strong>Total: <span id="cartTotal">0.00</span> US$</strong>
+                <strong data-i18n="cart.total">Total: <span id="cartTotal">0.00</span> US$</strong> <!-- Cambio 3: data-i18n -->
             </div>
-            <button class="checkout-btn" id="checkoutBtn">Finalizar Compra</button>
+            <button class="checkout-btn" id="checkoutBtn" data-i18n="cart.checkout">Finalizar Compra</button> <!-- Cambio 4: data-i18n -->
         </div>
     </aside>
 
@@ -653,6 +715,13 @@
             </a>
             
             <div class="header-actions">
+                <!-- Botón de menú hamburguesa -->
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
                 <div class="language-toggle">
                     <button class="language-btn" id="languageToggle" aria-label="Cambiar idioma">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -692,17 +761,17 @@
             </div>
         </div>
         
-        <nav class="nav">
-            <a href="index.html" data-i18n="nav.home">Inicio</a>
-            <a href="categorias.html" data-i18n="nav.shop">Tienda</a>
-            <a href="acerca-de.html" data-i18n="nav.about">Acerca de</a>
-            <a href="contacto.html" data-i18n="nav.contact">Contacto</a>
+        <nav class="nav" id="mainNav">
+            <a href="index.html" data-i18n="nav.home">Inicio</a> <!-- Cambio 5: data-i18n -->
+            <a href="categorias.html" data-i18n="nav.shop">Tienda</a> <!-- Cambio 6: data-i18n -->
+            <a href="acerca-de.html" data-i18n="nav.about">Acerca de</a> <!-- Cambio 7: data-i18n -->
+            <a href="contacto.html" data-i18n="nav.contact">Contacto</a> <!-- Cambio 8: data-i18n -->
         </nav>
     </header>
 
     <main class="main">
         <div class="categories-view" id="categoriesView">
-            <h1 class="categories-title">Categorías</h1>
+            <h1 class="categories-title" data-i18n="categories.title">Categorías</h1> <!-- Cambio 9: data-i18n -->
             
             <div class="categories-grid" id="categoriesGrid">
                 <!-- Las categorías se cargarán aquí dinámicamente -->
@@ -714,23 +783,23 @@
         <div class="footer-content">
             <div class="footer-section">
                 <img src="assets/logo.svg" alt="IslaMarket" width="140" height="35">
-                <p>Tu tienda online confiable con los mejores productos y precios.</p>
+                <p data-i18n="footer.description">Tu tienda online confiable con los mejores productos y precios.</p> <!-- Cambio 10: data-i18n -->
             </div>
             <div class="footer-section">
-                <h3>Menú</h3>
-                <a href="index.html" data-i18n="nav.home">Inicio</a>
-                <a href="categorias.html" data-i18n="nav.shop">Tienda</a>
-                <a href="acerca-de.html" data-i18n="nav.about">Acerca de</a>
-                <a href="contacto.html" data-i18n="nav.contact">Contacto</a>
+                <h3 data-i18n="footer.menu">Menú</h3> <!-- Cambio 11: data-i18n -->
+                <a href="index.html" data-i18n="nav.home">Inicio</a> <!-- Cambio 12: data-i18n -->
+                <a href="categorias.html" data-i18n="nav.shop">Tienda</a> <!-- Cambio 13: data-i18n -->
+                <a href="acerca-de.html" data-i18n="nav.about">Acerca de</a> <!-- Cambio 14: data-i18n -->
+                <a href="contacto.html" data-i18n="nav.contact">Contacto</a> <!-- Cambio 15: data-i18n -->
             </div>
             <div class="footer-section">
-                <h3>Contacto</h3>
-                <p>Email: info@islamarket.cu</p>
-                <p>WhatsApp: +53 63200804</p>
+                <h3 data-i18n="footer.contact">Contacto</h3> <!-- Cambio 16: data-i18n -->
+                <p data-i18n="footer.email">Email:</p> <p>info@islamarket.cu</p> <!-- Cambio 17: data-i18n -->
+                <p data-i18n="footer.whatsapp">WhatsApp:</p> <p>+53 63200804</p> <!-- Cambio 18: data-i18n -->
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 IslaMarket. Todos los derechos reservados.</p>
+            <p data-i18n="footer.copyright">&copy; 2025 IslaMarket. Todos los derechos reservados.</p> <!-- Cambio 19: data-i18n -->
         </div>
     </footer>
 
@@ -745,9 +814,13 @@
         </a>
     </div>
 
+    <!-- Incluir el archivo de traducciones -->
+    <script src="assets/js/translations.js"></script> <!-- Cambio 20: Incluir translations.js -->
+
     <script>
         // Variables globales
         let cartItems = [];
+        let currentLanguage = localStorage.getItem('language') || 'es'; // Cargar idioma guardado
 
         // Elementos del DOM
         const categoriesGrid = document.getElementById('categoriesGrid');
@@ -761,8 +834,13 @@
         const cartItemsContainer = document.getElementById('cartItems');
         const cartTotalElement = document.getElementById('cartTotal');
         const checkoutBtn = document.getElementById('checkoutBtn');
+        
+        // Elementos para el menú hamburguesa
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
 
         // === FUNCIONES DEL CARRITO ===
+        // (Las funciones del carrito permanecen igual)
         // Obtener carrito desde localStorage
         function getCart() {
             const savedCart = localStorage.getItem('islamarketCart');
@@ -801,7 +879,7 @@
             cartItemsContainer.innerHTML = '';
 
             if (cartItems.length === 0) {
-                cartItemsContainer.innerHTML = '<p class="empty-cart">Tu carrito está vacío</p>';
+                cartItemsContainer.innerHTML = '<p class="empty-cart" data-i18n="cart.empty">Tu carrito está vacío</p>'; // Cambio 21: data-i18n
                 cartTotalElement.textContent = '0.00';
                 return;
             }
@@ -819,7 +897,7 @@
                             <input type="number" value="${item.quantity}" min="1" class="quantity-input" data-id="${item.id}">
                             <button class="quantity-plus" data-id="${item.id}">+</button>
                         </div>
-                        <button class="remove-item" data-id="${item.id}">Eliminar</button>
+                        <button class="remove-item" data-id="${item.id}" data-i18n="cart.removeItem">Eliminar</button> <!-- Cambio 22: data-i18n -->
                     </div>
                 `;
                 cartItemsContainer.appendChild(cartItemElement);
@@ -860,12 +938,15 @@
                     removeFromCart(id);
                 });
             });
+            
+            // Aplicar traducciones al contenido del carrito
+            applyTranslations(currentLanguage);
         }
 
-        // Agregar producto al carrito
+        // Agregar producto al carrito (función simplificada para esta página)
         function addToCart(productId, quantity) {
-            // Esta función necesita los datos de productos, los cargaremos cuando sea necesario
-            console.log('Agregar al carrito:', productId, quantity);
+            console.log("Agregar al carrito:", productId, quantity);
+            // Esta página no agrega productos directamente, solo muestra categorías.
         }
 
         // Actualizar cantidad de un producto
@@ -949,6 +1030,9 @@
                     </div>
                 </a>
             `).join('');
+            
+            // Aplicar traducciones a las categorías si sus nombres estuvieran en `data-i18n`
+            // En este caso, los nombres vienen del JSON, por lo que no se traducen aquí.
         }
 
         // === FUNCIONES EXISTENTES ===
@@ -969,18 +1053,19 @@
             document.body.classList.add('dark-mode');
         }
 
-        // Cambio de idioma
+        // Cambio de idioma (Actualizado)
         const languageToggle = document.getElementById('languageToggle');
-        let currentLanguage = 'es';
-
         languageToggle.addEventListener('click', () => {
-            if (currentLanguage === 'es') {
-                currentLanguage = 'en';
-                console.log('Idioma cambiado a inglés');
-            } else {
-                currentLanguage = 'es';
-                console.log('Idioma cambiado a español');
-            }
+            // Cambiar idioma
+            currentLanguage = currentLanguage === 'es' ? 'en' : 'es';
+            
+            // Guardar preferencia de idioma
+            localStorage.setItem('language', currentLanguage);
+            
+            // Aplicar traducciones
+            applyTranslations(currentLanguage);
+            
+            console.log(`Idioma cambiado a ${currentLanguage}`);
         });
 
         // Ocultar/mostrar header al hacer scroll
@@ -1018,7 +1103,7 @@
         // Botón de finalizar compra
         checkoutBtn.addEventListener('click', function() {
             if (cartItems.length === 0) {
-                alert('El carrito está vacío');
+                alert(getTranslation("message.cartEmpty", currentLanguage) || 'El carrito está vacío'); // Cambio 23: Usar traducción
                 return;
             }
 
@@ -1031,10 +1116,26 @@
             window.open(`https://wa.me/5363200804?text=${message}`, '_blank');
         });
 
+        // === Menú Hamburguesa ===
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('open');
+            mainNav.classList.toggle('open');
+        });
+
+        // Cerrar el menú si se hace clic fuera de él
+        document.addEventListener('click', (e) => {
+            if (!mainNav.contains(e.target) && !menuToggle.contains(e.target) && mainNav.classList.contains('open')) {
+                menuToggle.classList.remove('open');
+                mainNav.classList.remove('open');
+            }
+        });
+
         // === INICIALIZACIÓN ===
         document.addEventListener('DOMContentLoaded', function() {
             initCart();
             loadCategories();
+            // Aplicar traducciones al cargar la página
+            applyTranslations(currentLanguage); // Cambio 24: Aplicar traducciones
         });
     </script>
 </body>
