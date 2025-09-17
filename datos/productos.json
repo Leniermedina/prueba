@@ -79,6 +79,102 @@
       "imagen": "assets/img/products/hammer.svg",
       "categoria": "herramientas",
       "descripcion": "Martillo de acero forjado"
+    },
+    {
+      "id": 11,
+      "nombre": "Zapatillas de Running",
+      "precio": 69.99,
+      "imagen": "assets/img/products/runningshoes.svg",
+      "categoria": "accesorios-deportivos",
+      "descripcion": "Zapatillas de running con amortiguación avanzada"
+    },
+    {
+      "id": 12,
+      "nombre": "Bicicleta Estática",
+      "precio": 199.99,
+      "imagen": "assets/img/products/staticbike.svg",
+      "categoria": "accesorios-deportivos",
+      "descripcion": "Bicicleta estática para entrenamiento cardiovascular"
+    },
+    {
+      "id": 13,
+      "nombre": "Jugo de Frutas Natural",
+      "precio": 5.99,
+      "imagen": "assets/img/products/juice.svg",
+      "categoria": "alimentos",
+      "descripcion": "Jugo natural de frutas frescas"
+    },
+    {
+      "id": 14,
+      "nombre": "Barra de Cereales",
+      "precio": 3.99,
+      "imagen": "assets/img/products/cerealbar.svg",
+      "categoria": "alimentos",
+      "descripcion": "Barra energética con nueces y frutas secas"
+    },
+    {
+      "id": 15,
+      "nombre": "Microondas Digital",
+      "precio": 89.99,
+      "imagen": "assets/img/products/microwave.svg",
+      "categoria": "electrodomesticos",
+      "descripcion": "Microondas digital con 10 niveles de potencia"
+    },
+    {
+      "id": 16,
+      "nombre": "Lavadora Compacta",
+      "precio": 149.99,
+      "imagen": "assets/img/products/washingmachine.svg",
+      "categoria": "electrodomesticos",
+      "descripcion": "Lavadora compacta con programa rápido"
+    },
+    {
+      "id": 17,
+      "nombre": "Tablet 10 Pulgadas",
+      "precio": 249.99,
+      "imagen": "assets/img/products/tablet.svg",
+      "categoria": "tecnologia",
+      "descripcion": "Tablet con pantalla táctil HD y cámara dual"
+    },
+    {
+      "id": 18,
+      "nombre": "Cámara de Acción",
+      "precio": 129.99,
+      "imagen": "assets/img/products/actioncam.svg",
+      "categoria": "tecnologia",
+      "descripcion": "Cámara de acción resistente al agua"
+    },
+    {
+      "id": 19,
+      "nombre": "Camisa Casual",
+      "precio": 29.99,
+      "imagen": "assets/img/products/casualshirt.svg",
+      "categoria": "ropa",
+      "descripcion": "Camisa casual de algodón 100%"
+    },
+    {
+      "id": 20,
+      "nombre": "Pantalón de Jeans",
+      "precio": 45.99,
+      "imagen": "assets/img/products/jeans.svg",
+      "categoria": "ropa",
+      "descripcion": "Pantalón de jeans ajustado"
+    },
+    {
+      "id": 21,
+      "nombre": "Destornillador Multifunción",
+      "precio": 8.99,
+      "imagen": "assets/img/products/screwdriver.svg",
+      "categoria": "herramientas",
+      "descripcion": "Destornillador multifunción con 12 puntas"
+    },
+    {
+      "id": 22,
+      "nombre": "Sierra Eléctrica",
+      "precio": 79.99,
+      "imagen": "assets/img/products/electric saw.svg",
+      "categoria": "herramientas",
+      "descripcion": "Sierra eléctrica de precisión"
     }
   ]
 }
