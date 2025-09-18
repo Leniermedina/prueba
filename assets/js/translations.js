@@ -27,37 +27,41 @@ const translations = {
         "cart.quantity": "Cantidad:",
 
         // === Nombres de Categorías en la Página de Inicio ===
-        "home.cat.allProducts": "Todos los productos",
-        "home.cat.accessories": "Accesorios Deportivos",
-        "home.cat.food": "Alimentos",
-        "home.cat.appliances": "Electrodomésticos",
-        "home.cat.clothing": "Ropa",
-        "home.cat.technology": "Tecnología",
-        "home.cat.tools": "Herramientas",
-        "home.cat.jewelry": "Joyería",
-        "home.cat.carParts": "Piezas para Autos",
-        "home.cat.home": "Productos del Hogar",
-        "home.cat.supplements": "Suplementos Vitamínicos",
-        "home.cat.services": "Servicios",
+        // --- CLAVES AÑADIDAS ---
+        "home.cat.todos": "Todos los productos",
+        "home.cat.accesorios-deportivos": "Accesorios Deportivos",
+        "home.cat.alimentos": "Alimentos",
+        "home.cat.electrodomesticos": "Electrodomésticos",
+        "home.cat.ropa": "Ropa",
+        "home.cat.tecnologia": "Tecnología",
+        "home.cat.herramientas": "Herramientas",
+        "home.cat.joyeria": "Joyería",
+        "home.cat.piezas-para-autos": "Piezas para Autos",
+        "home.cat.productos-del-hogar": "Productos del Hogar",
+        "home.cat.suplementos-vitaminicos": "Suplementos Vitamínicos",
+        "home.cat.servicios": "Servicios",
+        // -----------------------
 
         // === Página de Categorías (categorias.html) ===
         "categories.title": "Categorías",
         "categories.viewAll": "Ver todos los productos",
 
         // === Página Individual de Categoría (categoria.html) ===
+        // --- CLAVES ACTUALIZADAS/COMPLETADAS ---
         "category.title": "Categoría",
-        "category.allProducts": "Todos los productos",
-        "category.accessories": "Accesorios Deportivos",
-        "category.food": "Alimentos",
-        "category.appliances": "Electrodomésticos",
-        "category.clothing": "Ropa",
-        "category.technology": "Tecnología",
-        "category.tools": "Herramientas",
-        "category.jewelry": "Joyería",
-        "category.carParts": "Piezas para Autos",
-        "category.home": "Productos del Hogar",
-        "category.supplements": "Suplementos Vitamínicos",
-        "category.services": "Servicios",
+        "category.todos": "Todos los productos",
+        "category.accesorios-deportivos": "Accesorios Deportivos",
+        "category.alimentos": "Alimentos",
+        "category.electrodomesticos": "Electrodomésticos",
+        "category.ropa": "Ropa",
+        "category.tecnologia": "Tecnología",
+        "category.herramientas": "Herramientas",
+        "category.joyeria": "Joyería",
+        "category.piezas-para-autos": "Piezas para Autos",
+        "category.productos-del-hogar": "Productos del Hogar",
+        "category.suplementos-vitaminicos": "Suplementos Vitamínicos",
+        "category.servicios": "Servicios",
+        // ----------------------------------------
         "category.backToCategories": "Volver a Categorías",
         "category.sortBy": "Ordenar por:",
         "category.sort.default": "Por defecto",
@@ -65,6 +69,8 @@ const translations = {
         "category.sort.priceHigh": "Precio: Mayor a Menor",
         "category.sort.name": "Nombre (A-Z)",
         "category.noProducts": "No se encontraron productos para esta categoría.",
+        "category.addToCart": "Agregar",
+        "cart.quantity": "Cantidad:",
         // --- NUEVAS CLAVES PARA PRECIO ---
         "category.price.label": "Precio:",
         "category.currency": "US$",
@@ -153,37 +159,41 @@ const translations = {
         "cart.quantity": "Quantity:",
 
         // === Category Names on Home Page ===
-        "home.cat.allProducts": "All Products",
-        "home.cat.accessories": "Sports Accessories",
-        "home.cat.food": "Food",
-        "home.cat.appliances": "Home Appliances",
-        "home.cat.clothing": "Clothing",
-        "home.cat.technology": "Technology",
-        "home.cat.tools": "Tools",
-        "home.cat.jewelry": "Jewelry",
-        "home.cat.carParts": "Car Parts",
-        "home.cat.home": "Home Products",
-        "home.cat.supplements": "Vitamins & Supplements",
-        "home.cat.services": "Services",
+        // --- CLAVES AÑADIDAS ---
+        "home.cat.todos": "All Products",
+        "home.cat.accesorios-deportivos": "Sports Accessories",
+        "home.cat.alimentos": "Food",
+        "home.cat.electrodomesticos": "Home Appliances",
+        "home.cat.ropa": "Clothing",
+        "home.cat.tecnologia": "Technology",
+        "home.cat.herramientas": "Tools",
+        "home.cat.joyeria": "Jewelry",
+        "home.cat.piezas-para-autos": "Car Parts",
+        "home.cat.productos-del-hogar": "Home Products",
+        "home.cat.suplementos-vitaminicos": "Vitamins & Supplements",
+        "home.cat.servicios": "Services",
+        // -----------------------
 
         // === Categories Page (categorias.html) ===
         "categories.title": "Categories",
         "categories.viewAll": "View all products",
 
         // === Individual Category Page (categoria.html) ===
+        // --- CLAVES ACTUALIZADAS/COMPLETADAS ---
         "category.title": "Category",
-        "category.allProducts": "All Products",
-        "category.accessories": "Sports Accessories",
-        "category.food": "Food",
-        "category.appliances": "Home Appliances",
-        "category.clothing": "Clothing",
-        "category.technology": "Technology",
-        "category.tools": "Tools",
-        "category.jewelry": "Jewelry",
-        "category.carParts": "Car Parts",
-        "category.home": "Home Products",
-        "category.supplements": "Vitamins & Supplements",
-        "category.services": "Services",
+        "category.todos": "All Products",
+        "category.accesorios-deportivos": "Sports Accessories",
+        "category.alimentos": "Food",
+        "category.electrodomesticos": "Home Appliances",
+        "category.ropa": "Clothing",
+        "category.tecnologia": "Technology",
+        "category.herramientas": "Tools",
+        "category.joyeria": "Jewelry",
+        "category.piezas-para-autos": "Car Parts",
+        "category.productos-del-hogar": "Home Products",
+        "category.suplementos-vitaminicos": "Vitamins & Supplements",
+        "category.servicios": "Services",
+        // ----------------------------------------
         "category.backToCategories": "Back to Categories",
         "category.sortBy": "Sort by:",
         "category.sort.default": "Default",
@@ -191,10 +201,12 @@ const translations = {
         "category.sort.priceHigh": "Price: High to Low",
         "category.sort.name": "Name (A-Z)",
         "category.noProducts": "No products found for this category.",
-        // --- NEW KEYS FOR PRICE ---
+        "category.addToCart": "Add",
+        "cart.quantity": "Quantity:",
+        // --- NUEVAS CLAVES PARA PRECIO ---
         "category.price.label": "Price:",
         "category.currency": "USD",
-        // ------------------------
+        // -------------------------------
 
         // === About Page (acerca-de.html) ===
         "about.title": "About Us",
