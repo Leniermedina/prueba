@@ -65,7 +65,10 @@ const translations = {
         "category.sort.priceHigh": "Precio: Mayor a Menor",
         "category.sort.name": "Nombre (A-Z)",
         "category.noProducts": "No se encontraron productos para esta categoría.",
-        "category.price": "Precio:",
+        // --- NUEVAS CLAVES PARA PRECIO ---
+        "category.price.label": "Precio:",
+        "category.currency": "US$",
+        // -------------------------------
 
         // === Página Acerca de (acerca-de.html) ===
         "about.title": "Acerca de Nosotros",
@@ -188,7 +191,10 @@ const translations = {
         "category.sort.priceHigh": "Price: High to Low",
         "category.sort.name": "Name (A-Z)",
         "category.noProducts": "No products found for this category.",
-        "category.price": "Price:",
+        // --- NEW KEYS FOR PRICE ---
+        "category.price.label": "Price:",
+        "category.currency": "USD",
+        // ------------------------
 
         // === About Page (acerca-de.html) ===
         "about.title": "About Us",
