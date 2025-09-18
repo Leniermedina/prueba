@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="category.title">Categoría • IslaMarket</title>
+    <title data-i18n="category.title">Categoría • IslaMarket</title> <!-- Corregido -->
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <style>
         :root {
@@ -312,11 +312,33 @@
             stroke: currentColor;
         }
 
+        /* Controles de filtrado */
+        .filter-controls {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .sort-label {
+            font-weight: 500;
+        }
+
+        .sort-select {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
         /* Grid de productos */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-            gap: 1.75rem;
+            gap: 2rem;
         }
 
         .product-card {
@@ -380,7 +402,7 @@
             margin-bottom: 1rem;
         }
 
-        .quantity-container {
+        .quantity-selector {
             display: flex;
             align-items: center;
             margin-bottom: 1rem;
@@ -388,8 +410,23 @@
             justify-content: center;
         }
 
+        .quantity-btn {
+            background: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
         .quantity-input {
-            width: 60px;
+            width: 50px;
             text-align: center;
             border: 1px solid var(--border-color);
             border-radius: 4px;
@@ -847,7 +884,7 @@
 </head>
 <body>
     <div class="overlay" id="overlay"></div>
-    
+
     <!-- Mensaje de éxito -->
     <div class="success-message" id="successMessage">Producto agregado</div>
 
@@ -872,7 +909,7 @@
             <a href="index.html" class="logo">
                 <img src="assets/logo.svg" alt="IslaMarket" width="160" height="40">
             </a>
-            
+
             <div class="header-actions">
                 <!-- Botón de menú hamburguesa -->
                 <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
@@ -880,7 +917,7 @@
                     <span></span>
                     <span></span>
                 </button>
-                
+
                 <div class="language-toggle">
                     <button class="language-btn" id="languageToggle" aria-label="Cambiar idioma">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -891,7 +928,7 @@
                         </svg>
                     </button>
                 </div>
-                
+
                 <button id="themeToggle" class="theme-toggle" aria-label="Cambiar modo claro/oscuro">
                     <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
@@ -908,7 +945,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-                
+
                 <a href="#" class="cart-link" id="cartLink">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="9" cy="21" r="1"></circle>
@@ -919,7 +956,7 @@
                 </a>
             </div>
         </div>
-        
+
         <nav class="nav" id="mainNav">
             <a href="index.html" data-i18n="nav.home">Inicio</a>
             <a href="categorias.html" data-i18n="nav.shop">Tienda</a>
@@ -932,15 +969,26 @@
         <div class="category-header">
             <a href="categorias.html" class="back-to-categories">
                 <svg class="back-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M15 19l-7-7 7-7"></path>
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
                 </svg>
                 <span data-i18n="category.backToCategories">Volver a Categorías</span>
             </a>
-            <h1 class="category-title" id="categoryTitle">Cargando productos...</h1>
+            <h1 class="category-title" id="categoryTitle">Cargando productos...</h1> <!-- Este título se actualizará dinámicamente -->
+        </div>
+
+        <div class="filter-controls">
+            <label for="sortSelect" class="sort-label" data-i18n="category.sortBy">Ordenar por:</label>
+            <select id="sortSelect" class="sort-select">
+                <option value="default" data-i18n="category.sort.default">Por defecto</option>
+                <option value="priceLow" data-i18n="category.sort.priceLow">Precio: Menor a Mayor</option>
+                <option value="priceHigh" data-i18n="category.sort.priceHigh">Precio: Mayor a Menor</option>
+                <option value="name" data-i18n="category.sort.name">Nombre (A-Z)</option>
+            </select>
         </div>
 
         <div class="products-grid" id="productsGrid">
-            <!-- Productos se cargarán aquí dinámicamente -->
+            <!-- Los productos se cargarán aquí dinámicamente -->
         </div>
     </main>
 
@@ -991,6 +1039,7 @@
 
         // Elementos del DOM
         const categoryTitle = document.getElementById('categoryTitle');
+        const sortSelect = document.getElementById('sortSelect');
         const productsGrid = document.getElementById('productsGrid');
         const cartCountElement = document.getElementById('cartCount');
         const floatingCartCountElement = document.getElementById('floatingCartCount');
@@ -1003,7 +1052,7 @@
         const cartTotalElement = document.getElementById('cartTotal');
         const checkoutBtn = document.getElementById('checkoutBtn');
         const successMessage = document.getElementById('successMessage');
-        
+
         // Elementos para el menú hamburguesa
         const menuToggle = document.getElementById('menuToggle');
         const mainNav = document.getElementById('mainNav');
@@ -1106,7 +1155,7 @@
                     removeFromCart(id);
                 });
             });
-            
+
             // Aplicar traducciones al contenido del carrito
             applyTranslations(currentLanguage);
         }
@@ -1200,7 +1249,7 @@
             updateCartUI();
         }
 
-        // === FUNCIONES DE PRODUCTOS ===
+        // === FUNCIONES DE CATEGORÍA ===
         // Obtener parámetro de categoría de la URL
         function getCategoryFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1209,22 +1258,26 @@
 
         // Actualizar título de la categoría usando claves de traducción
         function updateCategoryTitle(categorySlug) {
+            // Objeto que mapea slugs a claves de traducción
             const categoryKeys = {
-                'todos': 'category.allProducts',
-                'accesorios-deportivos': 'category.accessories',
-                'alimentos': 'category.food',
-                'electrodomesticos': 'category.appliances',
-                'ropa': 'category.clothing',
-                'tecnologia': 'category.technology',
-                'herramientas': 'category.tools',
-                'joyeria': 'category.jewelry',
-                'piezas-para-autos': 'category.carParts',
-                'productos-del-hogar': 'category.home',
-                'suplementos-vitaminicos': 'category.supplements',
-                'servicios': 'category.services'
+                'todos': 'category.todos',
+                'accesorios-deportivos': 'category.accesorios-deportivos',
+                'alimentos': 'category.alimentos',
+                'electrodomesticos': 'category.electrodomesticos',
+                'ropa': 'category.ropa',
+                'tecnologia': 'category.tecnologia',
+                'herramientas': 'category.herramientas',
+                'joyeria': 'category.joyeria',
+                'piezas-para-autos': 'category.piezas-para-autos',
+                'productos-del-hogar': 'category.productos-del-hogar',
+                'suplementos-vitaminicos': 'category.suplementos-vitaminicos',
+                'servicios': 'category.servicios'
             };
-            
-            const translationKey = categoryKeys[categorySlug] || 'category.allProducts';
+
+            // Obtener la clave de traducción
+            const translationKey = categoryKeys[categorySlug] || 'category.todos';
+
+            // Obtener la traducción y actualizar el título
             categoryTitle.textContent = getTranslation(translationKey, currentLanguage);
         }
 
@@ -1242,15 +1295,25 @@
             }
         }
 
-        // Mostrar productos filtrados por categoría
+        // Mostrar productos (filtrados y ordenados)
         function displayProducts() {
-            currentCategory = getCategoryFromURL();
+            const currentCategory = getCategoryFromURL();
             updateCategoryTitle(currentCategory); // <-- Actualizar título con traducción
 
-            // Filtrar productos por categoría
+            // Filtrar productos
             let filteredProducts = allProducts;
             if (currentCategory !== 'todos') {
                 filteredProducts = allProducts.filter(product => product.categoria === currentCategory);
+            }
+
+            // Ordenar productos
+            const sortValue = sortSelect.value;
+            if (sortValue === 'priceLow') {
+                filteredProducts.sort((a, b) => a.precio - b.precio);
+            } else if (sortValue === 'priceHigh') {
+                filteredProducts.sort((a, b) => b.precio - a.precio);
+            } else if (sortValue === 'name') {
+                filteredProducts.sort((a, b) => a.nombre.localeCompare(b.nombre));
             }
 
             // Generar HTML de productos
@@ -1267,22 +1330,43 @@
                             <!-- LÍNEA MODIFICADA PARA TRADUCIR PRECIO Y MONEDA -->
                             <div class="product-price"><span data-i18n="category.price.label">Precio:</span> ${product.precio} <span data-i18n="category.currency">US$</span></div>
                             <!-- --------------------------------------------------- -->
-                            <div class="quantity-container">
-                                <input type="number" class="quantity-input" value="0" min="0" data-id="${product.id}">
-                                <button class="add-to-cart-btn" data-product-id="${product.id}" data-i18n="category.addToCart">
-                                    <svg class="cart-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="9" cy="21" r="1"></circle>
-                                        <circle cx="20" cy="21" r="1"></circle>
-                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                                    </svg>
-                                    Agregar
-                                </button>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn minus" data-product-id="${product.id}">-</button>
+                                <input type="number" value="0" min="0" max="99" class="quantity-input" data-product-id="${product.id}">
+                                <button class="quantity-btn plus" data-product-id="${product.id}">+</button>
                             </div>
+                            <button class="add-to-cart-btn" data-product-id="${product.id}" data-i18n="category.addToCart">
+                                <svg class="cart-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="9" cy="21" r="1"></circle>
+                                    <circle cx="20" cy="21" r="1"></circle>
+                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                </svg>
+                                Agregar
+                            </button>
                         </div>
                     </div>
                 `).join('');
 
-                // Agregar eventos a los botones de agregar al carrito
+                // Agregar eventos a los botones de cantidad y agregar al carrito
+                document.querySelectorAll('.quantity-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const productId = parseInt(button.getAttribute('data-product-id'));
+                        const input = document.querySelector(`.quantity-input[data-product-id="${productId}"]`);
+                        let value = parseInt(input.value);
+                        const max = parseInt(input.getAttribute('max'));
+
+                        if (button.classList.contains('plus')) {
+                            if (value < max) {
+                                input.value = value + 1;
+                            }
+                        } else if (button.classList.contains('minus')) {
+                            if (value > 0) {
+                                input.value = value - 1;
+                            }
+                        }
+                    });
+                });
+
                 document.querySelectorAll('.add-to-cart-btn').forEach(button => {
                     button.addEventListener('click', (e) => {
                         const productId = parseInt(e.target.closest('.add-to-cart-btn').getAttribute('data-product-id'));
@@ -1300,8 +1384,8 @@
                     });
                 });
             }
-            
-            // Aplicar traducciones a los productos recién generados
+
+            // Aplicar traducciones a los productos y controles
             applyTranslations(currentLanguage); // <-- CORRECCIÓN AQUÍ
         }
 
@@ -1328,16 +1412,16 @@
         languageToggle.addEventListener('click', () => {
             // Cambiar idioma
             currentLanguage = currentLanguage === 'es' ? 'en' : 'es';
-            
+
             // Guardar preferencia de idioma
             localStorage.setItem('language', currentLanguage);
-            
+
             // Aplicar traducciones
             applyTranslations(currentLanguage);
-            
+
             // Actualizar el título de la categoría
             updateCategoryTitle(getCategoryFromURL());
-            
+
             console.log(`Idioma cambiado a ${currentLanguage}`);
         });
 
@@ -1360,12 +1444,12 @@
         });
 
         // Eventos del carrito lateral
-        cartLink.addEventListener('click', function(e) {
+        cartLink.addEventListener('click', function (e) {
             e.preventDefault();
             openCart();
         });
 
-        floatingCart.addEventListener('click', function(e) {
+        floatingCart.addEventListener('click', function (e) {
             e.preventDefault();
             openCart();
         });
@@ -1374,7 +1458,7 @@
         overlay.addEventListener('click', closeCart);
 
         // Botón de finalizar compra
-        checkoutBtn.addEventListener('click', function() {
+        checkoutBtn.addEventListener('click', function () {
             if (cartItems.length === 0) {
                 alert(getTranslation("message.cartEmpty", currentLanguage) || 'El carrito está vacío');
                 return;
@@ -1388,6 +1472,9 @@
 
             window.open(`https://wa.me/5363200804?text=${message}`, '_blank');
         });
+
+        // Evento de cambio en el select de ordenamiento
+        sortSelect.addEventListener('change', displayProducts);
 
         // === Menú Hamburguesa ===
         menuToggle.addEventListener('click', () => {
@@ -1404,7 +1491,7 @@
         });
 
         // === INICIALIZACIÓN ===
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             initCart();
             loadProducts();
             // Aplicar traducciones al cargar la página
