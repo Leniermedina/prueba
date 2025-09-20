@@ -1,0 +1,94 @@
+{
+  "categorias": [
+    {
+      "id": "todos",
+      "nombre": "Todos los productos",
+      "slug": "todos",
+      "imagen": "assets/img/categories/all-products.jpg"
+    },
+    {
+      "id": "accesorios-deportivos",
+      "nombre": "Accesorios Deportivos",
+      "slug": "accesorios-deportivos",
+      "imagen": "assets/img/categories/sports.jpg"
+    },
+    {
+      "id": "alimentos",
+      "nombre": "Alimentos",
+      "slug": "alimentos",
+      "imagen": "assets/img/categories/food.jpg"
+    },
+    {
+      "id": "electrodomesticos",
+      "nombre": "Electrodomésticos",
+      "slug": "electrodomesticos",
+      "imagen": "assets/img/categories/appliances.jpg"
+    },
+    {
+      "id": "ropa",
+      "nombre": "Ropa",
+      "slug": "ropa",
+      "imagen": "assets/img/categories/clothing.jpg"
+    },
+    {
+      "id": "tecnologia",
+      "nombre": "Tecnología",
+      "slug": "tecnologia",
+      "imagen": "assets/img/categories/technology.jpg"
+    },
+    {
+      "id": "herramientas",
+      "nombre": "Herramientas",
+      "slug": "herramientas",
+      "imagen": "assets/img/categories/tools.jpg"
+    },
+    {
+      "id": "joyeria",
+      "nombre": "Joyería",
+      "slug": "joyeria",
+      "imagen": "assets/img/categories/jewelry.jpg"
+    },
+    {
+      "id": "piezas-para-autos",
+      "nombre": "Piezas para Autos",
+      "slug": "piezas-para-autos",
+      "imagen": "assets/img/categories/car-parts.jpg"
+    },
+    {
+      "id": "productos-del-hogar",
+      "nombre": "Productos del Hogar",
+      "slug": "productos-del-hogar",
+      "imagen": "assets/img/categories/home.jpg"
+    },
+    {
+      "id": "suplementos-vitaminicos",
+      "nombre": "Suplementos Vitamínicos",
+      "slug": "suplementos-vitaminicos",
+      "imagen": "assets/img/categories/supplements.jpg"
+    },
+    {
+      "id": "servicios",
+      "nombre": "Servicios",
+      "slug": "servicios",
+      "imagen": "assets/img/categories/services.jpg"
+    },
+    {
+      "id": "ofertas-de-temporada",
+      "nombre": "Ofertas de temporada",
+      "slug": "ofertas-de-temporada",
+      "imagen": "assets/img/categories/ofertas-de-temporada.jpg"
+    },
+    {
+      "id": "mas-vendidos",
+      "nombre": "Más vendidos",
+      "slug": "mas-vendidos",
+      "imagen": "assets/img/categories/mas-vendidos.jpg"
+    },
+    {
+      "id": "lo-que-necesitas",
+      "nombre": "Lo que necesitas",
+      "slug": "lo-que-necesitas",
+      "imagen": "assets/img/categories/lo-que-necesitas.jpg"
+    }
+  ]
+}
