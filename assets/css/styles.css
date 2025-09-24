@@ -242,103 +242,46 @@ input:focus-visible, textarea:focus-visible {
 .searchbar .btn { white-space: nowrap; }
 
 
-/* ===== Custom additions ===== */
+/* -- enforce 5 columns on product grid -- */
+#shop-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 1200px) { #shop-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 992px) { #shop-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) { #shop-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { #shop-grid { grid-template-columns: 1fr; } }
 
-/* Header & hero background images (user configurable) */
-.header {
-  background-image: var(--header-bg-img, linear-gradient(90deg, rgba(26,77,46,.95), rgba(74,157,94,.95)));
-  background-size: cover;
-  background-position: center;
-}
-.hero {
-  background-image: var(--hero-bg-img, none);
-  background-size: cover;
-  background-position: center;
-}
+/* -- product card fixed layout -- */
+.product-card .card__body { display: flex; flex-direction: column; gap: 10px; height: 100%; }
+.product-card .line1, .product-card .line2 { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.product-card .actions { display: flex; gap: 8px; align-items: center; margin-top: auto; }
+.product-card .p-name { font-weight: 800; line-height: 1.15; }
+.product-card .price-badge { font-weight: 800; }
+.qty-input { text-align: center; border-radius: 12px; min-width: 40px; width: auto; padding: 8px 10px; font-variant-numeric: tabular-nums; }
 
-/* Glassy green nav pills */
-.nav a {
-  background: rgba(60, 255, 158, 0.15);
-  border: 1px solid rgba(60,255,158,0.35);
-  padding: 10px 14px;
-  border-radius: 16px;
-  transition: transform .15s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
-  backdrop-filter: blur(6px) saturate(1.2);
-}
-.nav a:hover, .nav a:focus {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(60,255,158,0.25), inset 0 0 0 9999px rgba(60,255,158,0.08);
-  border-color: rgba(60,255,158,0.6);
-}
-.nav a.active {
-  background: rgba(60,255,158,0.25);
-  border-color: rgba(60,255,158,0.8);
-}
+/* -- 3D buttons (products & cart) -- */
+.btn-3d { transform: perspective(600px) translateZ(0); transition: transform .18s ease, box-shadow .25s ease; }
+.btn-3d:hover { transform: perspective(600px) translateZ(6px); box-shadow: 0 12px 24px rgba(0,0,0,.22); }
+.btn-3d:active { transform: perspective(600px) translateZ(2px) scale(.98); }
 
-/* Buttons hover/touch effects */
-.btn {
-  transform: perspective(600px) translateZ(0);
-  transition: transform .18s ease, box-shadow .2s ease, filter .2s ease;
-}
-.btn:hover, .btn:focus-visible {
-  transform: perspective(600px) translateZ(6px);
-  box-shadow: 0 10px 24px rgba(0,0,0,.18);
-}
-.btn:active {
-  transform: perspective(600px) translateZ(2px) scale(.98);
-}
+/* Floating cart orange theme-aware */
+.floating-cart { background: var(--naranja); color: #000; }
+[data-theme="dark"] .floating-cart { color: #fff; }
+.floating-cart:hover { transform: translateY(-2px) scale(1.03); }
 
-/* Category tiles with background image and only CTA */
-.category-tile {
-  position: relative;
-  height: 220px;
-  border-radius: 18px;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 8px 24px rgba(0,0,0,.25);
-}
-.category-tile::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: radial-gradient(circle at 20% 20%, rgba(0,0,0,.2), rgba(0,0,0,.55));
-}
-.category-tile .cta {
-  position: absolute; left: 16px; bottom: 16px;
-}
+/* Make sure header icon pills stay visible */
+.header .icon-btn { color: #fff; }
 
-/* Stats cards with background image */
-.stat-card {
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  overflow: hidden;
-}
-.stat-card::after {
-  content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.35);
-}
-.stat-card > .card__body { position: relative; color: #fff; }
+/* Stat cards readable on light/dark */
+.stat-card .card__body, .stat-card .card__body * { color: #fff !important; text-shadow: 0 1px 2px rgba(0,0,0,.5); }
 
-/* Subtle 3D on cards */
-.card { transition: transform .2s ease, box-shadow .2s ease; transform-style: preserve-3d; }
-.card:hover { transform: translateY(-4px) rotateX(2deg); box-shadow: 0 16px 32px rgba(0,0,0,.18); }
+/* Keep cart drawer open unless manually closed (no backdrop auto-close styles) */
+/* (No JS backdrop listener; ensure clicks don't hide) */
 
-/* Toasts */
-.toast-container {
-  position: fixed; right: 16px; top: 16px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;
-}
-.toast {
-  background: rgba(20,20,20,.85); color: #fff; padding: 10px 14px; border-radius: 12px; 
-  transform: translateY(-10px); opacity: 0; transition: all .25s ease; border:1px solid rgba(255,255,255,.12);
-}
-.toast.show { transform: translateY(0); opacity: 1; }
-.toast i { margin-right: 6px; color: var(--verde-claro); }
+/* Sorting select */
+.sortbar { display:flex; gap:10px; align-items:center; margin: 0 0 12px; flex-wrap: wrap; }
+.sortbar select { padding: 8px 10px; border-radius: 10px; border:1px solid var(--borde); background: var(--card); color: inherit; }
 
-.form--compact {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 10px;
-}
-.form--compact input, .form--compact textarea {
-  padding: 10px 12px !important;
-}
-.form--compact button { margin-top: 6px; }
+/* Ensure cards consistent height */
+.product-card { display: flex; flex-direction: column; }
+.product-card .card__img { height: 160px; object-fit: cover; }
+
+/* Category tiles keep as earlier if present */

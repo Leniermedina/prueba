@@ -19,18 +19,38 @@ export async function loadProducts() {
   }
 }
 
+
 function productHTML(p) {
-  const name = window.getProductName ? window.getProductName(p) : p.nombre;
-  const agotadoHTML = p.agotado ? `<div class="badge" data-i18n="product.soldout">Agotado</div>` : '';
-  const priceHTML = p.precio > 0 ? `<div class="badge">$${p.precio.toFixed(2)}</div>` : `<div class="badge">Consultar</div>`;
-  const btnDisabled = p.agotado ? 'disabled' : '';
+  const name = (window.getProductName ? window.getProductName(p) : p.nombre);
+  const agotado = !!p.agotado;
+  const priceHTML = (p.precio > 0) ? `<div class="badge price-badge">$${p.precio.toFixed(2)}</div>` : ``;
+  const soldHTML = agotado ? `<div class="badge" data-i18n="product.soldout">Agotado</div>` : ``;
+
+  const actions = agotado ? `` : `
+    <div class="actions">
+      <button class="btn btn--primary btn-3d add-btn" data-id="${p.id}">
+        <i class="fa-solid fa-cart-plus"></i> <span data-i18n="product.add">Agregar</span>
+      </button>
+      <input type="number" min="1" value="1" class="qty-input qty-input-${p.id}" inputmode="numeric">
+    </div>
+  `;
+
   return `
-  <article class="card" data-cat="${p.categoria}" data-name="${p.nombre.toLowerCase()}">
+  <article class="card product-card" data-cat="${p.categoria}" data-name="${name.toLowerCase()}">
     <img class="card__img" src="${p.imagen}" alt="${name}">
     <div class="card__body">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
-        <strong>${name}</strong>
+      <div class="line1">
+        <strong class="p-name">${name}</strong>
         ${priceHTML}
+      </div>
+      <div class="line2">
+        <span class="badge">${p.categoria}</span>
+        ${soldHTML}
+      </div>
+      ${actions}
+    </div>
+  </article>`;
+}
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
         <span class="badge">${p.categoria}</span>
@@ -52,8 +72,32 @@ export async function renderShop() {
   const filters = document.querySelectorAll('.filter-btn');
   const searchInput = document.querySelector('#search-input');
   const prods = await loadProducts();
-  grid.innerHTML = prods.map(productHTML).join('');
-  applyTranslations();
+  
+  let data = prods.slice();
+
+  function renderList(list){
+    grid.innerHTML = list.map(productHTML).join('');
+    // i18n on dynamic nodes
+    applyTranslations();
+    // attach add-to-cart and autosize
+    grid.querySelectorAll('.add-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        const qty = parseInt(document.querySelector(`.qty-input-${id}`)?.value || '1', 10);
+        const p = data.find(x => x.id === id);
+        if (!p || p.agotado) return;
+        addToCart(p, Math.max(1, qty));
+      });
+    });
+    grid.querySelectorAll('.qty-input').forEach(inp => {
+      autosizeQty(inp);
+      inp.addEventListener('input', () => autosizeQty(inp));
+    });
+  }
+
+  // initial render
+  renderList(data);
+
 
   function applyFilter() {
     const activeBtn = document.querySelector('.filter-btn.active');
@@ -95,20 +139,23 @@ export async function renderShop() {
 }
 
 
-// Re-apply names on language change
-document.addEventListener('lang:changed', () => {
-  const grid = document.querySelector('#shop-grid');
-  if (!grid) return;
-  // Update only titles to avoid refetch
-  grid.querySelectorAll('.card').forEach(card => {
-    const id = card.querySelector('.add-btn')?.dataset.id;
-    if (!id) return;
-    const nameEl = card.querySelector('strong');
-    if (!nameEl) return;
-    const prodsEl = Array.from(grid.querySelectorAll('.card'));
-  });
-  // simplest: re-render whole grid by re-calling renderShop if present
-  if (window.renderShop) {
-    window.renderShop();
+// autosize qty inputs for product grid
+function autosizeQty(el){
+  const len = String(el.value || '1').length;
+  el.style.width = Math.max(28, 14 + len*10) + 'px';
+}
+
+  // Sorting
+  const sortSel = document.querySelector('#sort-select');
+  function sortData(mode){
+    const arr = data.slice();
+    if (mode === 'name-asc') arr.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
+    if (mode === 'price-asc') arr.sort((a,b)=> (a.precio||0)-(b.precio||0));
+    if (mode === 'price-desc') arr.sort((a,b)=> (b.precio||0)-(a.precio||0));
+    if (mode === 'available') arr.sort((a,b)=> (a.agotado===b.agotado?0:(a.agotado?1:-1)) || (a.nombre||'').localeCompare(b.nombre||''));
+    return arr;
   }
-});
+  sortSel?.addEventListener('change', ()=> {
+    renderList(sortData(sortSel.value));
+    applyFilter();
+  });

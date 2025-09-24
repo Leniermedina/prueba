@@ -12,7 +12,7 @@
 </head>
 <body>
 
-  <header class="header" style="--header-bg-img: url('assets/img/headers/header.jpg')">
+  <header class="header">
     <div class="container">
       <a class="logo" href="index.html">
         <div class="logo__badge">EB</div>
@@ -41,7 +41,16 @@
       <input id="search-input" type="search" data-i18n="search.placeholder" placeholder="Buscar productos...">
       <button class="btn btn--accent-yellow"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
-    <div class="filters">
+    <div class="filters"></div>
+    <div class="sortbar">
+      <label for="sort-select" data-i18n="filters.sort">Ordenar:</label>
+      <select id="sort-select">
+        <option value="name-asc" data-i18n="filters.sort.name">Nombre (A-Z)</option>
+        <option value="price-asc" data-i18n="filters.sort.price_asc">Precio (menor a mayor)</option>
+        <option value="price-desc" data-i18n="filters.sort.price_desc">Precio (mayor a menor)</option>
+        <option value="available" data-i18n="filters.sort.available">Disponibles primero</option>
+      </select>
+    </div>
       <button class="filter-btn active" data-cat="todos" data-i18n="filters.all">Todos</button>
       <button class="filter-btn" data-cat="animales" data-i18n="filters.animals">Animales</button>
       <button class="filter-btn" data-cat="frutales" data-i18n="filters.fruit">Árboles Frutales</button>

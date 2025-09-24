@@ -108,7 +108,6 @@ export function getLang() {
 export function setLang(lang) {
   localStorage.setItem(I18N_STORAGE_KEY, lang);
   applyTranslations();
-  document.dispatchEvent(new CustomEvent('lang:changed', { detail: { lang } }));
 }
 
 export function applyTranslations(root=document) {
@@ -127,33 +126,18 @@ export function applyTranslations(root=document) {
 }
 
 
-// Extra messages
-MESSAGES.es['toast.added'] = (x)=> `${x} añadido al carrito`;
+// i18n additions
+MESSAGES.es['product.add'] = 'Agregar';
 MESSAGES.en = MESSAGES.en || {};
-MESSAGES.en['toast.added'] = (x)=> `${x} added to cart`;
+MESSAGES.en['product.add'] = 'Add';
+MESSAGES.es['filters.sort'] = 'Ordenar:';
+MESSAGES.es['filters.sort.name'] = 'Nombre (A-Z)';
+MESSAGES.es['filters.sort.price_asc'] = 'Precio (menor a mayor)';
+MESSAGES.es['filters.sort.price_desc'] = 'Precio (mayor a menor)';
+MESSAGES.es['filters.sort.available'] = 'Disponibles primero';
 
-// Optional product name translations by id (user can fill later)
-window.PRODUCTS_I18N = {
-  // "1": { en: "Organic Creole Eggs", es: "Huevos criollos orgánicos" },
-};
-
-// Utility to translate dynamic strings or callables
-window.__t = function(key, arg){
-  const lang = localStorage.getItem(I18N_STORAGE_KEY) || (navigator.language||'es').slice(0,2);
-  const dict = MESSAGES[lang] || MESSAGES.es;
-  const val = dict[key];
-  if (!val) return typeof arg === 'string' ? arg : key;
-  return typeof val === 'function' ? val(arg) : val;
-};
-
-// Get product display name by lang
-window.getProductName = function(p){
-  const lang = localStorage.getItem(I18N_STORAGE_KEY) || (navigator.language||'es').slice(0,2);
-  const map = window.PRODUCTS_I18N && window.PRODUCTS_I18N[p.id];
-  if (map && map[lang]) return map[lang];
-  if (lang.startsWith('en') && p.nombre_en) return p.nombre_en;
-  return p.nombre;
-};
-
-MESSAGES.es['product.soldout'] = 'Agotado';
-MESSAGES.en['product.soldout'] = 'Sold out';
+MESSAGES.en['filters.sort'] = 'Sort:';
+MESSAGES.en['filters.sort.name'] = 'Name (A-Z)';
+MESSAGES.en['filters.sort.price_asc'] = 'Price (low to high)';
+MESSAGES.en['filters.sort.price_desc'] = 'Price (high to low)';
+MESSAGES.en['filters.sort.available'] = 'Available first';

@@ -442,25 +442,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-/* Toasts & cart add notice */
+// Autosize qty inputs inside cart drawer
 (function(){
-  const container = document.createElement('div');
-  container.className = 'toast-container';
-  document.body.appendChild(container);
-
-  function showToast(msg) {
-    const t = document.createElement('div');
-    t.className = 'toast';
-    t.innerHTML = msg;
-    container.appendChild(t);
-    requestAnimationFrame(()=> t.classList.add('show'));
-    setTimeout(()=> { t.classList.remove('show'); setTimeout(()=> t.remove(), 300); }, 2400);
+  function autosize(el){
+    const len = String(el.value || '1').length;
+    el.style.width = Math.max(28, 14 + len*10) + 'px';
   }
-
-  document.addEventListener('cart:added', (e) => {
-    const { product, qty } = e.detail;
-    const name = (window.getProductName ? window.getProductName(product) : (product.nombre || 'Producto'));
-    const txt = (window.__t ? __t('toast.added', `${qty} × ${name}`) : `${qty} × ${name} añadido al carrito`);
-    showToast(`<i class="fa-solid fa-check"></i> ${txt}`);
+  document.addEventListener('cart:updated', ()=> {
+    document.querySelectorAll('.cart-drawer input.qty-input').forEach(i=>{
+      autosize(i);
+      i.addEventListener('input', ()=> autosize(i));
+    });
   });
 })();

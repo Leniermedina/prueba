@@ -21,17 +21,13 @@ export function addToCart(product, qty=1) {
   } else {
     cart.push({ id: product.id, nombre: product.nombre, precio: product.precio, qty });
   }
-    writeCart(cart);
-  document.dispatchEvent(new CustomEvent('cart:added', { detail: { product, qty } }));
+  writeCart(cart);
 }
-
 export function updateQty(id, qty) {
   let cart = readCart();
   cart = cart.map(i => i.id === id ? { ...i, qty: Math.max(0, qty) } : i).filter(i => i.qty > 0);
-    writeCart(cart);
-  document.dispatchEvent(new CustomEvent('cart:added', { detail: { product, qty } }));
+  writeCart(cart);
 }
-
 export function clearCart() {
   writeCart([]);
 }
