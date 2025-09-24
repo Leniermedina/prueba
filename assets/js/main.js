@@ -155,3 +155,42 @@ export function initHeader() {
 document.addEventListener('DOMContentLoaded', () => {
   initHeader();
 });
+
+function initHeroSlider(){
+  const root = document.getElementById('hero-slider');
+  if(!root) return;
+  const slides = Array.from(root.querySelectorAll('.slide'));
+  let i = 0;
+  setInterval(()=>{
+    slides[i].classList.remove('active');
+    i = (i+1) % slides.length;
+    slides[i].classList.add('active');
+  }, 4500);
+}
+document.addEventListener('DOMContentLoaded', initHeroSlider);
+
+function initCountUp(){
+  const els = document.querySelectorAll('[data-count-to]');
+  if(!els.length) return;
+  const ease = t => 1 - Math.pow(1 - t, 3);
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const el = entry.target;
+        const to = parseFloat(el.getAttribute('data-count-to')) || 0;
+        const dur = parseInt(el.getAttribute('data-count-dur')||'1500',10);
+        const start = performance.now();
+        function step(now){
+          const p = Math.min(1, (now-start)/dur);
+          const v = Math.round((to)*ease(p));
+          el.textContent = v.toLocaleString();
+          if(p<1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.35 });
+  els.forEach(el=> obs.observe(el));
+}
+document.addEventListener('DOMContentLoaded', initCountUp);
