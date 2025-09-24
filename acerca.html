@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title>El Bosque Farm — Acerca de</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+</head>
+<body>
+
+  <header class="header" style="--header-bg-img: url('assets/img/headers/header.jpg')">
+    <div class="container">
+      <a class="logo" href="index.html">
+        <div class="logo__badge">EB</div>
+        <div>El Bosque Farm</div>
+      </a>
+      <nav class="nav">
+        <a href="index.html" data-i18n="nav.home">Inicio</a>
+        <a href="productos.html" data-i18n="nav.shop">Tienda</a>
+        <a href="contacto.html" data-i18n="nav.contact">Contacto</a>
+        <a href="acerca.html" data-i18n="nav.about">Acerca de</a>
+      </nav>
+      <div class="header__actions">
+        <button class="icon-btn" id="lang-toggle" title="ES/EN"><i class="fa-solid fa-language"></i></button>
+        <button class="icon-btn" id="theme-toggle" title="Light/Dark"><i class="fa-solid fa-circle-half-stroke"></i></button>
+        <button class="icon-btn cart-indicator" id="cart-toggle" title="Carrito">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+
+  <section class="section">
+    <h2 data-i18n="about.title">Acerca de El Bosque Farm</h2>
+    <p><span data-i18n="about.intro1">En El Bosque Farm creemos en la conexión entre la tierra, los animales y las personas. Somos una compañía familiar dedicada a la producción agropecuaria sostenible, con el compromiso de brindar alimentos y productos naturales de la más alta calidad.</span></p>
+    <p><span data-i18n="about.intro2">Nuestro viaje comenzó con una pequeña finca y la visión de rescatar las prácticas tradicionales del campo, combinándolas con innovación moderna para asegurar la frescura y el bienestar de nuestros animales y cultivos.</span></p>
+
+    <div class="grid">
+      <article class="card">
+        <img src="assets/img/categorias/animales.jpg" class="card__img" alt="Animales de la finca">
+        <div class="card__body">
+          <strong data-i18n="about.block1.title">Bienestar Animal</strong>
+          <p><span data-i18n="about.block1.desc">Cuidamos de nuestros animales con dedicación, asegurando que crezcan en un ambiente sano y natural.</span></p>
+        </div>
+      </article>
+      <article class="card">
+        <img src="assets/img/categorias/arboles.jpg" class="card__img" alt="Árboles frutales">
+        <div class="card__body">
+          <strong data-i18n="about.block2.title">Cultivos Sostenibles</strong>
+          <p><span data-i18n="about.block2.desc">Nuestros árboles frutales son cultivados con prácticas respetuosas con el medio ambiente.</span></p>
+        </div>
+      </article>
+      <article class="card">
+        <img src="assets/img/categorias/ornamentales.jpg" class="card__img" alt="Árboles ornamentales">
+        <div class="card__body">
+          <strong data-i18n="about.block3.title">Belleza Natural</strong>
+          <p><span data-i18n="about.block3.desc">Ofrecemos variedades ornamentales que embellecen cualquier entorno.</span></p>
+        </div>
+      </article>
+    </div>
+
+    <h3 data-i18n="about.mission.title">Nuestra Misión</h3>
+    <p><span data-i18n="about.mission.desc">Queremos que cada producto de El Bosque Farm transmita confianza, calidad y respeto por la naturaleza. Nos esforzamos por ser un referente en el mercado agropecuario, destacando por nuestra ética y transparencia.</span></p>
+
+    <h3 data-i18n="about.values.title">Nuestros Valores</h3>
+    <ul>
+      <li><span data-i18n="about.values.item1">Sostenibilidad: Cuidamos los recursos naturales para las futuras generaciones.</span></li>
+      <li><span data-i18n="about.values.item2">Calidad: Garantizamos productos frescos y confiables.</span></li>
+      <li><span data-i18n="about.values.item3">Innovación: Incorporamos tecnología sin perder la esencia tradicional.</span></li>
+      <li><span data-i18n="about.values.item4">Compromiso: Con nuestros clientes, nuestra comunidad y el medio ambiente.</span></li>
+    </ul>
+  </section>
+
+
+  <aside class="cart-drawer">
+    <div class="cart-drawer__header">
+      <strong data-i18n="cart.title">Tu Carrito</strong>
+      <button class="icon-btn" onclick="document.querySelector('.cart-drawer').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="cart-drawer__list"></div>
+    <div class="cart-drawer__footer">
+      <div class="cart-empty-msg" data-i18n="cart.empty">El carrito está vacío</div>
+      <div><b data-i18n="cart.total">Total</b>: <span class="total-chip">$0.00</span></div>
+      <button class="btn btn--primary" id="wa-checkout" data-i18n="cart.checkout">Enviar pedido por WhatsApp</button>
+      <button class="btn btn--ghost" id="clear-cart" data-i18n="cart.clear">Vaciar carrito</button>
+    </div>
+  </aside>
+
+
+  <footer>
+    <p>© 2025 El Bosque Farm</p>
+    <p>TikTok: <a href="https://www.tiktok.com/@elbosquefarm" target="_blank">@ElBosqueFarm</a> · <a href="mailto:elbosquefarminfo@gmail.com">Correo</a></p>
+  </footer>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>

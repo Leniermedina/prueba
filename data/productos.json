@@ -1,0 +1,154 @@
+[
+  {
+    "id": "1",
+    "nombre": "Huevos criollos orgánicos",
+    "categoria": "animales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/animales/huevos.jpg",
+    "agotado": true
+  },
+  {
+    "id": "2",
+    "nombre": "Pollitos",
+    "categoria": "animales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/animales/pollitos.jpg",
+    "agotado": true
+  },
+  {
+    "id": "16",
+    "nombre": "Gallinas",
+    "categoria": "animales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/animales/gallinas.jpg",
+    "agotado": true
+  },
+  {
+    "id": "3",
+    "nombre": "Gallinas de Guinea",
+    "categoria": "animales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/animales/gallinas-guinea.jpg",
+    "agotado": true
+  },
+  {
+    "id": "4",
+    "nombre": "Chivos",
+    "categoria": "animales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/animales/chivos.jpg",
+    "agotado": true
+  },
+  {
+    "id": "5",
+    "nombre": "Carneros",
+    "categoria": "animales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/animales/carneros.jpg",
+    "agotado": true
+  },
+  {
+    "id": "6",
+    "nombre": "Conejos",
+    "categoria": "animales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/animales/conejos.jpg",
+    "agotado": true
+  },
+  {
+    "id": "7",
+    "nombre": "Codornices",
+    "categoria": "animales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/animales/codornices.jpg",
+    "agotado": true
+  },
+  {
+    "id": "17",
+    "nombre": "Guineo",
+    "categoria": "animales",
+    "precio": 5.5,
+    "imagen": "assets/img/categorias/animales/guineo.jpg",
+    "agotado": false
+  },
+  {
+    "id": "18",
+    "nombre": "Patos Grandes",
+    "categoria": "animales",
+    "precio": 25.99,
+    "imagen": "assets/img/categorias/animales/patos-grandes.jpg",
+    "agotado": false
+  },
+  {
+    "id": "19",
+    "nombre": "Patos Pequeños",
+    "categoria": "animales",
+    "precio": 5.99,
+    "imagen": "assets/img/categorias/animales/patos-pequenos.jpg",
+    "agotado": false
+  },
+  {
+    "id": "8",
+    "nombre": "Naranjo",
+    "categoria": "frutales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/frutales/naranjo.jpg",
+    "agotado": true
+  },
+  {
+    "id": "9",
+    "nombre": "Mango",
+    "categoria": "frutales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/frutales/mango.jpg",
+    "agotado": true
+  },
+  {
+    "id": "10",
+    "nombre": "Aguacate",
+    "categoria": "frutales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/frutales/aguacate.jpg",
+    "agotado": true
+  },
+  {
+    "id": "11",
+    "nombre": "Limonero",
+    "categoria": "frutales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/frutales/limonero.jpg",
+    "agotado": true
+  },
+  {
+    "id": "12",
+    "nombre": "Roble",
+    "categoria": "ornamentales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/ornamentales/roble.jpg",
+    "agotado": true
+  },
+  {
+    "id": "13",
+    "nombre": "Ciprés",
+    "categoria": "ornamentales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/ornamentales/cipres.jpg",
+    "agotado": true
+  },
+  {
+    "id": "14",
+    "nombre": "Magnolia",
+    "categoria": "ornamentales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/ornamentales/magnolia.jpg",
+    "agotado": true
+  },
+  {
+    "id": "15",
+    "nombre": "Jacarandá",
+    "categoria": "ornamentales",
+    "precio": 0,
+    "imagen": "assets/img/categorias/ornamentales/jacaranda.jpg",
+    "agotado": true
+  }
+]
