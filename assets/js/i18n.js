@@ -158,3 +158,41 @@ MESSAGES.es['stock.available'] = 'Disponible';
 MESSAGES.es['stock.soldout'] = 'Agotado';
 MESSAGES.en['stock.available'] = 'In stock';
 MESSAGES.en['stock.soldout'] = 'Sold out';
+
+// ---- Global static translations ----
+MESSAGES.es['nav.home']='Inicio';
+MESSAGES.en['nav.home']='Home';
+MESSAGES.es['nav.shop']='Tienda';
+MESSAGES.en['nav.shop']='Shop';
+MESSAGES.es['nav.contact']='Contacto';
+MESSAGES.en['nav.contact']='Contact';
+MESSAGES.es['nav.about']='Acerca de';
+MESSAGES.en['nav.about']='About';
+
+MESSAGES.es['home.hero.cta']='Ver productos';
+MESSAGES.en['home.hero.cta']='View products';
+MESSAGES.es['home.categories']='Nuestras categorías';
+MESSAGES.en['home.categories']='Our Categories';
+MESSAGES.es['home.track.title']='Nuestra Trayectoria';
+MESSAGES.en['home.track.title']='Our Track Record';
+
+MESSAGES.es['contact.title']='Contacto';
+MESSAGES.en['contact.title']='Contact';
+MESSAGES.es['contact.name']='Nombre';
+MESSAGES.en['contact.name']='Name';
+MESSAGES.es['contact.email']='Correo';
+MESSAGES.en['contact.email']='Email';
+MESSAGES.es['contact.message']='Mensaje';
+MESSAGES.en['contact.message']='Message';
+MESSAGES.es['contact.send']='Enviar';
+MESSAGES.en['contact.send']='Send';
+
+MESSAGES.es['about.title']='Acerca de';
+MESSAGES.en['about.title']='About';
+
+// Auto-apply on DOMContentLoaded (for non-module pages)
+if (typeof window !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', ()=> {
+    if (typeof applyTranslations === 'function') applyTranslations();
+  });
+}

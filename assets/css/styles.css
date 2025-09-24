@@ -412,3 +412,5 @@ input:focus-visible, textarea:focus-visible {
 .hero-slider .slide.active { opacity: 1; transform: scale(1); }
 .hero-slider::after { content:''; position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.35)); pointer-events:none; }
 .hero-slider .hero-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:24px; color:#fff; }
+
+.toast-container{ position:fixed; right:16px; top:16px; z-index:99999; display:flex; flex-direction:column; gap:10px; }

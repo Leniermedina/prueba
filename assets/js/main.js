@@ -173,24 +173,50 @@ function initCountUp(){
   const els = document.querySelectorAll('[data-count-to]');
   if(!els.length) return;
   const ease = t => 1 - Math.pow(1 - t, 3);
+  const locale = (document.documentElement.lang || navigator.language || 'es').slice(0,2);
+  const format = (n) => Number(n).toLocaleString(locale);
   const obs = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
       if(entry.isIntersecting){
         const el = entry.target;
         const to = parseFloat(el.getAttribute('data-count-to')) || 0;
         const dur = parseInt(el.getAttribute('data-count-dur')||'1500',10);
+        const prefix = el.getAttribute('data-prefix') || '';
+        const suffix = el.getAttribute('data-suffix') || '';
         const start = performance.now();
         function step(now){
           const p = Math.min(1, (now-start)/dur);
           const v = Math.round((to)*ease(p));
-          el.textContent = v.toLocaleString();
+          el.textContent = `${prefix}${format(v)}${suffix}`;
           if(p<1) requestAnimationFrame(step);
         }
         requestAnimationFrame(step);
         obs.unobserve(el);
       }
     });
-  }, { threshold: 0.35 });
+  }, { threshold: 0.25 });
   els.forEach(el=> obs.observe(el));
 }
 document.addEventListener('DOMContentLoaded', initCountUp);
+
+// ---- Global init: theme + i18n bindings ----
+document.addEventListener('DOMContentLoaded', ()=>{
+  try{
+    // Theme persistence
+    const saved = localStorage.getItem('ebf_theme');
+    if(saved) document.documentElement.setAttribute('data-theme', saved);
+
+    // Nav labels data-i18n
+    const nav = document.querySelector('nav') || document.querySelector('.nav');
+    if(nav){
+      const map = { 'Inicio':'nav.home', 'Tienda':'nav.shop', 'Contacto':'nav.contact', 'Acerca de':'nav.about' };
+      nav.querySelectorAll('a').forEach(a=>{
+        const txt = a.textContent.trim();
+        const key = map[txt];
+        if(key){ a.setAttribute('data-i18n', key); }
+      });
+    }
+    // Apply translations globally
+    if (typeof applyTranslations === 'function') applyTranslations();
+  }catch(e){ console.warn('init error', e); }
+});
