@@ -441,9 +441,21 @@ document.addEventListener('DOMContentLoaded', () => {
   window.initCounters();
 });
 
-// Toasts
+// Toasts for cart added
 (function(){
-  const c = document.createElement('div'); c.className='toast-container'; document.body.appendChild(c);
-  function toast(html){ const t=document.createElement('div'); t.className='toast'; t.innerHTML=html; c.appendChild(t); requestAnimationFrame(()=>t.classList.add('show')); setTimeout(()=>{t.classList.remove('show'); setTimeout(()=>t.remove(),300)},2200); }
-  document.addEventListener('cart:added', (e)=> { const {product, qty}=e.detail; toast(`<i class="fa-solid fa-check"></i> ${qty} × ${(product.nombre||'Producto')} añadido`); });
+  const box = document.createElement('div');
+  box.className = 'toast-container';
+  document.body.appendChild(box);
+  function toast(html){
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = html;
+    box.appendChild(t);
+    requestAnimationFrame(()=> t.classList.add('show'));
+    setTimeout(()=> { t.classList.remove('show'); setTimeout(()=> t.remove(), 300); }, 2200);
+  }
+  document.addEventListener('cart:added', e => {
+    const { product, qty } = e.detail;
+    toast(`<i class="fa-solid fa-check"></i> ${qty} × ${(product.nombre||'Producto')} añadido`);
+  });
 })();

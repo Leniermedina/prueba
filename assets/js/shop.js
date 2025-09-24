@@ -2,11 +2,7 @@
 import { addToCart } from './cart.js';
 import { applyTranslations } from './i18n.js';
 
-const FALLBACK_JSON = [
-  {"id":"17","nombre":"Guineo","categoria":"animales","precio":5.50,"imagen":"assets/img/categorias/animales/guineo.jpg","agotado":false},
-  {"id":"18","nombre":"Patos Grandes","categoria":"animales","precio":25.99,"imagen":"assets/img/categorias/animales/patos-grandes.jpg","agotado":false},
-  {"id":"19","nombre":"Patos Pequeños","categoria":"animales","precio":5.99,"imagen":"assets/img/categorias/animales/patos-pequenos.jpg","agotado":false},
-];
+const FALLBACK_JSON = [];
 
 export async function loadProducts() {
   try {
@@ -19,16 +15,13 @@ export async function loadProducts() {
   }
 }
 
-
 function productHTML(p){
   const name = window.getProductName ? window.getProductName(p) : p.nombre;
   const agotado = !!p.agotado;
   const priceHTML = (p.precio>0) ? `<div class="badge price-badge">$${p.precio.toFixed(2)}</div>` : ``;
   const soldHTML = agotado ? `<div class="badge" data-i18n="product.soldout">Agotado</div>` : ``;
   const actions = agotado ? `` : `<div class="actions">
-        <button class="icon-btn btn-3d add-btn" data-id="${p.id}" title="${name}">
-          <i class="fa-solid fa-cart-plus"></i>
-        </button>
+        <button class="icon-btn btn-3d add-btn" data-id="${p.id}" title="${name}"><i class="fa-solid fa-cart-plus"></i></button>
         <input type="number" min="0" value="0" class="qty-input qty-input-${p.id}" inputmode="numeric">
       </div>`;
   return `<article class="card product-card" data-cat="${p.categoria}" data-name="${name.toLowerCase()}">
@@ -40,64 +33,47 @@ function productHTML(p){
     </div>
   </article>`;
 }
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
-        <span class="badge">${p.categoria}</span>
-        ${agotadoHTML}
-      </div>
-      <div style="display:flex;gap:8px;align-items:center;margin-top:12px;">
-        <button class="btn btn--primary add-btn" data-id="${p.id}" ${btnDisabled}>
-          <i class="fa-solid fa-cart-plus"></i> <span>Agregar</span>
-        </button>
-        <input type="number" min="1" value="1" class="qty-input qty-input-${p.id}">
-      </div>
-    </div>
-  </article>
-  `;
-}
 
-export async function renderShop() {
+export async function renderShop(){
   const grid = document.querySelector('#shop-grid');
   const filters = document.querySelectorAll('.filter-btn');
   const searchInput = document.querySelector('#search-input');
+  const sortSel = document.querySelector('#sort-select');
   const prods = await loadProducts();
-  
   let data = prods.slice();
+
   function renderList(list){
     grid.innerHTML = list.map(productHTML).join('');
     applyTranslations();
-    // events
-    grid.querySelectorAll('.add-btn').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
+    // Add-to-cart
+    grid.querySelectorAll('.add-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
         const id = btn.dataset.id;
-        const qty = parseInt(document.querySelector(`.qty-input-${id}`)?.value||'0',10);
-        const p = data.find(x=>x.id===id);
-        if(!p || p.agotado) return;
+        const qty = parseInt(document.querySelector(`.qty-input-${id}`)?.value || '0', 10);
+        const p = data.find(x => x.id === id);
+        if (!p || p.agotado) return;
         addToCart(p, Math.max(1, qty));
       });
     });
-    // autosize qty
-    grid.querySelectorAll('.qty-input').forEach(inp=>{
-      const autosize=()=>{ const len=String(inp.value||'0').length; inp.style.width=Math.max(28,14+len*10)+'px'; };
+    // Autosize qty
+    grid.querySelectorAll('.qty-input').forEach(inp => {
+      const autosize = () => { const l=String(inp.value||'0').length; inp.style.width = Math.max(32, 14 + l*10) + 'px'; };
       autosize(); inp.addEventListener('input', autosize);
     });
   }
-  renderList(data);
 
-  applyTranslations();
+  // Sorting
+  function sortData(mode){
+    const arr = data.slice();
+    if (mode === 'name-asc')  arr.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
+    if (mode === 'price-asc') arr.sort((a,b)=> (a.precio||0)-(b.precio||0));
+    if (mode === 'price-desc') arr.sort((a,b)=> (b.precio||0)-(a.precio||0));
+    if (mode === 'available') arr.sort((a,b)=> (a.agotado===b.agotado?0:(a.agotado?1:-1)) || (a.nombre||'').localeCompare(b.nombre||''));
+    return arr;
+  }
 
-  
-function applyFilter(){
-  const activeBtn = document.querySelector('.filter-btn.active');
-  const cat = activeBtn ? activeBtn.dataset.cat : 'todos';
-  const q = (searchInput?.value||'').trim().toLowerCase();
-  grid.querySelectorAll('.card').forEach(card=>{
-    const matchCat = (cat==='todos') || (card.dataset.cat===cat);
-    const matchText = !q || card.dataset.name.includes(q);
-    card.style.display = (matchCat && matchText) ? '' : 'none';
-  });
-}
- {
+  // Filter (category + text)
+  function applyFilter(){
     const activeBtn = document.querySelector('.filter-btn.active');
     const cat = activeBtn ? activeBtn.dataset.cat : 'todos';
     const q = (searchInput?.value || '').trim().toLowerCase();
@@ -108,42 +84,20 @@ function applyFilter(){
     });
   }
 
-  // add events
-  grid.querySelectorAll('.add-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.id;
-      const qty = parseInt(document.querySelector(`.qty-input-${id}`).value || '1', 10);
-      const p = prods.find(x => x.id === id);
-      if (!p || p.agotado) return;
-      addToCart(p, Math.max(1, qty));
-    });
-  });
-  filters.forEach(b => b.addEventListener('click', () => {
-    filters.forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    applyFilter();
+  // Init render
+  renderList(sortData(sortSel?.value || 'name-asc'));
+  applyFilter();
+
+  // Events
+  filters.forEach(btn => btn.addEventListener('click', () => {
+    filters.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); applyFilter();
   }));
   searchInput?.addEventListener('input', applyFilter);
+  sortSel?.addEventListener('change', () => { renderList(sortData(sortSel.value)); applyFilter(); });
 
-  // If URL has ?cat=animales set filter
+  // URL ?cat=
   const url = new URL(location.href);
   const urlCat = url.searchParams.get('cat');
-  if (urlCat) {
-    const btn = document.querySelector(`.filter-btn[data-cat="${urlCat}"]`);
-    if (btn) btn.click();
-  } else {
-    applyFilter();
-  }
+  if (urlCat) document.querySelector(`.filter-btn[data-cat="${urlCat}"]`)?.click();
 }
-
-  // Sorting by selector
-  const sortSel = document.querySelector('#sort-select');
-  function sortData(mode){
-    const arr = data.slice();
-    if(mode==='name-asc') arr.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
-    if(mode==='price-asc') arr.sort((a,b)=> (a.precio||0)-(b.precio||0));
-    if(mode==='price-desc') arr.sort((a,b)=> (b.precio||0)-(a.precio||0));
-    if(mode==='available') arr.sort((a,b)=> (a.agotado===b.agotado?0:(a.agotado?1:-1)) || (a.nombre||'').localeCompare(b.nombre||''));
-    return arr;
-  }
-  sortSel?.addEventListener('change', ()=>{ renderList(sortData(sortSel.value)); applyFilter(); });

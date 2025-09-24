@@ -125,14 +125,31 @@ export function applyTranslations(root=document) {
   });
 }
 
-MESSAGES.es['product.soldout']='Agotado';
-MESSAGES.en=MESSAGES.en||{};MESSAGES.en['product.soldout']='Sold out';
-MESSAGES.es['product.add']='Agregar';MESSAGES.en['product.add']='Add';
-MESSAGES.es['filters.sort']='Ordenar:';MESSAGES.en['filters.sort']='Sort:';
-MESSAGES.es['filters.sort.name']='Nombre (A-Z)';MESSAGES.en['filters.sort.name']='Name (A-Z)';
-MESSAGES.es['filters.sort.price_asc']='Precio (menor a mayor)';MESSAGES.en['filters.sort.price_asc']='Price (low to high)';
-MESSAGES.es['filters.sort.price_desc']='Precio (mayor a menor)';MESSAGES.en['filters.sort.price_desc']='Price (high to low)';
-MESSAGES.es['filters.sort.available']='Disponibles primero';MESSAGES.en['filters.sort.available']='Available first';
+// i18n extras
+MESSAGES.es['product.soldout'] = 'Agotado';
+MESSAGES.es['product.add'] = 'Agregar';
+MESSAGES.es['filters.sort'] = 'Ordenar:';
+MESSAGES.es['filters.sort.name'] = 'Nombre (A-Z)';
+MESSAGES.es['filters.sort.price_asc'] = 'Precio (menor a mayor)';
+MESSAGES.es['filters.sort.price_desc'] = 'Precio (mayor a menor)';
+MESSAGES.es['filters.sort.available'] = 'Disponibles primero';
+MESSAGES.en = MESSAGES.en || {};
+MESSAGES.en['product.soldout'] = 'Sold out';
+MESSAGES.en['product.add'] = 'Add';
+MESSAGES.en['filters.sort'] = 'Sort:';
+MESSAGES.en['filters.sort.name'] = 'Name (A-Z)';
+MESSAGES.en['filters.sort.price_asc'] = 'Price (low to high)';
+MESSAGES.en['filters.sort.price_desc'] = 'Price (high to low)';
+MESSAGES.en['filters.sort.available'] = 'Available first';
 
+// Map for explicit product translations by id (optional)
 window.PRODUCTS_I18N = window.PRODUCTS_I18N || {};
-window.getProductName = function(p){const lang=(localStorage.getItem('ebf_lang')||(navigator.language||'es')).slice(0,2);const map=(window.PRODUCTS_I18N||{})[p.id];if(map&&map[lang])return map[lang];if(lang.startsWith('en')&&p.nombre_en)return p.nombre_en;return p.nombre;}
+
+// Helper to get product name per language, falling back to nombre/nombre_en
+window.getProductName = function(p){
+  const lang = (localStorage.getItem('ebf_lang') || (navigator.language||'es')).slice(0,2);
+  const map = (window.PRODUCTS_I18N||{})[p.id];
+  if (map && map[lang]) return map[lang];
+  if (lang.startsWith('en') && p.nombre_en) return p.nombre_en;
+  return p.nombre;
+};
