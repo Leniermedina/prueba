@@ -323,7 +323,7 @@
 
   function productHTML(p){
     const agotadoHTML = p.agotado ? `<div class="badge">Agotado</div>` : '';
-    const priceHTML = p.precio > 0 ? `<div class="badge">$${p.precio.toFixed(2)}</div>` : `<div class="badge">Consultar</div>`;
+    const priceHTML = p.precio > 0 ? `<div class="badge">$${p.precio.toFixed(2)}</div>` : `<div class="badge"></div>`;
     const btnDisabled = p.agotado ? 'disabled' : '';
     return `
     <article class="card" data-cat="${p.categoria}" data-name="${p.nombre.toLowerCase()}">
@@ -456,6 +456,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   document.addEventListener('cart:added', e => {
     const { product, qty } = e.detail;
-    toast(`<i class="fa-solid fa-check"></i> ${qty} × ${(product.nombre||'Producto')} añadido`);
+    toast(`Producto agregado`);
   });
 })();

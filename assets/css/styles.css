@@ -253,7 +253,7 @@ input:focus-visible, textarea:focus-visible {
 .product-card .card__img { height: 180px; object-fit: cover; }
 .product-card .card__body { display:flex; flex-direction:column; gap:10px; height:100%; }
 .product-card .line1, .product-card .line2 { display:flex; justify-content:space-between; align-items:center; gap:10px; }
-.product-card .p-name { font-weight:800; line-height:1.2; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:2.6em; }
+
 .product-card .price-badge { font-weight:800; }
 .product-card .actions { display:flex; gap:10px; align-items:center; margin-top:auto; }
 
@@ -270,3 +270,15 @@ input:focus-visible, textarea:focus-visible {
 /* Sort bar */
 .sortbar { display:flex; gap:10px; align-items:center; margin:6px 0 12px; flex-wrap:wrap; }
 .sortbar select { padding:8px 10px; border-radius:10px; border:1px solid var(--borde); background: var(--card); color: inherit; }
+
+.product-card .p-name{
+  font-weight:800;
+  line-height:1.2;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  min-height: calc(1.2em * 2);
+  max-height: calc(1.2em * 2);
+  margin: 0;
+}
