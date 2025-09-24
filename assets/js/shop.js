@@ -101,3 +101,6 @@ export async function renderShop(){
   const urlCat = url.searchParams.get('cat');
   if (urlCat) document.querySelector(`.filter-btn[data-cat="${urlCat}"]`)?.click();
 }
+
+// Auto-run fallback
+if (window.AUTO_INIT_SHOP) { renderShop(); }
