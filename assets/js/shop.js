@@ -20,33 +20,22 @@ export async function loadProducts() {
 }
 
 
-function productHTML(p) {
-  const name = (window.getProductName ? window.getProductName(p) : p.nombre);
+function productHTML(p){
+  const name = window.getProductName ? window.getProductName(p) : p.nombre;
   const agotado = !!p.agotado;
-  const priceHTML = (p.precio > 0) ? `<div class="badge price-badge">$${p.precio.toFixed(2)}</div>` : ``;
+  const priceHTML = (p.precio>0) ? `<div class="badge price-badge">$${p.precio.toFixed(2)}</div>` : ``;
   const soldHTML = agotado ? `<div class="badge" data-i18n="product.soldout">Agotado</div>` : ``;
-
-  const actions = agotado ? `` : `
-    <div class="actions">
-      <button class="btn btn--primary btn-3d add-btn" data-id="${p.id}">
-        <i class="fa-solid fa-cart-plus"></i> <span data-i18n="product.add">Agregar</span>
-      </button>
-      <input type="number" min="1" value="1" class="qty-input qty-input-${p.id}" inputmode="numeric">
-    </div>
-  `;
-
-  return `
-  <article class="card product-card" data-cat="${p.categoria}" data-name="${name.toLowerCase()}">
+  const actions = agotado ? `` : `<div class="actions">
+        <button class="icon-btn btn-3d add-btn" data-id="${p.id}" title="${name}">
+          <i class="fa-solid fa-cart-plus"></i>
+        </button>
+        <input type="number" min="0" value="0" class="qty-input qty-input-${p.id}" inputmode="numeric">
+      </div>`;
+  return `<article class="card product-card" data-cat="${p.categoria}" data-name="${name.toLowerCase()}">
     <img class="card__img" src="${p.imagen}" alt="${name}">
     <div class="card__body">
-      <div class="line1">
-        <strong class="p-name">${name}</strong>
-        ${priceHTML}
-      </div>
-      <div class="line2">
-        <span class="badge">${p.categoria}</span>
-        ${soldHTML}
-      </div>
+      <div class="line1"><strong class="p-name">${name}</strong>${priceHTML}</div>
+      <div class="line2"><span class="badge">${p.categoria}</span>${soldHTML}</div>
       ${actions}
     </div>
   </article>`;
@@ -74,32 +63,41 @@ export async function renderShop() {
   const prods = await loadProducts();
   
   let data = prods.slice();
-
   function renderList(list){
     grid.innerHTML = list.map(productHTML).join('');
-    // i18n on dynamic nodes
     applyTranslations();
-    // attach add-to-cart and autosize
-    grid.querySelectorAll('.add-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+    // events
+    grid.querySelectorAll('.add-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
         const id = btn.dataset.id;
-        const qty = parseInt(document.querySelector(`.qty-input-${id}`)?.value || '1', 10);
-        const p = data.find(x => x.id === id);
-        if (!p || p.agotado) return;
+        const qty = parseInt(document.querySelector(`.qty-input-${id}`)?.value||'0',10);
+        const p = data.find(x=>x.id===id);
+        if(!p || p.agotado) return;
         addToCart(p, Math.max(1, qty));
       });
     });
-    grid.querySelectorAll('.qty-input').forEach(inp => {
-      autosizeQty(inp);
-      inp.addEventListener('input', () => autosizeQty(inp));
+    // autosize qty
+    grid.querySelectorAll('.qty-input').forEach(inp=>{
+      const autosize=()=>{ const len=String(inp.value||'0').length; inp.style.width=Math.max(28,14+len*10)+'px'; };
+      autosize(); inp.addEventListener('input', autosize);
     });
   }
-
-  // initial render
   renderList(data);
 
+  applyTranslations();
 
-  function applyFilter() {
+  
+function applyFilter(){
+  const activeBtn = document.querySelector('.filter-btn.active');
+  const cat = activeBtn ? activeBtn.dataset.cat : 'todos';
+  const q = (searchInput?.value||'').trim().toLowerCase();
+  grid.querySelectorAll('.card').forEach(card=>{
+    const matchCat = (cat==='todos') || (card.dataset.cat===cat);
+    const matchText = !q || card.dataset.name.includes(q);
+    card.style.display = (matchCat && matchText) ? '' : 'none';
+  });
+}
+ {
     const activeBtn = document.querySelector('.filter-btn.active');
     const cat = activeBtn ? activeBtn.dataset.cat : 'todos';
     const q = (searchInput?.value || '').trim().toLowerCase();
@@ -138,24 +136,14 @@ export async function renderShop() {
   }
 }
 
-
-// autosize qty inputs for product grid
-function autosizeQty(el){
-  const len = String(el.value || '1').length;
-  el.style.width = Math.max(28, 14 + len*10) + 'px';
-}
-
-  // Sorting
+  // Sorting by selector
   const sortSel = document.querySelector('#sort-select');
   function sortData(mode){
     const arr = data.slice();
-    if (mode === 'name-asc') arr.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
-    if (mode === 'price-asc') arr.sort((a,b)=> (a.precio||0)-(b.precio||0));
-    if (mode === 'price-desc') arr.sort((a,b)=> (b.precio||0)-(a.precio||0));
-    if (mode === 'available') arr.sort((a,b)=> (a.agotado===b.agotado?0:(a.agotado?1:-1)) || (a.nombre||'').localeCompare(b.nombre||''));
+    if(mode==='name-asc') arr.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
+    if(mode==='price-asc') arr.sort((a,b)=> (a.precio||0)-(b.precio||0));
+    if(mode==='price-desc') arr.sort((a,b)=> (b.precio||0)-(a.precio||0));
+    if(mode==='available') arr.sort((a,b)=> (a.agotado===b.agotado?0:(a.agotado?1:-1)) || (a.nombre||'').localeCompare(b.nombre||''));
     return arr;
   }
-  sortSel?.addEventListener('change', ()=> {
-    renderList(sortData(sortSel.value));
-    applyFilter();
-  });
+  sortSel?.addEventListener('change', ()=>{ renderList(sortData(sortSel.value)); applyFilter(); });

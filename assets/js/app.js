@@ -441,17 +441,9 @@ document.addEventListener('DOMContentLoaded', () => {
   window.initCounters();
 });
 
-
-// Autosize qty inputs inside cart drawer
+// Toasts
 (function(){
-  function autosize(el){
-    const len = String(el.value || '1').length;
-    el.style.width = Math.max(28, 14 + len*10) + 'px';
-  }
-  document.addEventListener('cart:updated', ()=> {
-    document.querySelectorAll('.cart-drawer input.qty-input').forEach(i=>{
-      autosize(i);
-      i.addEventListener('input', ()=> autosize(i));
-    });
-  });
+  const c = document.createElement('div'); c.className='toast-container'; document.body.appendChild(c);
+  function toast(html){ const t=document.createElement('div'); t.className='toast'; t.innerHTML=html; c.appendChild(t); requestAnimationFrame(()=>t.classList.add('show')); setTimeout(()=>{t.classList.remove('show'); setTimeout(()=>t.remove(),300)},2200); }
+  document.addEventListener('cart:added', (e)=> { const {product, qty}=e.detail; toast(`<i class="fa-solid fa-check"></i> ${qty} × ${(product.nombre||'Producto')} añadido`); });
 })();
