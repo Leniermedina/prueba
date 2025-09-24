@@ -447,12 +447,13 @@ document.addEventListener('DOMContentLoaded', () => {
   box.className = 'toast-container';
   document.body.appendChild(box);
   function toast(html){
-    const t = document.createElement('div');
-    t.className = 'toast';
-    t.innerHTML = html;
-    box.appendChild(t);
-    requestAnimationFrame(()=> t.classList.add('show'));
-    setTimeout(()=> { t.classList.remove('show'); setTimeout(()=> t.remove(), 300); }, 2200);
+  const t = document.createElement('div');
+  t.className = 'toast success one-sec';
+  t.innerHTML = html;
+  box.appendChild(t);
+  // auto remove after 1s
+  setTimeout(()=> { t.remove(); }, 1000);
+}, 2200);
   }
   document.addEventListener('cart:added', e => {
     const { product, qty } = e.detail;

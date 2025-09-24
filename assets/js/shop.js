@@ -2,105 +2,140 @@
 import { addToCart } from './cart.js';
 import { applyTranslations } from './i18n.js';
 
-const FALLBACK_JSON = [];
-
+/** Load products from JSON (no-cache) with graceful fallback */
 export async function loadProducts() {
   try {
     const res = await fetch('data/productos.json', { cache: 'no-store' });
     if (!res.ok) throw new Error('Network');
     return await res.json();
-  } catch(e) {
-    console.warn('Usando fallback de productos por CORS/local:', e);
-    return FALLBACK_JSON;
+  } catch (e) {
+    console.warn('Fallo al cargar productos:', e);
+    return [];
   }
 }
 
-function productHTML(p){
-  const name = window.getProductName ? window.getProductName(p) : p.nombre;
+/** Build a single product card (glass style) */
+function productHTML(p) {
+  const name = (window.getProductName ? window.getProductName(p) : p.nombre) || '';
   const agotado = !!p.agotado;
-  const priceHTML = (p.precio>0) ? `<div class="badge price-badge">$${p.precio.toFixed(2)}</div>` : ``;
-  const soldHTML = agotado ? `<div class="badge" data-i18n="product.soldout">Agotado</div>` : ``;
-  const actions = agotado ? `` : `<div class="actions">
-        <button class="icon-btn btn-3d add-btn" data-id="${p.id}" title="${name}"><i class="fa-solid fa-cart-plus"></i></button>
-        <input type="number" min="0" value="0" class="qty-input qty-input-${p.id}" inputmode="numeric">
-      </div>`;
-  return `<article class="card product-card" data-cat="${p.categoria}" data-name="${name.toLowerCase()}">
-    <img class="card__img" src="${p.imagen}" alt="${name}">
-    <div class="card__body">
-      <div class="line1"><strong class="p-name">${name}</strong>${priceHTML}</div>
-      <div class="line2"><span class="badge">${p.categoria}</span>${soldHTML}</div>
-      ${actions}
+
+  const priceHTML = (p.precio > 0)
+    ? `<span class="price-badge">$${Number(p.precio).toFixed(2)}</span>`
+    : ``;
+
+  const stockHTML = agotado
+    ? `<div class="stock-row"><i class="fa-regular fa-circle-xmark"></i><span data-i18n="stock.soldout">Agotado</span></div>`
+    : `<div class="stock-row"><i class="fa-solid fa-circle-check"></i><span data-i18n="stock.available">Disponible</span></div>`;
+
+  const actionsHTML = agotado ? `` : `
+    <div class="actions-row">
+      <button class="add-btn btn-3d" data-id="${p.id}" title="${name}">
+        <i class="fa-solid fa-cart-plus"></i>
+      </button>
+      <div class=\"qty-stepper\"><button class=\"step minus\" data-id=\"${p.id}\" aria-label=\"-\">−</button><input type=\"number\" min=\"0\" value=\"0\" class=\"qty-input qty-input-${p.id}\" inputmode=\"numeric\"><button class=\"step plus\" data-id=\"${p.id}\" aria-label=\"+\">+</button></div>
+    </div>`;
+
+  return `
+  <article class="card product-card" data-cat="${p.categoria}" data-name="${name.toLowerCase()}">
+    <div class="card__media">
+      <img src="${p.imagen}" alt="${name}">
+      ${priceHTML}
+    </div>
+    <div class="card__glass">
+      <h3 class="p-name">${name}</h3>
+      <span class="category-pill">${p.categoria}</span>
+      ${stockHTML}
+      ${actionsHTML}
     </div>
   </article>`;
 }
 
-export async function renderShop(){
+/** Render shop grid, add sorting/filtering and interactions */
+export async function renderShop() {
   const grid = document.querySelector('#shop-grid');
-  const filters = document.querySelectorAll('.filter-btn');
+  if (!grid) return;
+
+  const filters = Array.from(document.querySelectorAll('.filter-btn'));
   const searchInput = document.querySelector('#search-input');
   const sortSel = document.querySelector('#sort-select');
-  const prods = await loadProducts();
-  let data = prods.slice();
 
-  function renderList(list){
+  const data = await loadProducts();
+
+  function renderList(list) {
     grid.innerHTML = list.map(productHTML).join('');
     applyTranslations();
-    // Add-to-cart
+
+    // Bind add-to-cart
     grid.querySelectorAll('.add-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.dataset.id;
-        const qty = parseInt(document.querySelector(`.qty-input-${id}`)?.value || '0', 10);
-        const p = data.find(x => x.id === id);
+        const qty = parseInt(document.querySelector(`.qty-input-${CSS.escape(id)}`)?.value || '0', 10);
+        const p = data.find(x => String(x.id) === String(id));
         if (!p || p.agotado) return;
         addToCart(p, Math.max(1, qty));
       });
     });
-    // Autosize qty
+
+    // Autosize qty pills
     grid.querySelectorAll('.qty-input').forEach(inp => {
-      const autosize = () => { const l=String(inp.value||'0').length; inp.style.width = Math.max(32, 14 + l*10) + 'px'; };
+      const autosize = () => { const l = String(inp.value || '0').length; inp.style.width = Math.max(32, 16 + l * 10) + 'px'; };
       autosize(); inp.addEventListener('input', autosize);
     });
+    // Stepper +/-
+    grid.querySelectorAll('.qty-stepper .step').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        const input = grid.querySelector(`.qty-input-${CSS.escape(id)}`);
+        if (!input) return;
+        const cur = parseInt(input.value || '0', 10) || 0;
+        const next = btn.classList.contains('plus') ? cur + 1 : Math.max(0, cur - 1);
+        input.value = next;
+        const e = new Event('input'); input.dispatchEvent(e);
+      });
+    });
   }
-
-  // Sorting
-  function sortData(mode){
-    const arr = data.slice();
+function sortData(mode, src) {
+    const arr = src.slice();
     if (mode === 'name-asc')  arr.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
-    if (mode === 'price-asc') arr.sort((a,b)=> (a.precio||0)-(b.precio||0));
-    if (mode === 'price-desc') arr.sort((a,b)=> (b.precio||0)-(a.precio||0));
+    if (mode === 'price-asc') arr.sort((a,b)=> (Number(a.precio)||0)-(Number(b.precio)||0));
+    if (mode === 'price-desc')arr.sort((a,b)=> (Number(b.precio)||0)-(Number(a.precio)||0));
     if (mode === 'available') arr.sort((a,b)=> (a.agotado===b.agotado?0:(a.agotado?1:-1)) || (a.nombre||'').localeCompare(b.nombre||''));
     return arr;
   }
 
-  // Filter (category + text)
-  function applyFilter(){
+  function applyFilter() {
     const activeBtn = document.querySelector('.filter-btn.active');
     const cat = activeBtn ? activeBtn.dataset.cat : 'todos';
     const q = (searchInput?.value || '').trim().toLowerCase();
-    grid.querySelectorAll('.card').forEach(card => {
+    grid.querySelectorAll('.product-card').forEach(card => {
       const matchCat = (cat === 'todos') || (card.dataset.cat === cat);
       const matchText = !q || card.dataset.name.includes(q);
       card.style.display = (matchCat && matchText) ? '' : 'none';
     });
   }
 
-  // Init render
-  renderList(sortData(sortSel?.value || 'name-asc'));
+  // Initial render sorted by selection (default name-asc)
+  const initial = sortData(sortSel?.value || 'name-asc', data);
+  renderList(initial);
   applyFilter();
 
   // Events
   filters.forEach(btn => btn.addEventListener('click', () => {
     filters.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active'); applyFilter();
+    btn.classList.add('active');
+    applyFilter();
   }));
   searchInput?.addEventListener('input', applyFilter);
-  sortSel?.addEventListener('change', () => { renderList(sortData(sortSel.value)); applyFilter(); });
+  sortSel?.addEventListener('change', () => {
+    const sorted = sortData(sortSel.value, data);
+    renderList(sorted);
+    applyFilter();
+  });
 
   // URL ?cat=
-  const url = new URL(location.href);
-  const urlCat = url.searchParams.get('cat');
+  const urlCat = new URL(location.href).searchParams.get('cat');
   if (urlCat) document.querySelector(`.filter-btn[data-cat="${urlCat}"]`)?.click();
 }
 
-// Auto-run fallback
+// Auto-run fallback if loaded directly
 if (window.AUTO_INIT_SHOP) { renderShop(); }

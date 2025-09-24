@@ -153,3 +153,8 @@ window.getProductName = function(p){
   if (lang.startsWith('en') && p.nombre_en) return p.nombre_en;
   return p.nombre;
 };
+
+MESSAGES.es['stock.available'] = 'Disponible';
+MESSAGES.es['stock.soldout'] = 'Agotado';
+MESSAGES.en['stock.available'] = 'In stock';
+MESSAGES.en['stock.soldout'] = 'Sold out';
