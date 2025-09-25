@@ -1,5 +1,10 @@
 
 import { readCart, updateQty, clearCart, cartTotal } from './cart.js';
+
+function cartItemCount(){
+  try { return readCart().reduce((a, it)=> a + (Number(it.qty)||0), 0); } catch(e){ return 0; }
+}
+
 import { getLang, setLang, applyTranslations } from './i18n.js';
 
 const THEME_KEY = 'ebf_theme';
@@ -47,19 +52,19 @@ function buildCartDrawer() {
       list.appendChild(row);
     });
   }
-  totalEl.textContent = '$' + cartTotal(cart).toFixed(2);
+  totalEl.textContent = '$' + cartTotal(cart).toFixed(2); updateCartBadges();
 
   // events
   list.querySelectorAll('input.qty-input').forEach(inp => {
     inp.addEventListener('change', () => {
       const id = inp.dataset.id;
       const qty = Math.max(0, parseInt(inp.value || '0', 10));
-      updateQty(id, qty);
+      updateQty(id, qty); updateCartBadges();
     });
   });
   list.querySelectorAll('[data-action="del"]').forEach(btn => {
     btn.addEventListener('click', () => {
-      updateQty(btn.dataset.id, 0);
+      updateQty(btn.dataset.id, 0); updateCartBadges();
     });
   });
 }
@@ -71,14 +76,16 @@ function toggleDrawer(force) {
   if (drawer.style.display === 'flex') buildCartDrawer();
 }
 
-function createFloatingCart() {
+function createFloatingCart(){
   if (document.querySelector('.floating-cart')) return;
   const btn = document.createElement('button');
   btn.className = 'floating-cart';
   btn.id = 'floating-cart';
-  btn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i>';
+  btn.innerHTML = '<span class="badge" aria-label="Items in cart">0</span><i class="fa-solid fa-cart-shopping"></i>';
   btn.addEventListener('click', () => toggleDrawer(true));
   document.body.appendChild(btn);
+  // initialize badge
+  updateCartBadges();
 
   let lastY = window.scrollY;
   window.addEventListener('scroll', () => {
@@ -145,7 +152,7 @@ export function initHeader() {
   });
 
   document.querySelector('#clear-cart')?.addEventListener('click', () => {
-    clearCart();
+    clearCart(); updateCartBadges();
   });
 
   // Floating cart + autohide header
@@ -220,3 +227,13 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if (typeof applyTranslations === 'function') applyTranslations();
   }catch(e){ console.warn('init error', e); }
 });
+
+
+// Update cart badges for header and floating cart
+function updateCartBadges(){
+  const count = cartItemCount();
+  const hdrBadge = document.querySelector('[data-cart-count]');
+  if(hdrBadge) hdrBadge.textContent = String(count);
+  const floatBadge = document.querySelector('#floating-cart .badge');
+  if(floatBadge) floatBadge.textContent = String(count);
+}

@@ -4,6 +4,11 @@
   const I18N_STORAGE_KEY = 'ebf_lang';
   const MESSAGES = {
     es: {
+      'footer.address.title': 'Nuestra ubicación',
+      'footer.address.open_map': 'Ver en Google Maps',
+      'footer.address.address': '14370 SW 208th Ave, Miami, FL 33196',
+      'contact.bg.credit': 'Imágenes de Freepik',
+      'contact.address': 'Dirección',
       'nav.home': 'Inicio',
       'nav.shop': 'Tienda',
       'nav.contact': 'Contacto',
@@ -578,3 +583,32 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 /* === /Animated Counters === */
 
+
+// ===== Mobile Menu (hamburger) =====
+(function(){
+  function initMobileMenu(){
+    const header = document.querySelector('.header');
+    if(!header) return;
+    const nav = header.querySelector('nav, .nav');
+    if(!nav) return;
+    if(document.getElementById('menu-toggle')) return;
+
+    const btn = document.createElement('button');
+    btn.id = 'menu-toggle';
+    btn.className = 'icon-btn hamburger';
+    btn.setAttribute('aria-label', 'Menu');
+    btn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+    header.querySelector('.container')?.prepend(btn);
+
+    btn.addEventListener('click', ()=>{
+      nav.classList.toggle('nav--open');
+      document.body.classList.toggle('no-scroll', nav.classList.contains('nav--open'));
+    });
+
+    // Close when clicking a link (mobile)
+    nav.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>{
+      nav.classList.remove('nav--open'); document.body.classList.remove('no-scroll');
+    }));
+  }
+  document.addEventListener('DOMContentLoaded', initMobileMenu);
+})();

@@ -40,36 +40,35 @@
     <h2 data-i18n="contact.title">Escríbenos</h2>
     <p style="text-align:center" data-i18n="contact.subtitle">Envíanos un mensaje y te respondemos pronto</p>
 
-    <section class="section" style="padding-top:10px;">
-      <div class="grid">
-        <article class="card">
-          <div class="card__body" style="display:flex;gap:10px;align-items:center;">
-            <i class="fa-solid fa-phone"></i>
-            <div><strong>WhatsApp</strong><br><a href="https://wa.me/17864036850" target="_blank">+1 786 403 6850</a></div>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card__body" style="display:flex;gap:10px;align-items:center;">
-            <i class="fa-solid fa-envelope"></i>
-            <div><strong>Email</strong><br><a href="mailto:elbosquefarminfo@gmail.com">elbosquefarminfo@gmail.com</a></div>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card__body" style="display:flex;gap:10px;align-items:center;">
-            <i class="fa-solid fa-location-dot"></i>
-            <div><strong>Ubicación</strong><br>Área rural — atención coordinada por WhatsApp</div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <form class="grid" style="max-width:800px;margin:0 auto;">
-      <input type="text" placeholder="Nombre" data-i18n="contact.name" required class="card" style="padding:12px;border-radius:12px;">
-      <input type="email" placeholder="Correo" data-i18n="contact.email" required class="card" style="padding:12px;border-radius:12px;">
-      <textarea rows="6" placeholder="Mensaje" data-i18n="contact.message" class="card" style="padding:12px;border-radius:12px;"></textarea>
-      <button class="btn btn--primary" type="submit" data-i18n="contact.send"><span data-i18n="contact.send">Enviar</span></button>
+    <section class="contact-hero" data-hero="contact">
+  <div class="contact-hero__overlay" aria-hidden="true"></div>
+  <div class="contact-hero__grid">
+    <div class="contact-hero__content">
+      <h2 data-i18n="contact.title">Contáctenos</h2>
+      <p class="contact-hero__desc" data-i18n="contact.subtitle">Envíanos un mensaje y te respondemos pronto.</p>
+      <small class="img-credit" data-i18n="contact.bg.credit">Imágenes de Freepik</small>
+    </div>
+    <form id="contact-form" class="contact-form" autocomplete="on" novalidate>
+      <label>
+        <span data-i18n="contact.email">Correo</span>
+        <input type="email" id="cf-email" placeholder="name@email.com" required data-i18n="contact.email">
+      </label>
+      <label>
+        <span data-i18n="contact.name">Nombre</span>
+        <input type="text" id="cf-name" placeholder="Tu nombre" required data-i18n="contact.name">
+      </label>
+      <label class="span-2">
+        <span data-i18n="contact.address">Dirección</span>
+        <input type="text" id="cf-address" placeholder="Tu dirección" data-i18n="contact.address">
+      </label>
+      <label class="span-2">
+        <span data-i18n="contact.message">Mensaje</span>
+        <textarea id="cf-message" rows="4" placeholder="Cuéntanos..." required data-i18n="contact.message"></textarea>
+      </label>
+      <button class="btn btn--primary" id="cf-send" type="submit" data-i18n="contact.send">Enviar</button>
     </form>
-  </section>
+  </div>
+</section>
 
 
   <aside class="cart-drawer">
@@ -90,10 +89,70 @@
   <footer>
     <p>© 2025 El Bosque Farm</p>
     <p>TikTok: <a href="https://www.tiktok.com/@elbosquefarm" target="_blank">@ElBosqueFarm</a> · <a href="mailto:elbosquefarminfo@gmail.com"><span data-i18n="contact.email">Correo</span></a></p>
-  </footer>
+  <div class="footer-map">
+    <div class="footer-map__text">
+      <h3 data-i18n="footer.address.title">Nuestra ubicación</h3>
+      <p class="address-line" data-i18n="footer.address.address">14370 SW 208th Ave, Miami, FL 33196</p>
+      <a class="btn btn--outline" href="https://www.google.com/maps/search/?api=1&query=14370+SW+208th+Ave,+Miami,+FL+33196" target="_blank" rel="noopener" data-i18n="footer.address.open_map">Ver en Google Maps</a>
+    </div>
+    <div class="footer-map__map" aria-label="Google Maps">
+      <iframe
+        title="Google Maps — 14370 SW 208th Ave, Miami, FL 33196"
+        src="https://www.google.com/maps?q=14370+SW+208th+Ave,+Miami,+FL+33196&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</footer>
 <script type="module" src="assets/js/main.js?v=15"></script>
 <script src="assets/js/app.js?v=15"></script>
 
 <script src="assets/js/app.js"></script>
+
+<script>
+(function(){
+  const form = document.getElementById('contact-form');
+  if(!form) return;
+  function getWaNumber(){
+    const link = document.querySelector('a[href*="wa.me"]');
+    if(link){
+      const m = link.href.match(/wa\.me\/(\d+)/);
+      if(m) return m[1];
+    }
+    return '17864036850';
+  }
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = (document.getElementById('cf-name').value||'').trim();
+    const email = (document.getElementById('cf-email').value||'').trim();
+    const address = (document.getElementById('cf-address').value||'').trim();
+    const message = (document.getElementById('cf-message').value||'').trim();
+    if(!name || !email || !message){
+      const es = !window.I18N || (window.I18N.getLang && window.I18N.getLang()) !== 'en';
+      alert(es ? 'Por favor completa Nombre, Correo y Mensaje.' : 'Please complete Name, Email and Message.');
+      return;
+    }
+    const lang = (window.I18N && I18N.getLang && I18N.getLang()) || 'es';
+    const intro = lang === 'en' ? 'New contact from the website' : 'Nuevo contacto desde la web';
+    const body =
+      `*${intro}*\n\n` +
+      `Nombre: ${name}\n` +
+      `Email: ${email}\n` +
+      (address ? `Dirección: ${address}\n` : '') +
+      `Mensaje: ${message}`;
+    const url = `https://wa.me/${getWaNumber()}?text=` + encodeURIComponent(body);
+    window.open(url, '_blank');
+  });
+
+  // set background image placeholder; user can replace file later
+  const hero = document.querySelector('.contact-hero');
+  if(hero){
+    hero.style.backgroundImage = "url('assets/img/contact-hero.jpg')";
+  }
+})();
+</script>
+
 </body>
 </html>

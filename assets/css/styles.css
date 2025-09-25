@@ -93,7 +93,7 @@ body {
 }
 
 /* Hero */
-.hero {
+.hero { position: relative;
   background:
     linear-gradient(rgba(26,77,46,0.85), rgba(26,77,46,0.75)),
     url('assets/img/background/hero-bg.jpg');
@@ -400,9 +400,9 @@ input:focus-visible, textarea:focus-visible {
 }
 
 /* Hero slider */
-.hero { position: relative; }
+.hero { position: relative; position: relative; }
 .hero-slider { position: relative; height: 64vh; min-height: 420px; border-radius: 16px; overflow: hidden; }
-.hero-slider .slide {
+.hero-slider .slide { z-index:1;
   position: absolute; inset: 0;
   background-image: var(--img);
   background-size: cover; background-position: center;
@@ -411,6 +411,153 @@ input:focus-visible, textarea:focus-visible {
 }
 .hero-slider .slide.active { opacity: 1; transform: scale(1); }
 .hero-slider::after { content:''; position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.35)); pointer-events:none; }
-.hero-slider .hero-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:24px; color:#fff; }
+.hero-slider .hero-overlay { z-index:2; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:24px; color:#fff; }
 
 .toast-container{ position:fixed; right:16px; top:16px; z-index:99999; display:flex; flex-direction:column; gap:10px; }
+
+
+/* ===== Contact Hero (scoped) ===== */
+.contact-hero{
+  position: relative;
+  min-height: 72vh;
+  padding: 60px 20px;
+  background: var(--bg) url('../img/contact-hero.jpg') center/cover no-repeat;
+  display: grid;
+  align-items: center;
+}
+.contact-hero__overlay{
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,.55), rgba(0,0,0,.25));
+  pointer-events: none;
+}
+[data-theme="light"] .contact-hero__overlay{
+  background: linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.0));
+}
+.contact-hero__grid{
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+@media (max-width: 900px){
+  .contact-hero__grid{ grid-template-columns: 1fr; }
+}
+.contact-hero__content{
+  color: #fff;
+}
+[data-theme="light"] .contact-hero__content{
+  color: var(--texto);
+  text-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+.contact-hero__content h2{
+  font-family: 'Merriweather', serif;
+  font-size: clamp(28px, 4vw, 44px);
+  margin: 0 0 12px;
+}
+.contact-hero__desc{ max-width: 560px; opacity: .95; }
+.img-credit{ display:inline-block; margin-top:12px; opacity:.8; }
+
+.contact-form{
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 14px;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid var(--borde);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+.contact-form label{ display:flex; flex-direction:column; gap:6px; font-weight:600; color: var(--texto); }
+.contact-form .span-2{ grid-column: 1 / -1; }
+.contact-form input, .contact-form textarea{
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--borde);
+  background: var(--bg);
+  color: var(--texto);
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+[data-theme="light"] .contact-form input, [data-theme="light"] .contact-form textarea{
+  background: #fff; color: #111;
+}
+.contact-form input::placeholder, .contact-form textarea::placeholder{
+  color: rgba(127,127,127,.90);
+}
+[data-theme="dark"] .contact-form input::placeholder, [data-theme="dark"] .contact-form textarea::placeholder{
+  color: rgba(220,220,220,.60);
+}
+.contact-form input:focus, .contact-form textarea:focus{
+  outline: none; border-color: var(--verde-claro);
+  box-shadow: 0 0 0 3px rgba(60,255,158,.25);
+}
+.contact-form button{ grid-column: 1 / -1; justify-self: start; }
+
+
+/* === Footer Map Block === */
+.footer-map{
+  display:grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap:16px;
+  padding:16px;
+  margin: 20px auto;
+  border-radius: 16px;
+  border: 1px solid var(--borde);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  max-width: 1100px;
+}
+.footer-map__text h3{ margin: 0 0 6px; }
+.footer-map__text .address-line{ margin: 0 0 10px; opacity:.9; }
+.footer-map__map iframe{
+  width:100%;
+  aspect-ratio: 16/9;
+  border:0;
+  border-radius: 12px;
+  filter: saturate(1) contrast(1);
+}
+@media (max-width: 900px){
+  .footer-map{ grid-template-columns: 1fr; }
+}
+
+
+
+/* ===== Mobile Nav + Hamburger ===== */
+.hamburger { display:none; margin-right:8px; }
+@media (max-width: 900px){
+  .hamburger { display:inline-flex; align-items:center; justify-content:center; }
+  .header nav, .header .nav {
+    position: fixed; inset: 60px 12px auto 12px;
+    background: var(--card);
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 12px;
+    transform: translateY(-16px);
+    opacity: 0; pointer-events: none;
+    transition: transform .18s ease, opacity .18s ease;
+    z-index: 50;
+  }
+  .header nav.nav--open, .header .nav.nav--open { transform:none; opacity:1; pointer-events:auto; }
+  body.no-scroll { overflow: hidden; }
+  .header nav ul, .header .nav ul { display:flex; flex-direction:column; gap:8px; margin:0; padding:0; list-style:none; }
+  .header nav a, .header .nav a { display:block; padding:10px 12px; border-radius:10px; color: var(--texto); text-decoration:none; }
+  .header nav a:hover, .header .nav a:hover { background: rgba(255,255,255,.06); }
+}
+/* ===== Floating cart badge ===== */
+.floating-cart { position: fixed; right: 16px; bottom: 16px; z-index: 60; }
+.floating-cart .badge{
+  position:absolute; top:-6px; right:-6px; min-width:20px; height:20px; border-radius:999px;
+  background: var(--verde-claro); color:#000; font-weight:800; font-size:12px; display:flex; align-items:center; justify-content:center; padding:0 5px;
+  border:1px solid rgba(0,0,0,.25);
+}
+
+/* Hero overlay content */
+.hero-content{ text-align:center; max-width: 900px; margin: 0 auto; padding: 20px; }
+.hero-content h1{ font-size: clamp(40px, 6vw, 72px); margin: 0 0 12px; }
+.hero-content p{ font-size: clamp(16px, 2.2vw, 22px); margin: 0 auto; max-width: 900px; }
+.hero-content .cta{ margin-top: 22px; }
