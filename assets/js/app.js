@@ -468,13 +468,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const els = Array.prototype.slice.call(document.querySelectorAll(SELECTOR));
   if (!els.length) return;
 
-  // Prevent double-init
   if (window.__ebfCountersInit) return;
   window.__ebfCountersInit = true;
 
   function parseNumber(str){
     try {
-      // allow commas, dots, spaces
       const clean = String(str).replace(/[^\d.-]/g,'');
       const n = parseFloat(clean);
       return isNaN(n) ? 0 : n;
@@ -482,14 +480,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function formatLikeOriginal(target, originalText){
-    // Preserve "+" or suffix like "k", "+", etc.
     const suffixMatch = originalText.match(/[^\d]*$/);
     const suffix = suffixMatch ? suffixMatch[0] : '';
     return Math.round(target).toLocaleString() + suffix;
   }
 
   function animate(el){
-    if (el.__running) return;
+    if (el.__running || el.__done) return;
     el.__running = true;
     const toAttr = el.getAttribute('data-counter-to');
     const durAttr = el.getAttribute('data-counter-dur');
@@ -498,7 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const original = el.textContent || '0';
     const to = parseNumber(toAttr);
-    const start = startAttr != null ? parseNumber(startAttr) : 0;
+    const start = startAttr != null ? parseNumber(startAttr) : parseNumber(original) || 0;
     const dur = Math.max(200, parseInt(durAttr || '1200', 10));
     const ease = (easingAttr || 'outCubic').toLowerCase();
 
@@ -521,13 +518,24 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         el.textContent = formatLikeOriginal(to, original);
         el.__running = false;
+        el.__done = true;
       }
     }
     requestAnimationFrame(step);
   }
 
-  function init(){
-    // If IntersectionObserver is available, lazy-animate when visible.
+  function isInViewport(el, ratio=0.1){
+    const r = el.getBoundingClientRect();
+    const h = (window.innerHeight || document.documentElement.clientHeight);
+    const elVisible = Math.max(0, Math.min(h, r.bottom) - Math.max(0, r.top));
+    return elVisible >= Math.min(h*ratio, r.height*ratio);
+  }
+
+  function initWithFallbacks(){
+    const notDone = () => els.filter(e => !e.__done);
+
+    // 1) Try IntersectionObserver
+    let usedIO = false;
     if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -538,16 +546,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }, { threshold: 0.1, rootMargin: '0px 0px -15% 0px' });
       els.forEach(el => io.observe(el));
-    } else {
-      // Fallback: animate immediately
-      els.forEach(animate);
+      usedIO = true;
     }
+
+    // 2) Immediate check for elements already visible (covers some IO edge cases)
+    els.forEach(el => {
+      if (isInViewport(el, 0.1)) animate(el);
+    });
+
+    // 3) Scroll/resize fallback for any that remain
+    function tryScrollFallback(){
+      notDone().forEach(el => { if (isInViewport(el, 0.1)) animate(el); });
+      if (!notDone().length){
+        window.removeEventListener('scroll', tryScrollFallback, { passive: true });
+        window.removeEventListener('resize', tryScrollFallback);
+      }
+    }
+    window.addEventListener('scroll', tryScrollFallback, { passive: true });
+    window.addEventListener('resize', tryScrollFallback);
+
+    // 4) Safety timer: after 2s, animate anything pendiente (last resort)
+    setTimeout(() => {
+      notDone().forEach(animate);
+    }, 2000);
   }
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    init();
+    initWithFallbacks();
   } else {
-    document.addEventListener('DOMContentLoaded', init, { once:true });
+    document.addEventListener('DOMContentLoaded', initWithFallbacks, { once:true });
   }
 })();
 /* === /Animated Counters === */
+
