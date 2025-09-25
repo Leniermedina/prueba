@@ -460,3 +460,94 @@ document.addEventListener('DOMContentLoaded', () => {
     toast(`Producto agregado`);
   });
 })();
+
+
+/* === Animated Counters — robust init (safe, idempotent) === */
+(function(){
+  const SELECTOR = '[data-counter-to]';
+  const els = Array.prototype.slice.call(document.querySelectorAll(SELECTOR));
+  if (!els.length) return;
+
+  // Prevent double-init
+  if (window.__ebfCountersInit) return;
+  window.__ebfCountersInit = true;
+
+  function parseNumber(str){
+    try {
+      // allow commas, dots, spaces
+      const clean = String(str).replace(/[^\d.-]/g,'');
+      const n = parseFloat(clean);
+      return isNaN(n) ? 0 : n;
+    } catch(e){ return 0; }
+  }
+
+  function formatLikeOriginal(target, originalText){
+    // Preserve "+" or suffix like "k", "+", etc.
+    const suffixMatch = originalText.match(/[^\d]*$/);
+    const suffix = suffixMatch ? suffixMatch[0] : '';
+    return Math.round(target).toLocaleString() + suffix;
+  }
+
+  function animate(el){
+    if (el.__running) return;
+    el.__running = true;
+    const toAttr = el.getAttribute('data-counter-to');
+    const durAttr = el.getAttribute('data-counter-dur');
+    const startAttr = el.getAttribute('data-counter-from');
+    const easingAttr = el.getAttribute('data-counter-ease');
+
+    const original = el.textContent || '0';
+    const to = parseNumber(toAttr);
+    const start = startAttr != null ? parseNumber(startAttr) : 0;
+    const dur = Math.max(200, parseInt(durAttr || '1200', 10));
+    const ease = (easingAttr || 'outCubic').toLowerCase();
+
+    const easings = {
+      linear: t=>t,
+      outCubic: t=>1-Math.pow(1-t,3),
+      outQuad: t=>1-(1-t)*(1-t),
+      outExpo: t=>(t===1?1:1-Math.pow(2,-10*t))
+    };
+    const E = easings[ease] || easings.outCubic;
+
+    let startTime = null;
+    function step(ts){
+      if (!startTime) startTime = ts;
+      const p = Math.min(1, (ts - startTime) / dur);
+      const v = start + (to - start) * E(p);
+      el.textContent = formatLikeOriginal(v, original);
+      if (p < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.textContent = formatLikeOriginal(to, original);
+        el.__running = false;
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  function init(){
+    // If IntersectionObserver is available, lazy-animate when visible.
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animate(entry.target);
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -15% 0px' });
+      els.forEach(el => io.observe(el));
+    } else {
+      // Fallback: animate immediately
+      els.forEach(animate);
+    }
+  }
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    init();
+  } else {
+    document.addEventListener('DOMContentLoaded', init, { once:true });
+  }
+})();
+/* === /Animated Counters === */
