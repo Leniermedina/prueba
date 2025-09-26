@@ -563,54 +563,45 @@ input:focus-visible, textarea:focus-visible {
 .hero-content .cta{ margin-top: 22px; }
 
 
-/* ==== El Bosque Farm — Logo animado + Nav responsive (incrustado) ==== */
-:root{
-  --verde-oscuro:#0e4d2d;
-  --verde-medio:#168f4c;
-  --verde-claro:#3cff9e;
-  --verde-muy-claro:#7ef7bd;
-}
-.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:inherit;font-weight:800;letter-spacing:.02em}
-.logo__badge{width:48px;height:48px;flex:0 0 48px;filter:drop-shadow(0 4px 14px rgba(0,0,0,.18))}
-.header .logo__badge{width:42px;height:42px;flex-basis:42px}
-.logo__text{display:inline-flex;gap:.02em;font-size:1.05rem;line-height:1}
-.logo__text .sp{width:.35rem}
-.logo--animated .logo__text span{opacity:0;transform:translateY(.45em);filter:blur(2px);animation:logo-rise .7s cubic-bezier(.2,.7,.2,1) forwards}
-@keyframes logo-rise{to{opacity:1;transform:translateY(0);filter:blur(0)}}
-.logo__text span:nth-child(1){animation-delay:.02s}
-.logo__text span:nth-child(2){animation-delay:.08s}
-.logo__text span:nth-child(3){animation-delay:.14s}
-.logo__text span:nth-child(4){animation-delay:.20s}
-.logo__text span:nth-child(5){animation-delay:.26s}
-.logo__text span:nth-child(6){animation-delay:.32s}
-.logo__text span:nth-child(7){animation-delay:.38s}
-.logo__text span:nth-child(8){animation-delay:.44s}
-.logo__text span:nth-child(9){animation-delay:.50s}
-.logo__text span:nth-child(10){animation-delay:.56s}
-.logo__text span:nth-child(11){animation-delay:.62s}
-.logo__text span:nth-child(12){animation-delay:.68s}
-.logo__text span:nth-child(13){animation-delay:.74s}
-.logo__text span:nth-child(14){animation-delay:.80s}
-.logo__text span:nth-child(15){animation-delay:.86s}
-.logo__text span:nth-child(16){animation-delay:.92s}
-.logo:hover .logo__text{text-shadow:0 0 6px var(--verde-claro)}
-.logo:hover .logo__badge{transform:translateY(-1px) scale(1.02)}
-.logo__badge .leaf{transform-origin:11px 20px;animation:leaf-pop .8s .4s both}
-@keyframes leaf-pop{0%{transform:scale(.6) rotate(-8deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
-.logo__badge .cow{opacity:0;animation:cow-in .6s .55s forwards}
-@keyframes cow-in{to{opacity:1}}
-.logo__badge .chicken{opacity:0;transform:translateY(4px);animation:ch-in .6s .65s forwards}
-@keyframes ch-in{to{opacity:1;transform:translateY(0)}}
+/* === EBF: text-only header logo (gentle) === */
+.ebf-logo-text{display:inline-flex;gap:.02em;white-space:nowrap;color:inherit;font:inherit;line-height:1}
+.ebf-logo-text .sp{width:.35rem;display:inline-block}
+/* gentle per-letter rise */
+.ebf-logo-text > span{opacity:0;transform:translateY(.28em);filter:blur(1px);animation:ebf-rise .42s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes ebf-rise{to{opacity:1;transform:translateY(0);filter:blur(0)}}
+/* stagger */
+.ebf-logo-text > span:nth-child(1){animation-delay:.02s}
+.ebf-logo-text > span:nth-child(2){animation-delay:.06s}
+.ebf-logo-text > span:nth-child(3){animation-delay:.10s}
+.ebf-logo-text > span:nth-child(4){animation-delay:.14s}
+.ebf-logo-text > span:nth-child(5){animation-delay:.18s}
+.ebf-logo-text > span:nth-child(6){animation-delay:.22s}
+.ebf-logo-text > span:nth-child(7){animation-delay:.26s}
+.ebf-logo-text > span:nth-child(8){animation-delay:.30s}
+.ebf-logo-text > span:nth-child(9){animation-delay:.34s}
+.ebf-logo-text > span:nth-child(10){animation-delay:.38s}
+.ebf-logo-text > span:nth-child(11){animation-delay:.42s}
+.ebf-logo-text > span:nth-child(12){animation-delay:.46s}
+.ebf-logo-text > span:nth-child(13){animation-delay:.50s}
+.ebf-logo-text > span:nth-child(14){animation-delay:.54s}
+.ebf-logo-text > span:nth-child(15){animation-delay:.58s}
+.ebf-logo-text > span:nth-child(16){animation-delay:.62s}
 @media (prefers-reduced-motion: reduce){
-  .logo--animated .logo__text span,.logo__badge .leaf,.logo__badge .cow,.logo__badge .chicken{animation:none}
+  .ebf-logo-text > span{animation:none;opacity:1;transform:none;filter:none}
 }
 
-/* === Navegación responsive mínima sin romper nada === */
-.js-mobile-nav-toggle{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:0;border-radius:10px;background:transparent;cursor:pointer}
-.js-mobile-nav-toggle svg{width:24px;height:24px}
-@media (max-width: 768px){
-  .js-mobile-nav-toggle{display:flex}
-  .js-mobile-nav-target{display:none}
-  .js-mobile-nav-target.nav--open{display:block}
+
+
+/* === EBF TEXT LOGO — Verde Neon, sin subrayado === */
+:root{ --logo-brand:#18c37e }
+[data-theme="dark"]{ --logo-brand:#3cff9e }
+header .logo{ color:var(--logo-brand); text-decoration:none; }
+header .logo:link, header .logo:visited, header .logo:hover, header .logo:focus{ color:var(--logo-brand); text-decoration:none; }
+header .ebf-logo-text{ color:var(--logo-brand); text-shadow: 0 0 2px rgba(60,255,158,.25); }
+@keyframes ebf-neon-pulse{ 
+  0%,100%{ text-shadow: 0 0 2px rgba(60,255,158,.25), 0 0 0 rgba(60,255,158,0); }
+  50%{ text-shadow: 0 0 6px rgba(60,255,158,.55), 0 0 14px rgba(60,255,158,.35); }
 }
+header .ebf-logo-text{ animation: ebf-neon-pulse 2.6s ease-in-out infinite; }
+header .logo:hover .ebf-logo-text{ text-shadow: 0 0 8px rgba(60,255,158,.8), 0 0 18px rgba(60,255,158,.55); }
 
